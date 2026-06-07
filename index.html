@@ -1,1 +1,511 @@
-function hideSavingOverlay() { const ov = document
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Soko Plus+ – Premium Marketplace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #1e293b; font-size: 14px; overflow-x: hidden; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
+        :root { --school-blue: #002654; --school-blue-dark: #001a3d; --school-gold: #f5b042; --school-gold-dark: #e6a017; --gray-bg: #f1f5f9; --gray-light: #e2e8f0; --gray-text: #475569; --pure-white: #ffffff; --card-radius: 1rem; }
+
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+
+        .soko-header { background: var(--school-blue-dark); color: white; position: sticky; top: 0; z-index: 50; padding-top: env(safe-area-inset-top); }
+        .header-top { padding: 0.8rem 1rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .logo-area { display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+        .logo-icon { font-size: 1.6rem; background: linear-gradient(135deg, #2e7d32, #4caf50); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: none; display: inline-block; }
+        .shop-title { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.5px; background: linear-gradient(135deg, #f5b042, #e6a017); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+        .header-middle { padding: 0.6rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; flex-wrap: wrap; }
+        .search-wrapper { flex: 1; min-width: 180px; }
+        .right-group { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
+        @media (min-width: 768px) { .header-middle { flex-wrap: nowrap; } }
+        @media (max-width: 767px) { .header-middle { flex-direction: row; flex-wrap: nowrap; } .search-wrapper { flex: 1; } .right-group { flex-shrink: 0; } }
+
+        .search-bar { display: flex; background: white; border-radius: 50px; overflow: hidden; width: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .search-bar input { flex: 1; padding: 0.6rem 1rem; border: none; outline: none; font-size: 0.85rem; }
+        .search-bar button { background: var(--school-gold); border: none; padding: 0 1.2rem; cursor: pointer; color: var(--school-blue); transition: all 0.2s; }
+        .search-bar button:hover { background: var(--school-gold-dark); }
+        .wallet-section { display: flex; align-items: center; gap: 0.4rem; background: rgba(255,255,255,0.12); padding: 0.4rem 0.8rem; border-radius: 50px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+        .wallet-section:hover { background: rgba(255,255,255,0.2); transform: scale(1.02); }
+        .wallet-icon { color: var(--school-gold); }
+        .wallet-amount { font-size: 0.7rem; font-weight: 600; }
+        .login-btn-header { background: var(--school-gold); color: var(--school-blue-dark); border: none; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.7rem; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+        .login-btn-header:hover { background: var(--school-gold-dark); transform: scale(1.02); }
+        .welcome-row { padding: 0.5rem 1rem; text-align: center; background: rgba(255,255,255,0.05); }
+        .welcome-text { font-size: 0.75rem; opacity: 0.9; }
+
+        .desktop-header-icons { display: none; }
+        @media (min-width: 768px) {
+            .desktop-header-icons { display: flex; align-items: center; gap: 0.6rem; }
+            .desktop-icon-btn { background: rgba(255,255,255,0.12); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; position: relative; }
+            .desktop-icon-btn:hover { background: rgba(255,255,255,0.25); transform: scale(1.05); }
+            .desktop-cart-badge { position: absolute; top: -5px; right: -5px; background: var(--school-gold); color: var(--school-blue-dark); border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        }
+
+        .bottom-nav-fixed { display: none; }
+        @media (max-width: 767px) {
+            .bottom-nav-fixed { display: block; position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-top: 1px solid var(--gray-light); padding: 0.5rem 0.5rem; z-index: 1000; padding-bottom: calc(0.5rem + env(safe-area-inset-bottom)); box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+            .nav-links { width: 100%; display: flex; justify-content: space-around; align-items: center; }
+            .nav-item { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; color: var(--gray-text); font-size: 0.7rem; font-weight: 500; cursor: pointer; padding: 0.3rem 0; position: relative; transition: color 0.2s; }
+            .nav-item i { font-size: 1.2rem; }
+            .nav-item.active, .nav-item:hover { color: var(--school-blue); }
+            .cart-badge-mobile { position: absolute; top: -8px; right: -12px; background: var(--school-gold); color: var(--school-blue-dark); border-radius: 20px; padding: 0 5px; font-size: 10px; font-weight: 700; min-width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; }
+        }
+
+        .light-footer { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid var(--gray-light); padding: 0.5rem 1rem; display: flex; justify-content: flex-end; align-items: center; z-index: 100; gap: 0.8rem; transition: transform 0.3s ease; }
+        @media (max-width: 767px) { .light-footer { bottom: 65px; } }
+        @media (min-width: 768px) { .light-footer { justify-content: flex-end; padding: 0.4rem 1rem; } }
+        .light-footer.hide { transform: translateY(100%); }
+
+        .support-chat-footer { background: linear-gradient(135deg, var(--school-blue), var(--school-blue-dark)); color: white; border: none; padding: 0.5rem 1.2rem; border-radius: 50px; cursor: pointer; font-size: 0.75rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .support-chat-footer:hover { transform: scale(1.02); background: linear-gradient(135deg, var(--school-blue-dark), var(--school-blue)); }
+        .support-chat-footer i { font-size: 0.9rem; }
+        .unread-badge { position: absolute; top: -5px; right: -5px; background: #dc2626; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; animation: pulse-red 1.5s infinite; }
+        @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.2); background: #ef4444; } 100% { transform: scale(1); } }
+
+        .chat-modal { position: fixed; bottom: 70px; right: 16px; width: 340px; height: 480px; background: white; border-radius: var(--card-radius); box-shadow: 0 4px 20px rgba(0,0,0,0.2); z-index: 1002; display: flex; flex-direction: column; opacity: 0; visibility: hidden; transition: all 0.3s ease; border: 1px solid var(--gray-light); }
+        @media (max-width: 480px) { .chat-modal { width: 300px; height: 440px; right: 10px; bottom: 65px; } }
+        .chat-modal.active { opacity: 1; visibility: visible; }
+        .chat-header { background: linear-gradient(135deg, var(--school-blue), var(--school-blue-dark)); color: white; padding: 0.8rem; border-radius: var(--card-radius) var(--card-radius) 0 0; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 600; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 0.8rem; display: flex; flex-direction: column; gap: 0.5rem; background: #f9fafb; }
+        .message-buyer { background: #e9ecef; padding: 0.5rem 0.8rem; border-radius: 18px 18px 18px 4px; align-self: flex-start; max-width: 80%; font-size: 0.75rem; }
+        .message-seller { background: var(--school-blue); color: white; padding: 0.5rem 0.8rem; border-radius: 18px 18px 4px 18px; align-self: flex-end; max-width: 80%; font-size: 0.75rem; }
+        .message-image { max-width: 120px; max-height: 120px; border-radius: 8px; margin-top: 5px; cursor: pointer; }
+        .message-time { font-size: 0.55rem; opacity: 0.6; margin-top: 3px; }
+        .chat-input-area { display: flex; padding: 0.5rem; border-top: 1px solid var(--gray-light); gap: 0.5rem; align-items: center; background: white; }
+        .chat-input-area input { flex: 1; padding: 0.6rem 0.8rem; border: 1px solid var(--gray-light); border-radius: 30px; font-size: 0.75rem; outline: none; }
+        .chat-input-area button { background: var(--school-blue); color: white; border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; transition: all 0.2s; }
+        .chat-input-area button:hover { background: var(--school-blue-dark); transform: scale(1.05); }
+        .image-upload-chat { background: var(--gray-bg); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; transition: all 0.2s; }
+
+        .payment-chat-section { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--gray-light); }
+        .payment-chat-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; font-weight: 600; color: var(--school-blue); }
+        .payment-chat-messages { max-height: 200px; overflow-y: auto; background: #f9fafb; border-radius: 12px; padding: 0.5rem; margin-bottom: 0.5rem; }
+        .payment-chat-message { font-size: 0.7rem; padding: 0.3rem 0.5rem; margin-bottom: 0.3rem; border-radius: 12px; }
+        .payment-chat-message.seller { background: var(--school-blue); color: white; text-align: right; }
+        .payment-chat-message.buyer { background: #e9ecef; text-align: left; }
+        .payment-chat-input { display: flex; gap: 0.3rem; }
+        .payment-chat-input input { flex: 1; padding: 0.4rem 0.6rem; border: 1px solid var(--gray-light); border-radius: 30px; font-size: 0.7rem; outline: none; }
+        .payment-chat-input button { background: var(--school-blue); color: white; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 0.7rem; }
+        .payment-chat-badge { background: #dc2626; color: white; border-radius: 50%; width: 16px; height: 16px; font-size: 9px; display: inline-flex; align-items: center; justify-content: center; margin-left: 0.3rem; }
+
+        .main-container { width: 100%; padding: 0.8rem 0.8rem 5rem; min-height: calc(100vh - 120px); background: #f8fafc; }
+        @media (min-width: 768px) { .main-container { padding: 1rem 1rem 4rem; } }
+
+        .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 0.5rem; }
+        @media (min-width: 768px) { .product-grid { grid-template-columns: repeat(4, 1fr); gap: 1.2rem; } }
+
+        .product-card { background: var(--pure-white); border: 1px solid var(--gray-light); overflow: hidden; cursor: pointer; transition: all 0.3s ease; border-radius: var(--card-radius); }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .product-img { background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); height: 150px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; overflow: hidden; }
+        .product-img img { width: 100%; height: 100%; object-fit: cover; }
+        .product-info { background: var(--pure-white); padding: 0.8rem; }
+        .product-title { font-weight: 600; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.3rem; }
+        .seller-name { font-size: 0.65rem; color: var(--gray-text); cursor: pointer; }
+        .seller-name:hover { color: var(--school-gold); text-decoration: underline; }
+        .price { font-weight: 700; color: var(--school-blue); margin-top: 0.3rem; font-size: 0.9rem; }
+        .rating { display: flex; align-items: center; gap: 0.2rem; margin: 0.3rem 0; font-size: 0.65rem; }
+        .stars { color: var(--school-gold); }
+        .stock-badge { display: inline-block; font-size: 0.65rem; color: #2e7d32; margin-top: 0.2rem; }
+
+        .mobile-category-row { display: flex; overflow-x: auto; gap: 0.6rem; padding: 0.5rem 0 1rem; scrollbar-width: thin; }
+        .cat-pill { background: linear-gradient(135deg, white 0%, #fff8e8 100%); border: 1px solid var(--school-gold); border-radius: 50px; padding: 0.5rem 1.2rem; font-size: 0.8rem; cursor: pointer; white-space: nowrap; color: var(--school-blue-dark); font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .cat-pill i { color: var(--school-gold); font-size: 0.85rem; }
+        .cat-pill.active-cat { background: linear-gradient(135deg, var(--school-gold), var(--school-gold-dark)); color: var(--school-blue-dark); border-color: var(--school-gold-dark); box-shadow: 0 4px 12px rgba(245,176,66,0.3); }
+        .cat-pill.active-cat i { color: var(--school-blue-dark); }
+        @media (min-width: 768px) { .mobile-category-row { display: none; } }
+
+        /* Category Modal - GOLD FIXED */
+        .category-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .category-modal.active { opacity: 1; visibility: visible; }
+        .category-modal-content { background: white; border-radius: 28px; width: 90%; max-width: 420px; max-height: 80vh; overflow-y: auto; padding: 1.5rem; box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
+        .category-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; padding-bottom: 0.8rem; border-bottom: 2px solid var(--school-gold); }
+        .category-modal-header h3 { color: var(--school-blue-dark); font-size: 1.2rem; font-weight: 700; }
+        .category-modal-header h3 i { color: var(--school-gold); margin-right: 0.5rem; }
+        .close-category-modal { background: var(--gray-bg); border: none; width: 34px; height: 34px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; color: var(--gray-text); transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+        .close-category-modal:hover { background: var(--gray-light); transform: rotate(90deg); }
+        .category-list-modal { display: flex; flex-direction: column; gap: 0.6rem; }
+        .category-item-modal { display: flex; align-items: center; gap: 0.8rem; padding: 0.8rem 1rem; background: var(--gray-bg); border-radius: 60px; cursor: pointer; transition: all 0.2s; color: var(--school-blue-dark); font-weight: 500; }
+        .category-item-modal i { width: 32px; color: var(--school-gold); font-size: 1.2rem; transition: all 0.2s; }
+        .category-item-modal .category-count { background: var(--school-gold); color: var(--school-blue-dark); padding: 4px 10px; border-radius: 30px; font-size: 0.7rem; font-weight: 700; }
+        .category-item-modal:hover { background: linear-gradient(135deg, var(--school-gold), var(--school-gold-dark)); color: var(--school-blue-dark); transform: translateX(5px); }
+        .category-item-modal:hover i { color: var(--school-blue-dark); }
+        .category-item-modal:hover .category-count { background: var(--school-blue-dark); color: white; }
+
+        .desktop-layout { display: none; }
+        @media (min-width: 768px) {
+            .desktop-layout { display: flex; gap: 1.5rem; margin-top: 0.5rem; }
+            .categories-sidebar-desktop { width: 280px; flex-shrink: 0; background: white; border-radius: var(--card-radius); border: 1px solid var(--gray-light); overflow: hidden; position: sticky; top: 80px; max-height: calc(100vh - 100px); overflow-y: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+            .sidebar-header-desktop { background: linear-gradient(135deg, var(--school-blue) 0%, var(--school-blue-dark) 100%); padding: 1rem; color: white; text-align: center; }
+            .sidebar-header-desktop i { color: var(--school-gold); margin-right: 0.5rem; }
+            .sidebar-header-desktop h4 { font-size: 0.9rem; font-weight: 600; }
+            .category-list-desktop { padding: 0.5rem 0; }
+            .sidebar-cat-desktop { display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 1rem; cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent; margin: 0.1rem 0; }
+            .sidebar-cat-desktop:hover { background: rgba(245,176,66,0.1); transform: translateX(4px); }
+            .sidebar-cat-desktop.active-cat-desktop { background: rgba(245,176,66,0.15); border-left-color: var(--school-gold); color: var(--school-blue); font-weight: 600; }
+            .cat-name-desktop { display: flex; align-items: center; gap: 0.8rem; }
+            .cat-name-desktop i { width: 24px; color: var(--school-gold); }
+            .cat-count-desktop { background: var(--gray-bg); padding: 0.2rem 0.6rem; border-radius: 30px; font-size: 0.6rem; font-weight: 500; }
+            .main-content-desktop { flex: 1; }
+        }
+
+        .carousel-container { position: relative; border-radius: var(--card-radius); overflow: hidden; margin: 0.5rem 0 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .carousel-track { display: flex; transition: transform 0.5s ease-in-out; }
+        .carousel-slide { flex: 0 0 100%; display: flex; flex-direction: row; align-items: center; min-height: 240px; cursor: pointer; }
+        .carousel-slide:nth-child(1) { background: linear-gradient(135deg, #001a3d, #000000); }
+        .carousel-slide:nth-child(2) { background: linear-gradient(135deg, #8b0055, #1a0033); }
+        .carousel-slide:nth-child(3) { background: linear-gradient(135deg, #006b6b, #001a1a); }
+        .carousel-slide:nth-child(4) { background: linear-gradient(135deg, #e65c00, #4a1a00); }
+        .carousel-slide:nth-child(5) { background: linear-gradient(135deg, #1a4a7a, #001a3d); }
+        .carousel-text { flex: 0.8; padding: 1rem; color: white; text-align: left; }
+        .carousel-text h3 { font-size: 1rem; margin-bottom: 0.3rem; font-weight: 700; }
+        .carousel-text .carousel-price { font-size: 1.1rem; font-weight: 800; color: var(--school-gold); margin: 0.2rem 0; }
+        .carousel-text .carousel-seller { font-size: 0.65rem; opacity: 0.9; }
+        .carousel-image { flex: 1; display: flex; justify-content: center; align-items: center; padding: 0.5rem; min-width: 0; }
+        .carousel-image img { width: 100%; max-width: 160px; max-height: 160px; object-fit: contain; border-radius: 12px; }
+        @media (min-width: 768px) { .carousel-image img { max-width: 220px; max-height: 220px; } }
+        @media (max-width: 768px) { .carousel-slide { min-height: 180px; } .carousel-text h3 { font-size: 0.8rem; } .carousel-text .carousel-price { font-size: 0.9rem; } .carousel-image img { max-width: 120px; max-height: 120px; } }
+
+        .announcement-banner { background: linear-gradient(135deg, var(--school-gold), #ffd700); color: var(--school-blue-dark); padding: 0.8rem 1rem; margin-bottom: 1rem; border-radius: 14px; cursor: pointer; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .announcement-title { font-weight: 700; font-size: 0.85rem; }
+        .announcement-message { font-size: 0.75rem; margin-top: 0.2rem; opacity: 0.9; }
+        .close-announcement { position: absolute; top: 8px; right: 12px; cursor: pointer; background: rgba(0,0,0,0.2); width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; transition: all 0.2s; }
+
+        .random-carousel { margin: 1rem 0; overflow: hidden; }
+        .random-carousel-container { overflow: hidden; }
+        .random-carousel-track { display: flex; transition: transform 0.5s ease-in-out; }
+        .random-card { background: white; border: 1px solid var(--gray-light); border-radius: var(--card-radius); margin-right: 0.8rem; flex: 0 0 calc(33.333% - 0.6rem); cursor: pointer; transition: all 0.2s; }
+        .random-card:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        @media (min-width: 768px) { .random-card { flex: 0 0 calc(14.2857% - 0.6rem); } }
+        .random-img { background: #f1f5f9; height: 110px; display: flex; align-items: center; justify-content: center; font-size: 2rem; overflow: hidden; border-radius: var(--card-radius) var(--card-radius) 0 0; }
+        .random-img img { width: 100%; height: 100%; object-fit: cover; }
+        .random-info { padding: 0.5rem; }
+        .random-title-text { font-weight: 600; font-size: 0.75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .random-price { font-weight: 700; color: var(--school-blue); font-size: 0.75rem; margin-top: 0.2rem; }
+
+        .product-gallery { position: relative; margin-bottom: 1rem; }
+        .main-image-container { position: relative; width: 100%; height: 400px; overflow: hidden; border-radius: var(--card-radius); background: #f1f5f9; cursor: crosshair; }
+        @media (max-width: 768px) { .main-image-container { height: 300px; } }
+        .main-image { width: 100%; height: 100%; object-fit: contain; transition: transform 0.1s ease; }
+        .zoom-lens { position: absolute; border: 2px solid var(--school-gold); width: 150px; height: 150px; background: rgba(245, 176, 66, 0.2); border-radius: 50%; pointer-events: none; display: none; z-index: 10; }
+        .zoom-result { position: absolute; top: 0; right: -340px; width: 320px; height: 320px; background: white; border: 2px solid var(--school-gold); border-radius: var(--card-radius); background-repeat: no-repeat; display: none; z-index: 20; box-shadow: 0 4px 20px rgba(0,0,0,0.2); pointer-events: none; }
+        @media (max-width: 768px) { .zoom-result { display: none !important; } }
+        .thumbnail-container { display: flex; gap: 0.6rem; margin-top: 1rem; overflow-x: auto; padding-bottom: 0.5rem; }
+        .thumbnail { width: 75px; height: 75px; object-fit: cover; border-radius: 12px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
+        .thumbnail.active { border-color: var(--school-gold); transform: scale(1.05); }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 3000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-card { background: white; border-radius: 28px; padding: 1.5rem; width: 90%; max-width: 500px; max-height: 85vh; overflow-y: auto; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
+        .modal-card h3 { margin-bottom: 1rem; color: var(--school-blue-dark); border-bottom: 2px solid var(--school-gold); padding-bottom: 0.5rem; font-size: 1.2rem; display: inline-block; }
+        .modal-card input, .modal-card select, .modal-card textarea { width: 100%; padding: 0.8rem 1rem; margin-bottom: 0.8rem; border: 1px solid var(--gray-light); border-radius: 14px; font-size: 0.85rem; outline: none; transition: all 0.2s; }
+        .modal-card input:focus, .modal-card select:focus, .modal-card textarea:focus { border-color: var(--school-gold); box-shadow: 0 0 0 3px rgba(245,176,66,0.2); }
+        .modal-card button { width: 100%; padding: 0.8rem; background: var(--school-blue); color: white; border: none; border-radius: 50px; cursor: pointer; margin-top: 0.4rem; font-size: 0.9rem; font-weight: 600; transition: all 0.2s; }
+        .modal-card button:hover { background: var(--school-blue-dark); transform: translateY(-2px); }
+        .close-modal { position: absolute; top: 12px; right: 15px; cursor: pointer; font-size: 1.3rem; font-weight: bold; background: rgba(0,0,0,0.1); width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.2s; }
+        .close-modal:hover { background: rgba(0,0,0,0.2); transform: rotate(90deg); }
+
+        .wallet-modal-content { max-width: 420px; }
+        .wallet-balance-card { background: linear-gradient(135deg, var(--school-blue), var(--school-blue-dark)); color: white; padding: 1.5rem; border-radius: 24px; text-align: center; margin-bottom: 1rem; }
+        .wallet-balance-label { font-size: 0.75rem; opacity: 0.8; letter-spacing: 1px; }
+        .wallet-balance-amount { font-size: 2rem; font-weight: 700; margin-top: 0.3rem; }
+        .topup-toggle-btn { background: linear-gradient(135deg, var(--school-gold), var(--school-gold-dark)); color: var(--school-blue-dark); border: none; width: 100%; padding: 0.8rem; border-radius: 50px; font-weight: 700; cursor: pointer; margin-top: 0.5rem; transition: all 0.2s; font-size: 0.9rem; }
+        .topup-toggle-btn:hover { transform: scale(1.02); box-shadow: 0 4px 12px rgba(245,176,66,0.3); }
+        .topup-form { display: none; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--gray-light); animation: fadeIn 0.3s ease; }
+        .topup-form.show { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .topup-info { background: #e8f5e9; padding: 0.8rem; border-radius: 16px; margin-bottom: 1rem; font-size: 0.75rem; border-left: 4px solid #2e7d32; }
+        .mixx-number { background: #fff3e0; padding: 0.6rem; border-radius: 12px; text-align: center; margin: 0.5rem 0; font-size: 1rem; font-weight: bold; color: var(--school-blue); }
+
+        .floating-actions { position: sticky; bottom: 15px; right: 15px; display: flex; gap: 10px; justify-content: flex-end; z-index: 20; margin-top: -48px; pointer-events: none; }
+        .floating-actions button { pointer-events: auto; width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); color: white; transition: all 0.2s; }
+        .floating-actions button:hover { background: rgba(0, 0, 0, 0.8); transform: scale(1.05); }
+        .modal-actions-sticky { position: sticky; bottom: 0; background: white; padding: 1rem 0 0.4rem; margin-top: 1rem; border-top: 1px solid var(--gray-light); display: flex; gap: 1rem; }
+        .modal-actions-sticky button { flex: 1; padding: 0.8rem; font-size: 0.9rem; font-weight: 600; border: none; border-radius: 50px; cursor: pointer; transition: all 0.2s; }
+        .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); padding: 12px 24px; border-radius: 50px; font-size: 0.8rem; z-index: 10000; animation: fadeInOut 3s ease; background: #2e7d32; color: white; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .toast-error { background: #dc2626; }
+        @keyframes fadeInOut { 0% { opacity: 0; transform: translateX(-50%) translateY(20px); } 10% { opacity: 1; transform: translateX(-50%) translateY(0); } 90% { opacity: 1; } 100% { opacity: 0; transform: translateX(-50%) translateY(-20px); } }
+
+        .panel { background: white; padding: 1rem; border: 1px solid var(--gray-light); border-radius: var(--card-radius); margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .cart-item { display: flex; justify-content: space-between; padding: 0.8rem 0; border-bottom: 1px solid var(--gray-light); flex-wrap: wrap; gap: 0.4rem; align-items: center; }
+        .cart-item-controls { display: flex; gap: 0.5rem; align-items: center; }
+        .cart-item-controls button { background: var(--school-blue); color: white; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 1rem; transition: all 0.2s; }
+        .cart-item-controls button:hover { background: var(--school-blue-dark); transform: scale(1.05); }
+        .cart-total { font-weight: 700; text-align: right; margin-top: 1rem; font-size: 1rem; padding-top: 0.5rem; border-top: 2px solid var(--school-gold); }
+        .profile-row { background: var(--gray-bg); padding: 0.8rem; border-radius: var(--card-radius); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; font-size: 0.8rem; }
+        .dashboard-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin-bottom: 1rem; }
+        .stat-card { background: linear-gradient(135deg, var(--school-blue), var(--school-blue-dark)); color: white; padding: 1rem; border-radius: var(--card-radius); text-align: center; }
+        .stat-number { font-size: 1.3rem; font-weight: 700; }
+        .create-shop-btn { background: var(--school-gold); border: none; padding: 0.7rem; border-radius: 50px; font-weight: 600; width: 100%; cursor: pointer; margin-top: 1rem; transition: all 0.2s; font-size: 0.85rem; }
+        .create-shop-btn:hover { background: var(--school-gold-dark); transform: scale(1.02); }
+
+        .fullscreen-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 5000; display: none; align-items: center; justify-content: center; cursor: zoom-out; }
+        .fullscreen-modal.active { display: flex; }
+        .fullscreen-image { max-width: 90%; max-height: 90%; object-fit: contain; }
+        .fullscreen-close { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; background: none; border: none; }
+        .fullscreen-prev, .fullscreen-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.3); color: white; border: none; font-size: 30px; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; transition: all 0.2s; }
+        .fullscreen-prev:hover, .fullscreen-next:hover { background: rgba(255,255,255,0.6); color: var(--school-blue); }
+        .fullscreen-prev { left: 20px; }
+        .fullscreen-next { right: 20px; }
+
+        .image-upload-area { border: 2px dashed var(--gray-light); border-radius: var(--card-radius); padding: 1rem; text-align: center; margin-bottom: 0.8rem; cursor: pointer; transition: all 0.2s; font-size: 0.8rem; }
+        .image-upload-area:hover { border-color: var(--school-gold); background: rgba(245,176,66,0.05); }
+        .image-preview { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+        .image-preview img { width: 80px; height: 80px; object-fit: cover; border-radius: var(--card-radius); cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
+        .saving-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 10000; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+        .saving-spinner { width: 50px; height: 50px; border: 4px solid var(--gray-light); border-top-color: var(--school-gold); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 1rem; }
+        @keyframes spin { to { rotate: 360deg; } }
+        .saving-text { color: white; font-size: 1rem; font-weight: 500; }
+        .payment-selection-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 4000; display: flex; align-items: center; justify-content: center; }
+        .payment-selection-card { background: white; border-radius: 28px; padding: 1.5rem; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; }
+        .payment-option { padding: 0.8rem; margin: 0.5rem 0; border-radius: 60px; cursor: pointer; background: var(--gray-bg); transition: all 0.2s; font-weight: 500; font-size: 0.9rem; }
+        .payment-option:hover { background: var(--school-gold); transform: scale(1.02); }
+        .payment-option.disabled { opacity: 0.5; cursor: not-allowed; background: #e0e0e0; }
+        .buyer-contact-card { background: #e8f5e9; padding: 0.6rem; border-radius: 14px; margin-top: 0.3rem; font-size: 0.7rem; }
+        .seller-product-item { background: var(--gray-bg); padding: 0.8rem; margin-bottom: 0.5rem; border-radius: var(--card-radius); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-size: 0.75rem; }
+        .product-actions button { background: var(--school-gold); border: none; padding: 0.3rem 0.8rem; border-radius: 30px; cursor: pointer; font-size: 0.7rem; transition: all 0.2s; }
+        .delete-product-btn { background: #dc2626; color: white; margin-left: 0.3rem; }
+        .order-item, .sale-item { background: var(--gray-bg); padding: 0.8rem; margin-bottom: 0.5rem; border-radius: var(--card-radius); font-size: 0.75rem; }
+        .order-status { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 30px; font-size: 0.65rem; font-weight: 600; }
+        .status-completed { background: #d1fae5; color: #059669; }
+        .sale-amount { font-size: 0.9rem; font-weight: bold; color: var(--school-gold); }
+        .detect-location-btn { background: var(--gray-bg); border: 1px solid var(--gray-light); padding: 0.6rem; border-radius: 50px; font-size: 0.7rem; margin-bottom: 0.8rem; cursor: pointer; width: 100%; transition: all 0.2s; }
+        .detect-location-btn:hover { background: var(--gray-light); }
+        .form-row { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; }
+        .form-row > * { flex: 1; }
+        .role-btn { flex: 1; background: var(--gray-bg); padding: 0.6rem; border-radius: 50px; text-align: center; cursor: pointer; transition: all 0.2s; font-weight: 500; }
+        .role-btn.active { background: var(--school-blue); color: white; }
+        .product-list { max-height: 350px; overflow-y: auto; }
+        
+        .seller-chat-badge { background: #dc2626; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 10px; display: inline-flex; align-items: center; justify-content: center; margin-left: 0.5rem; animation: pulse-red 1.5s infinite; }
+        .seller-chat-item { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem; border-bottom: 1px solid var(--gray-light); cursor: pointer; transition: background 0.2s; }
+        .seller-chat-item:hover { background: #fff8e8; }
+    </style>
+</head>
+<body>
+
+<header class="soko-header">
+    <div class="header-top">
+        <div class="logo-area">
+            <i class="fas fa-shopping-cart logo-icon"></i>
+            <div class="shop-title">Soko Plus+</div>
+        </div>
+    </div>
+    <div class="header-middle">
+        <div class="search-wrapper">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search products...">
+                <button id="searchBtn"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+        <div class="right-group">
+            <div class="desktop-header-icons">
+                <div class="desktop-icon-btn" id="desktopProfileBtn" onclick="setPage('profile')">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="desktop-icon-btn" id="desktopCartBtn" onclick="setPage('cart')">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="desktopCartBadge" class="desktop-cart-badge">0</span>
+                </div>
+            </div>
+            <div class="wallet-section" id="walletSection" style="display: none;" onclick="showWalletModal()">
+                <i class="fas fa-wallet wallet-icon"></i>
+                <span class="wallet-amount" id="walletAmount">TSh 0</span>
+            </div>
+            <button class="login-btn-header" id="loginBtnHeader" onclick="showAuthModal()">Login</button>
+        </div>
+    </div>
+    <div class="welcome-row" id="welcomeRow" style="display: none;">
+        <div class="welcome-text" id="welcomeMessage"></div>
+    </div>
+</header>
+
+<div class="bottom-nav-fixed">
+    <div class="nav-links">
+        <div class="nav-item" data-page="home"><i class="fas fa-home"></i><span>Home</span></div>
+        <div class="nav-item" data-page="categories"><i class="fas fa-th-large"></i><span>Categories</span></div>
+        <div class="nav-item" data-page="cart" style="position: relative;">
+            <i class="fas fa-shopping-cart"></i><span>Cart</span>
+            <span id="cartBadgeMobile" class="cart-badge-mobile">0</span>
+        </div>
+        <div class="nav-item" data-page="profile"><i class="fas fa-user-circle"></i><span>Profile</span></div>
+    </div>
+</div>
+
+<div class="light-footer" id="lightFooter">
+    <button class="support-chat-footer" id="supportChatFooterBtn">
+        <i class="fas fa-headset"></i> Support
+    </button>
+</div>
+
+<main class="main-container" id="appRoot">
+    <div id="dynamicContent"></div>
+</main>
+
+<div id="categoryModal" class="category-modal">
+    <div class="category-modal-content">
+        <div class="category-modal-header">
+            <h3><i class="fas fa-th-large"></i> All Categories</h3>
+            <button class="close-category-modal" onclick="closeCategoryModal()">&times;</button>
+        </div>
+        <div class="category-list-modal" id="categoryListModal"></div>
+    </div>
+</div>
+
+<div id="walletModal" class="modal-overlay">
+    <div class="modal-card wallet-modal-content">
+        <span class="close-modal" onclick="closeWalletModal()">&times;</span>
+        <div class="wallet-balance-card">
+            <div class="wallet-balance-label">Available Balance</div>
+            <div class="wallet-balance-amount" id="walletBalanceDisplay">TSh 0</div>
+        </div>
+        <button class="topup-toggle-btn" id="showTopupBtn" onclick="toggleTopupForm()"><i class="fas fa-plus-circle"></i> Top Up Wallet</button>
+        <div id="topupForm" class="topup-form">
+            <div class="topup-info"><i class="fas fa-info-circle"></i> <strong>Top Up Instructions:</strong><div class="mixx-number"><i class="fas fa-mobile-alt"></i> Send money to: <strong>Mixx Yas: 214253</strong></div><ol><li>Send amount to Mixx Yas number above</li><li>Copy transaction reference</li><li>Enter amount and reference below</li><li>Upload payment screenshot</li><li>Click Submit</li></ol></div>
+            <input type="number" id="topupAmount" placeholder="Amount (TSh)">
+            <input type="text" id="topupReference" placeholder="Transaction Reference">
+            <div class="image-upload-area" onclick="document.getElementById('screenshotInput').click()"><i class="fas fa-image"></i> Upload Payment Screenshot</div>
+            <input type="file" id="screenshotInput" accept="image/*" style="display:none">
+            <div id="screenshotPreview" class="image-preview"></div>
+            <button onclick="submitTopUpRequest()">Submit Top Up</button>
+        </div>
+    </div>
+</div>
+
+<div id="authModal" class="modal-overlay">
+    <div class="modal-card">
+        <span class="close-modal" onclick="closeAuthModal()">&times;</span>
+        <h3 id="authTitle">Login / Register</h3>
+        <div id="authForm">
+            <input type="email" id="loginEmail" placeholder="Email">
+            <input type="password" id="loginPassword" placeholder="Password">
+            <button onclick="handleLogin()">Login</button>
+        </div>
+        <div id="registerForm" style="display:none;">
+            <div class="form-row"><select id="regTitle"><option value="">Title*</option><option>Mr</option><option>Dr</option><option>Prof</option><option>Fr</option><option>Miss</option><option>Mrs</option><option>Ms</option></select><select id="regGender"><option value="">Gender*</option><option>Male</option><option>Female</option><option>Other</option></select></div>
+            <input type="text" id="regFullName" placeholder="Full Name*" required>
+            <input type="email" id="regEmail" placeholder="Email Address*" required>
+            <input type="tel" id="regPhone" placeholder="Phone Number*" required>
+            <input type="tel" id="regWhatsapp" placeholder="WhatsApp Number*" required>
+            <div class="form-row"><select id="regCountry"><option value="">Select Country*</option><option value="Tanzania">Tanzania</option><option value="Kenya">Kenya</option><option value="Uganda">Uganda</option><option value="Rwanda">Rwanda</option><option value="Burundi">Burundi</option><option value="DRC">DR Congo</option><option value="Malawi">Malawi</option><option value="Zambia">Zambia</option><option value="South Sudan">South Sudan</option></select><select id="regRegion"><option value="">Select Region/Province*</option></select></div>
+            <button class="detect-location-btn" onclick="detectUserLocation()"><i class="fas fa-map-marker-alt"></i> Detect My Location</button>
+            <input type="text" id="regCity" placeholder="City/District*" required>
+            <div id="sellerFields" style="display:none;"><input type="text" id="regShopName" placeholder="Shop Name*"><input type="text" id="regShopLocation" placeholder="Shop Location*"></div>
+            <input type="password" id="regPassword" placeholder="Password*" required>
+            <div style="display:flex; gap:0.5rem; margin:0.8rem 0;"><div class="role-btn active" data-role="buyer" onclick="selectRole('buyer')">Buyer</div><div class="role-btn" data-role="seller" onclick="selectRole('seller')">Seller</div></div>
+            <button onclick="handleRegister()">Register</button>
+        </div>
+        <p style="margin-top:0.8rem; text-align:center;"><a href="#" onclick="toggleAuthMode()" id="switchMode">Need an account? Register</a></p>
+    </div>
+</div>
+
+<div id="chatModal" class="chat-modal">
+    <div class="chat-header">
+        <span><i class="fas fa-headset"></i> <span id="chatTitle">Support Chat</span></span>
+        <button onclick="closeChat()" style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;">&times;</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+        <div style="text-align:center;padding:1rem;color:#999;">Loading conversation...</div>
+    </div>
+    <div class="chat-input-area">
+        <input type="file" id="chatImageInput" accept="image/*" style="display:none">
+        <button class="image-upload-chat" onclick="document.getElementById('chatImageInput').click()"><i class="fas fa-image"></i></button>
+        <input type="text" id="chatInput" placeholder="Type a message...">
+        <button onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<div id="productModal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 900px; padding-bottom: 0.5rem;">
+        <span class="close-modal" onclick="closeProductModal()">&times;</span>
+        <div id="productModalContent" style="max-height: 65vh; overflow-y: auto; padding-right: 0.5rem;"></div>
+        <div class="floating-actions"><button id="shareProductBtn" class="share-btn"><i class="fas fa-share-alt"></i></button><button id="favoriteProductBtn" class="favorite-btn"><i class="fas fa-heart"></i></button></div>
+        <div class="modal-actions-sticky"><button id="modalAddToCartBtn" style="background:var(--school-gold); color:var(--school-blue-dark);">Add to Cart</button><button id="modalBuyNowBtn" style="background:var(--school-blue); color:white;">Buy Now</button></div>
+    </div>
+</div>
+
+<div id="fullscreenModal" class="fullscreen-modal" onclick="closeFullscreen()">
+    <button class="fullscreen-close" onclick="closeFullscreen()">&times;</button>
+    <button class="fullscreen-prev" onclick="prevFullscreenImage(event)">❮</button>
+    <button class="fullscreen-next" onclick="nextFullscreenImage(event)">❯</button>
+    <img id="fullscreenImage" class="fullscreen-image" src="">
+</div>
+
+<div id="sellerDashboard" class="modal-overlay">
+    <div class="modal-card" style="max-width: 750px;">
+        <span class="close-modal" onclick="closeSellerDashboard()">&times;</span>
+        <h3><i class="fas fa-store"></i> Seller Dashboard</h3>
+        <div id="sellerContent"></div>
+    </div>
+</div>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAYJ7ddb15xJQeGUwazW0PwAv-lDCHXAMY",
+        authDomain: "new-prototype-ldf3z.firebaseapp.com",
+        projectId: "new-prototype-ldf3z",
+        storageBucket: "new-prototype-ldf3z.firebasestorage.app",
+        messagingSenderId: "559322889629",
+        appId: "1:559322889629:web:b039d42df62528520a8374"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+    const IMAGEBB_API_KEY = "3e094ae1fb6f0240abca132e3d6976a0";
+
+    let currentUser = null;
+    let currentPage = "home";
+    let currentCategory = "All";
+    let selectedCategorySidebar = "All";
+    let searchQuery = "";
+    let allProducts = [];
+    let cart = [];
+    let randomCarouselInterval = null;
+    let randomCarouselIntervalDesktop = null;
+    let randomCurrentIndex = 0;
+    let currentScreenshotFile = null;
+    let isSaving = false;
+    let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    let currentProductId = null;
+    let liveTrackingInterval = null;
+    let currentConversationId = null;
+    let messagesUnsubscribe = null;
+    let totalUnreadCount = 0;
+    let announcements = [];
+    let lastScrollTop = 0;
+    let scrollTimeout = null;
+    let currentPaymentSellerId = null;
+    let currentPaymentSellerName = null;
+    let paymentChatUnsubscribe = null;
+
+    window.currentProductImages = [];
+    window.currentImageIndex = 0;
+
+    const allCategoriesList = ["All","Cars","Motorcycles","Phones & Tablets","Electronics","Laptops & Computers","Home Appliances","Fashion & Clothing","Shoes","Bags & Luggage","Jewelry & Watches","Health & Beauty","Baby Products","Toys & Games","Sports & Outdoors","Books & Media","Office Supplies","Pet Supplies","Garden & Tools","Furniture","Food & Groceries","Uniforms","Farming Tools","Fruit Cultivation","Aquarium","Eco Products","Accessories"];
+    const categoryIcons = {"All":"fa-layer-group","Cars":"fa-car","Motorcycles":"fa-motorcycle","Phones & Tablets":"fa-mobile-alt","Electronics":"fa-microchip","Laptops & Computers":"fa-laptop","Home Appliances":"fa-tv","Fashion & Clothing":"fa-tshirt","Shoes":"fa-shoe-prints","Bags & Luggage":"fa-bag-shopping","Jewelry & Watches":"fa-gem","Health & Beauty":"fa-heartbeat","Baby Products":"fa-baby","Toys & Games":"fa-gamepad","Sports & Outdoors":"fa-futbol","Books & Media":"fa-book","Office Supplies":"fa-pen-ruler","Pet Supplies":"fa-paw","Garden & Tools":"fa-leaf","Furniture":"fa-couch","Food & Groceries":"fa-apple-alt","Uniforms":"fa-shirt","Farming Tools":"fa-tractor","Fruit Cultivation":"fa-apple-alt","Aquarium":"fa-fish","Eco Products":"fa-recycle","Accessories":"fa-mask"};
+
+    const regionsData = {
+        "Tanzania": ["Arusha","Dar es Salaam","Dodoma","Geita","Iringa","Kagera","Katavi","Kigoma","Kilimanjaro","Lindi","Manyara","Mara","Mbeya","Morogoro","Mtwara","Mwanza","Njombe","Pemba North","Pemba South","Pwani","Rukwa","Ruvuma","Shinyanga","Simiyu","Singida","Songwe","Tabora","Tanga","Unguja North","Unguja South","Unguja West"],
+        "Kenya": ["Nairobi","Mombasa","Kisumu","Nakuru","Eldoret","Thika","Kitale","Malindi","Garissa","Kakamega","Nyeri","Machakos","Meru","Embu","Isiolo","Kajiado","Kericho","Kiambu","Kilifi","Kirinyaga","Kisii","Kitui","Kwale","Laikipia","Lamu","Makueni","Mandera","Marsabit","Migori","Murang'a","Nandi","Narok","Nyamira","Nyandarua","Samburu","Siaya","Taita Taveta","Tana River","Tharaka Nithi","Trans Nzoia","Turkana","Uasin Gishu","Vihiga","Wajir","West Pokot"],
+        "Uganda": ["Kampala","Entebbe","Jinja","Gulu","Mbarara","Mbale","Fort Portal","Arua","Masaka","Soroti","Lira","Kabale","Kasese","Busia","Tororo","Mukono","Wakiso","Hoima","Iganga","Mityana","Nebbi","Apac","Kitgum","Moroto","Kotido","Pader","Yumbe","Adjumani","Moyo","Koboko","Maracha","Zombo","Nwoya","Amuru","Lamwo","Agago","Otuke","Alebtong","Dokolo","Amolatar","Oyam","Kole","Kwania"],
+        "Rwanda": ["Kigali","Butare","Gisenyi","Ruhengeri","Byumba","Cyangugu","Kibuye","Gitarama","Nyanza","Rwamagana","Muhanga","Musanze","Nyagatare","Rulindo","Gicumbi","Burera","Gakenke","Ngororero","Nyabihu","Rubavu","Rutsiro","Karongi","Nyamasheke","Rusizi","Kamonyi","Ruhango","Huye","Gisagara","Nyaruguru","Bugesera","Ngoma","Kirehe","Kayonza","Gatsibo"],
+        "Burundi": ["Bujumbura","Gitega","Ngozi","Ruyigi","Cankuzo","Rutana","Mwaro","Muramvya","Kayanza","Karuzi","Bubanza","Cibitoke","Makamba","Bururi","Rumonge","Muyinga","Kirundo"],
+        "DRC": ["Kinshasa","Lubumbashi","Mbuji-Mayi","Kisangani","Bukavu","Goma","Kananga","Bandundu","Matadi","Mbandaka","Bunia","Butembo","Uvira","Likasi","Kolwezi","Tshikapa","Beni","Mwene-Ditu","Kindu","Isiro","Gemena","Boma","Kikwit"],
+        "Malawi": ["Lilongwe","Blantyre","Mzuzu","Zomba","Karonga","Mangochi","Salima","Nkhotakota","Kasungu","Mchinji","Dedza","Ntcheu","Balaka","Machinga","Thyolo","Mulanje","Phalombe","Chiradzulu","Chikwawa","Nsanje","Neno","Mwanza","Ntchisi","Dowa","Mzimba","Rumphi","Nkhata Bay","Likoma","Chitipa"],
+        "Zambia": ["Lusaka","Kitwe","Ndola","Kabwe","Chingola","Mufulira","Luanshya","Livingstone","Kasama","Chipata","Solwezi","Mongu","Mansa","Mbala","Mpika","Kafue","Choma","Mazabuka","Siavonga","Nakonde","Kapiri Mposhi","Kalulushi","Chililabombwe","Mkushi","Serenje","Samfya","Kawambwa","Mwense","Nchelenge","Zambezi","Sesheke","Senanga","Kaoma","Lukulu","Kalabo"]
+    };
+
+    function updateRegionsDropdown() { const c = document.getElementById("regCountry").value; const r = document.getElementById("regRegion"); r.innerHTML = '<option value="">Select Region/Province*</option>'; if(c && regionsData[c]) regionsData[c].forEach(reg => { const opt = document.createElement("option"); opt.value = reg; opt.textContent = reg; r.appendChild(opt); }); }
+    function detectUserLocation() { if(navigator.geolocation) navigator.geolocation.getCurrentPosition(async pos => { const lat = pos.coords.latitude, lng = pos.coords.longitude; try { const resp = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`); const data = await resp.json(); const addr = data.address; if(addr){ if(addr.country){ const cs = document.getElementById("regCountry"); for(let i=0;i<cs.options.length;i++) if(cs.options[i].value === addr.country){ cs.selectedIndex = i; updateRegionsDropdown(); break; } } if(addr.state || addr.province || addr.region){ const rn = addr.state || addr.province || addr.region; const rs = document.getElementById("regRegion"); for(let i=0;i<rs.options.length;i++) if(rs.options[i].value === rn){ rs.selectedIndex = i; break; } } if(addr.city || addr.town || addr.village) document.getElementById("regCity").value = addr.city || addr.town || addr.village || ""; } showToast("Location detected!", "success"); } catch(e){ document.getElementById("regCity").value = `${lat}, ${lng}`; } }, () => {}); }
+    function showToast(msg, type="success") { const t = document.createElement("div"); t.className = `toast toast-${type}`; t.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-exclamation-circle'}"></i> ${msg}`; document.body.appendChild(t); setTimeout(()=>t.remove(),3000); }
+    function showSavingOverlay(msg="Processing...") { if(document.querySelector('.saving-overlay')) return; const ov = document.createElement('div'); ov.className = 'saving-overlay'; ov.id = 'savingOverlay'; ov.innerHTML = `<div class="saving-spinner"></div><div class="saving-text">${msg}</div>`; document.body.appendChild(ov); }
+    function hideSavingOverlay() { const ov = document
