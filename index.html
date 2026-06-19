@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Soko Plus+ – Premium Marketplace</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Soko Admin – Complete Control Center</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -11,441 +11,341 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #1e293b; font-size: 14px; overflow-x: hidden; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
-        :root { --school-blue: #002654; --school-blue-dark: #001a3d; --school-gold: #f5b042; --school-gold-dark: #e6a017; --gray-bg: #f1f5f9; --gray-light: #e2e8f0; --gray-text: #475569; --pure-white: #ffffff; --card-radius: 1rem; }
+        body { font-family: 'Inter', sans-serif; background: #f0f2f5; color: #1e293b; font-size: 13px; overflow-x: hidden; }
+        :root { --admin-blue: #1a56db; --admin-dark: #1e3a8a; --admin-gold: #f59e0b; --admin-red: #dc2626; --admin-green: #10b981; --gray-bg: #f3f4f6; --gray-border: #e5e7eb; }
 
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+        .login-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1e3a8a 0%, #1a56db 100%); }
+        .login-card { background: white; border-radius: 20px; padding: 2rem; width: 90%; max-width: 400px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .login-card h2 { text-align: center; margin-bottom: 1.5rem; color: #1e3a8a; }
+        .login-card input { width: 100%; padding: 0.8rem; margin-bottom: 1rem; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 0.9rem; }
+        .login-card button { width: 100%; padding: 0.8rem; background: #1a56db; color: white; border: none; border-radius: 12px; font-size: 1rem; cursor: pointer; }
 
-        .soko-header { background: var(--school-blue-dark); color: white; position: sticky; top: 0; z-index: 50; padding-top: env(safe-area-inset-top); }
-        .header-top { padding: 0.8rem 1rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .logo-area { display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
-        .logo-icon { font-size: 1.6rem; background: linear-gradient(135deg, #2e7d32, #4caf50); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: none; display: inline-block; }
-        .shop-title { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.5px; background: linear-gradient(135deg, #f5b042, #e6a017); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .admin-header { background: var(--admin-dark); color: white; padding: 0.8rem 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; position: fixed; top: 0; left: 0; right: 0; z-index: 100; }
+        .logo { display: flex; align-items: center; gap: 0.8rem; font-size: 1.2rem; font-weight: 700; }
+        .logo i { color: var(--admin-gold); font-size: 1.5rem; }
+        .header-stats { display: flex; gap: 1rem; align-items: center; }
+        .header-stat { background: rgba(255,255,255,0.1); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.7rem; }
+        .admin-info { display: flex; align-items: center; gap: 1rem; }
+        .logout-btn { background: var(--admin-red); color: white; border: none; padding: 0.4rem 1rem; border-radius: 30px; cursor: pointer; font-size: 0.8rem; }
+        .live-dot { width: 10px; height: 10px; background: #10b981; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; margin-right: 5px; }
+        @keyframes pulse { 0% { opacity: 0.5; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } 100% { opacity: 0.5; transform: scale(0.8); } }
 
-        .header-middle { padding: 0.6rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; flex-wrap: wrap; }
-        .search-wrapper { flex: 1; min-width: 180px; }
-        .right-group { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
-        @media (min-width: 768px) { .header-middle { flex-wrap: nowrap; } }
-        @media (max-width: 767px) { .header-middle { flex-direction: row; flex-wrap: nowrap; } .search-wrapper { flex: 1; } .right-group { flex-shrink: 0; } }
+        .admin-container { display: flex; margin-top: 65px; min-height: calc(100vh - 65px); }
+        .sidebar { width: 280px; background: white; border-right: 1px solid var(--gray-border); padding: 1rem 0; position: fixed; left: 0; top: 65px; bottom: 0; overflow-y: auto; z-index: 90; }
+        .sidebar-item { display: flex; align-items: center; gap: 0.8rem; padding: 0.8rem 1.2rem; cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent; }
+        .sidebar-item:hover { background: var(--gray-bg); }
+        .sidebar-item.active { background: #e0e7ff; border-left-color: var(--admin-blue); color: var(--admin-blue); font-weight: 600; }
+        .sidebar-item i { width: 22px; }
+        .content { flex: 1; margin-left: 280px; padding: 1.5rem; overflow-y: auto; min-height: calc(100vh - 65px); }
+        .content-panel { display: none; animation: fadeIn 0.3s ease; }
+        .content-panel.active { display: block; }
 
-        .search-bar { display: flex; background: white; border-radius: 50px; overflow: hidden; width: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .search-bar input { flex: 1; padding: 0.6rem 1rem; border: none; outline: none; font-size: 0.85rem; }
-        .search-bar button { background: var(--school-gold); border: none; padding: 0 1.2rem; cursor: pointer; color: var(--school-blue); transition: all 0.2s; }
-        .search-bar button:hover { background: var(--school-gold-dark); }
-        .wallet-section { display: flex; align-items: center; gap: 0.4rem; background: rgba(255,255,255,0.12); padding: 0.4rem 0.8rem; border-radius: 50px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
-        .wallet-section:hover { background: rgba(255,255,255,0.2); transform: scale(1.02); }
-        .wallet-icon { color: var(--school-gold); }
-        .wallet-amount { font-size: 0.7rem; font-weight: 600; }
-        .login-btn-header { background: var(--school-gold); color: var(--school-blue-dark); border: none; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.7rem; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
-        .login-btn-header:hover { background: var(--school-gold-dark); transform: scale(1.02); }
-        .welcome-row { padding: 0.5rem 1rem; text-align: center; background: rgba(255,255,255,0.05); }
-        .welcome-text { font-size: 0.75rem; opacity: 0.9; }
-
-        .desktop-header-icons { display: none; }
-        @media (min-width: 768px) {
-            .desktop-header-icons { display: flex; align-items: center; gap: 0.6rem; }
-            .desktop-icon-btn { background: rgba(255,255,255,0.12); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; position: relative; }
-            .desktop-icon-btn:hover { background: rgba(255,255,255,0.25); transform: scale(1.05); }
-            .desktop-cart-badge { position: absolute; top: -5px; right: -5px; background: var(--school-gold); color: var(--school-blue-dark); border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; width: 280px; position: fixed; top: 65px; bottom: 0; background: white; z-index: 95; }
+            .sidebar.open { transform: translateX(0); }
+            .content { margin-left: 0; padding: 1rem; }
+            .menu-toggle { display: flex; position: fixed; bottom: 20px; right: 20px; background: var(--admin-blue); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; font-size: 1.3rem; cursor: pointer; z-index: 96; box-shadow: 0 2px 10px rgba(0,0,0,0.2); align-items: center; justify-content: center; }
+            .sidebar-overlay { position: fixed; top: 65px; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 94; display: none; }
+            .sidebar-overlay.active { display: block; }
         }
+        @media (min-width: 769px) { .menu-toggle { display: none; } }
 
-        .bottom-nav-fixed { display: none; }
-        @media (max-width: 767px) {
-            .bottom-nav-fixed { display: block; position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-top: 1px solid var(--gray-light); padding: 0.5rem 0.5rem; z-index: 1000; padding-bottom: calc(0.5rem + env(safe-area-inset-bottom)); box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
-            .nav-links { width: 100%; display: flex; justify-content: space-around; align-items: center; }
-            .nav-item { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; color: var(--gray-text); font-size: 0.7rem; font-weight: 500; cursor: pointer; padding: 0.3rem 0; position: relative; transition: color 0.2s; }
-            .nav-item i { font-size: 1.2rem; }
-            .nav-item.active, .nav-item:hover { color: var(--school-blue); }
-            .cart-badge-mobile { position: absolute; top: -8px; right: -12px; background: var(--school-gold); color: var(--school-blue-dark); border-radius: 20px; padding: 0 5px; font-size: 10px; font-weight: 700; min-width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; }
-        }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+        .stat-card { background: white; padding: 1rem; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid var(--admin-blue); cursor: pointer; transition: transform 0.2s; }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .stat-number { font-size: 1.8rem; font-weight: 700; }
+        .stat-label { font-size: 0.7rem; color: #6b7280; }
+        .card { background: white; border-radius: 12px; padding: 1rem; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--gray-border); flex-wrap: wrap; gap: 0.5rem; }
 
-        .light-footer { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid var(--gray-light); padding: 0.5rem 1rem; display: flex; justify-content: flex-end; align-items: center; z-index: 100; gap: 0.8rem; transition: transform 0.3s ease; }
-        @media (max-width: 767px) { .light-footer { bottom: 65px; } }
-        @media (min-width: 768px) { .light-footer { justify-content: flex-end; padding: 0.4rem 1rem; } }
-        .light-footer.hide { transform: translateY(100%); }
+        .btn-primary { background: var(--admin-blue); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; }
+        .btn-primary:hover { background: var(--admin-dark); transform: scale(1.02); }
+        .btn-danger { background: var(--admin-red); color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.7rem; }
+        .btn-warning { background: var(--admin-gold); color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.7rem; }
+        .btn-edit { background: #3b82f6; color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.7rem; margin-right: 0.3rem; }
+        .btn-success { background: var(--admin-green); color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.7rem; }
 
-        .support-chat-footer { background: linear-gradient(135deg, var(--school-blue), var(--school-blue-dark)); color: white; border: none; padding: 0.5rem 1.2rem; border-radius: 50px; cursor: pointer; font-size: 0.75rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .support-chat-footer:hover { transform: scale(1.02); background: linear-gradient(135deg, var(--school-blue-dark), var(--school-blue)); }
-        .support-chat-footer i { font-size: 0.9rem; }
-        .unread-badge { position: absolute; top: -5px; right: -5px; background: #dc2626; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; animation: pulse-red 1.5s infinite; }
-        @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.2); background: #ef4444; } 100% { transform: scale(1); } }
+        .table-wrapper { overflow-x: auto; width: 100%; max-height: 500px; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--gray-border); }
+        th { background: var(--gray-bg); font-weight: 600; position: sticky; top: 0; }
+        .search-input { width: 100%; padding: 0.6rem; border: 1px solid var(--gray-border); border-radius: 10px; margin-bottom: 1rem; font-size: 0.8rem; }
 
-        .chat-modal { position: fixed; bottom: 70px; right: 16px; width: 340px; height: 480px; background: white; border-radius: var(--card-radius); box-shadow: 0 4px 20px rgba(0,0,0,0.2); z-index: 1002; display: flex; flex-direction: column; opacity: 0; visibility: hidden; transition: all 0.3s ease; border: 1px solid var(--gray-light); }
-        @media (max-width: 480px) { .chat-modal { width: 300px; height: 440px; right: 10px; bottom: 65px; } }
-        .chat-modal.active { opacity: 1; visibility: visible; }
-        .chat-header { background: linear-gradient(135deg, var(--school-blue), var(--school-blue-dark)); color: white; padding: 0.8rem; border-radius: var(--card-radius) var(--card-radius) 0 0; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 600; }
-        .chat-messages { flex: 1; overflow-y: auto; padding: 0.8rem; display: flex; flex-direction: column; gap: 0.5rem; background: #f9fafb; }
-        .message-buyer { background: #e9ecef; padding: 0.5rem 0.8rem; border-radius: 18px 18px 18px 4px; align-self: flex-start; max-width: 80%; font-size: 0.75rem; }
-        .message-seller { background: var(--school-blue); color: white; padding: 0.5rem 0.8rem; border-radius: 18px 18px 4px 18px; align-self: flex-end; max-width: 80%; font-size: 0.75rem; }
-        .message-image { max-width: 120px; max-height: 120px; border-radius: 8px; margin-top: 5px; cursor: pointer; }
-        .message-time { font-size: 0.55rem; opacity: 0.6; margin-top: 3px; }
-        .chat-input-area { display: flex; padding: 0.5rem; border-top: 1px solid var(--gray-light); gap: 0.5rem; align-items: center; background: white; }
-        .chat-input-area input { flex: 1; padding: 0.6rem 0.8rem; border: 1px solid var(--gray-light); border-radius: 30px; font-size: 0.75rem; outline: none; }
-        .chat-input-area button { background: var(--school-blue); color: white; border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; transition: all 0.2s; }
-        .chat-input-area button:hover { background: var(--school-blue-dark); transform: scale(1.05); }
-        .image-upload-chat { background: var(--gray-bg); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; transition: all 0.2s; }
+        .live-user-card { display: flex; align-items: center; gap: 0.8rem; padding: 0.8rem; background: var(--gray-bg); border-radius: 12px; margin-bottom: 0.5rem; border-left: 3px solid var(--admin-green); }
+        .live-user-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--admin-blue); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .live-user-info { flex: 1; }
+        .live-user-name { font-weight: 600; font-size: 0.85rem; }
+        .live-user-page { font-size: 0.7rem; color: var(--admin-blue); }
+        .live-user-product { font-size: 0.65rem; color: var(--admin-gold); background: rgba(245,158,11,0.1); padding: 2px 6px; border-radius: 12px; display: inline-block; margin-top: 3px; }
+        .live-user-time { font-size: 0.6rem; color: #6b7280; }
+        .online-status { color: var(--admin-green); font-size: 0.6rem; }
 
-        .payment-chat-section { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--gray-light); }
-        .payment-chat-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; font-weight: 600; color: var(--school-blue); }
-        .payment-chat-messages { max-height: 200px; overflow-y: auto; background: #f9fafb; border-radius: 12px; padding: 0.5rem; margin-bottom: 0.5rem; }
-        .payment-chat-message { font-size: 0.7rem; padding: 0.3rem 0.5rem; margin-bottom: 0.3rem; border-radius: 12px; }
-        .payment-chat-message.seller { background: var(--school-blue); color: white; text-align: right; }
-        .payment-chat-message.buyer { background: #e9ecef; text-align: left; }
-        .payment-chat-input { display: flex; gap: 0.3rem; }
-        .payment-chat-input input { flex: 1; padding: 0.4rem 0.6rem; border: 1px solid var(--gray-light); border-radius: 30px; font-size: 0.7rem; outline: none; }
-        .payment-chat-input button { background: var(--school-blue); color: white; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 0.7rem; }
-        .payment-chat-badge { background: #dc2626; color: white; border-radius: 50%; width: 16px; height: 16px; font-size: 9px; display: inline-flex; align-items: center; justify-content: center; margin-left: 0.3rem; }
+        .chat-user-item { display: flex; align-items: center; gap: 0.8rem; padding: 0.8rem; background: var(--gray-bg); border-radius: 12px; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent; }
+        .chat-user-item:hover { background: #e0e7ff; transform: translateX(4px); }
+        .chat-user-item.selected { background: #e0e7ff; border-left-color: var(--admin-blue); }
+        .chat-user-avatar { width: 45px; height: 45px; border-radius: 50%; background: var(--admin-blue); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem; }
+        .chat-user-info { flex: 1; }
+        .chat-user-name { font-weight: 600; font-size: 0.9rem; }
+        .chat-last-message { font-size: 0.7rem; color: #6b7280; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+        .chat-time { font-size: 0.6rem; color: #9ca3af; }
+        .chat-unread-badge { background: var(--admin-red); color: white; border-radius: 50%; min-width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: bold; padding: 0 5px; }
+        .chat-container { display: flex; flex-direction: column; height: 500px; background: white; border-radius: 12px; overflow: hidden; border: 1px solid var(--gray-border); }
+        .chat-header { background: var(--admin-dark); color: white; padding: 0.8rem 1rem; display: flex; align-items: center; gap: 1rem; cursor: pointer; }
+        .chat-header .chat-user-avatar { width: 35px; height: 35px; font-size: 0.9rem; }
+        .chat-messages-area { flex: 1; overflow-y: auto; padding: 1rem; background: #f9fafb; display: flex; flex-direction: column; gap: 0.5rem; }
+        .chat-message { max-width: 70%; padding: 0.6rem 1rem; border-radius: 18px; font-size: 0.8rem; }
+        .chat-message.admin { background: var(--admin-blue); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .chat-message.user { background: #e5e7eb; color: #1e293b; align-self: flex-start; border-bottom-left-radius: 4px; }
+        .chat-message-image { max-width: 150px; max-height: 150px; border-radius: 8px; margin-top: 0.3rem; cursor: pointer; }
+        .chat-message-time { font-size: 0.55rem; opacity: 0.7; margin-top: 0.2rem; }
+        .chat-input-area { display: flex; padding: 0.8rem; gap: 0.5rem; border-top: 1px solid var(--gray-border); background: white; }
+        .chat-input-area input { flex: 1; padding: 0.6rem 1rem; border: 1px solid var(--gray-border); border-radius: 30px; font-size: 0.8rem; outline: none; }
+        .chat-input-area button { background: var(--admin-blue); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; transition: all 0.2s; }
+        .chat-input-area button:hover { background: var(--admin-dark); transform: scale(1.05); }
+        .chat-send-btn { background: var(--admin-green) !important; }
 
-        .main-container { width: 100%; padding: 0.8rem 0.8rem 5rem; min-height: calc(100vh - 120px); background: #f8fafc; }
-        @media (min-width: 768px) { .main-container { padding: 1rem 1rem 4rem; } }
-
-        .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 0.5rem; }
-        @media (min-width: 768px) { .product-grid { grid-template-columns: repeat(4, 1fr); gap: 1.2rem; } }
-
-        .product-card { background: var(--pure-white); border: 1px solid var(--gray-light); overflow: hidden; cursor: pointer; transition: all 0.3s ease; border-radius: var(--card-radius); }
-        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .product-img { background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); height: 150px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; overflow: hidden; }
-        .product-img img { width: 100%; height: 100%; object-fit: cover; }
-        .product-info { background: var(--pure-white); padding: 0.8rem; }
-        .product-title { font-weight: 600; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.3rem; }
-        .seller-name { font-size: 0.65rem; color: var(--gray-text); cursor: pointer; }
-        .seller-name:hover { color: var(--school-gold); text-decoration: underline; }
-        .price { font-weight: 700; color: var(--school-blue); margin-top: 0.3rem; font-size: 0.9rem; }
-        .rating { display: flex; align-items: center; gap: 0.2rem; margin: 0.3rem 0; font-size: 0.65rem; }
-        .stars { color: var(--school-gold); }
-        .stock-badge { display: inline-block; font-size: 0.65rem; color: #2e7d32; margin-top: 0.2rem; }
-
-        .mobile-category-row { display: flex; overflow-x: auto; gap: 0.6rem; padding: 0.5rem 0 1rem; scrollbar-width: thin; }
-        .cat-pill { background: linear-gradient(135deg, white 0%, #fff8e8 100%); border: 1px solid var(--school-gold); border-radius: 50px; padding: 0.5rem 1.2rem; font-size: 0.8rem; cursor: pointer; white-space: nowrap; color: var(--school-blue-dark); font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .cat-pill i { color: var(--school-gold); font-size: 0.85rem; }
-        .cat-pill.active-cat { background: linear-gradient(135deg, var(--school-gold), var(--school-gold-dark)); color: var(--school-blue-dark); border-color: var(--school-gold-dark); box-shadow: 0 4px 12px rgba(245,176,66,0.3); }
-        .cat-pill.active-cat i { color: var(--school-blue-dark); }
-        @media (min-width: 768px) { .mobile-category-row { display: none; } }
-
-        /* Category Modal - GOLD FIXED */
-        .category-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
-        .category-modal.active { opacity: 1; visibility: visible; }
-        .category-modal-content { background: white; border-radius: 28px; width: 90%; max-width: 420px; max-height: 80vh; overflow-y: auto; padding: 1.5rem; box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
-        .category-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; padding-bottom: 0.8rem; border-bottom: 2px solid var(--school-gold); }
-        .category-modal-header h3 { color: var(--school-blue-dark); font-size: 1.2rem; font-weight: 700; }
-        .category-modal-header h3 i { color: var(--school-gold); margin-right: 0.5rem; }
-        .close-category-modal { background: var(--gray-bg); border: none; width: 34px; height: 34px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; color: var(--gray-text); transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
-        .close-category-modal:hover { background: var(--gray-light); transform: rotate(90deg); }
-        .category-list-modal { display: flex; flex-direction: column; gap: 0.6rem; }
-        .category-item-modal { display: flex; align-items: center; gap: 0.8rem; padding: 0.8rem 1rem; background: var(--gray-bg); border-radius: 60px; cursor: pointer; transition: all 0.2s; color: var(--school-blue-dark); font-weight: 500; }
-        .category-item-modal i { width: 32px; color: var(--school-gold); font-size: 1.2rem; transition: all 0.2s; }
-        .category-item-modal .category-count { background: var(--school-gold); color: var(--school-blue-dark); padding: 4px 10px; border-radius: 30px; font-size: 0.7rem; font-weight: 700; }
-        .category-item-modal:hover { background: linear-gradient(135deg, var(--school-gold), var(--school-gold-dark)); color: var(--school-blue-dark); transform: translateX(5px); }
-        .category-item-modal:hover i { color: var(--school-blue-dark); }
-        .category-item-modal:hover .category-count { background: var(--school-blue-dark); color: white; }
-
-        .desktop-layout { display: none; }
-        @media (min-width: 768px) {
-            .desktop-layout { display: flex; gap: 1.5rem; margin-top: 0.5rem; }
-            .categories-sidebar-desktop { width: 280px; flex-shrink: 0; background: white; border-radius: var(--card-radius); border: 1px solid var(--gray-light); overflow: hidden; position: sticky; top: 80px; max-height: calc(100vh - 100px); overflow-y: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-            .sidebar-header-desktop { background: linear-gradient(135deg, var(--school-blue) 0%, var(--school-blue-dark) 100%); padding: 1rem; color: white; text-align: center; }
-            .sidebar-header-desktop i { color: var(--school-gold); margin-right: 0.5rem; }
-            .sidebar-header-desktop h4 { font-size: 0.9rem; font-weight: 600; }
-            .category-list-desktop { padding: 0.5rem 0; }
-            .sidebar-cat-desktop { display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 1rem; cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent; margin: 0.1rem 0; }
-            .sidebar-cat-desktop:hover { background: rgba(245,176,66,0.1); transform: translateX(4px); }
-            .sidebar-cat-desktop.active-cat-desktop { background: rgba(245,176,66,0.15); border-left-color: var(--school-gold); color: var(--school-blue); font-weight: 600; }
-            .cat-name-desktop { display: flex; align-items: center; gap: 0.8rem; }
-            .cat-name-desktop i { width: 24px; color: var(--school-gold); }
-            .cat-count-desktop { background: var(--gray-bg); padding: 0.2rem 0.6rem; border-radius: 30px; font-size: 0.6rem; font-weight: 500; }
-            .main-content-desktop { flex: 1; }
-        }
-
-        .carousel-container { position: relative; border-radius: var(--card-radius); overflow: hidden; margin: 0.5rem 0 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .carousel-track { display: flex; transition: transform 0.5s ease-in-out; }
-        .carousel-slide { flex: 0 0 100%; display: flex; flex-direction: row; align-items: center; min-height: 240px; cursor: pointer; }
-        .carousel-slide:nth-child(1) { background: linear-gradient(135deg, #001a3d, #000000); }
-        .carousel-slide:nth-child(2) { background: linear-gradient(135deg, #8b0055, #1a0033); }
-        .carousel-slide:nth-child(3) { background: linear-gradient(135deg, #006b6b, #001a1a); }
-        .carousel-slide:nth-child(4) { background: linear-gradient(135deg, #e65c00, #4a1a00); }
-        .carousel-slide:nth-child(5) { background: linear-gradient(135deg, #1a4a7a, #001a3d); }
-        .carousel-text { flex: 0.8; padding: 1rem; color: white; text-align: left; }
-        .carousel-text h3 { font-size: 1rem; margin-bottom: 0.3rem; font-weight: 700; }
-        .carousel-text .carousel-price { font-size: 1.1rem; font-weight: 800; color: var(--school-gold); margin: 0.2rem 0; }
-        .carousel-text .carousel-seller { font-size: 0.65rem; opacity: 0.9; }
-        .carousel-image { flex: 1; display: flex; justify-content: center; align-items: center; padding: 0.5rem; min-width: 0; }
-        .carousel-image img { width: 100%; max-width: 160px; max-height: 160px; object-fit: contain; border-radius: 12px; }
-        @media (min-width: 768px) { .carousel-image img { max-width: 220px; max-height: 220px; } }
-        @media (max-width: 768px) { .carousel-slide { min-height: 180px; } .carousel-text h3 { font-size: 0.8rem; } .carousel-text .carousel-price { font-size: 0.9rem; } .carousel-image img { max-width: 120px; max-height: 120px; } }
-
-        .announcement-banner { background: linear-gradient(135deg, var(--school-gold), #ffd700); color: var(--school-blue-dark); padding: 0.8rem 1rem; margin-bottom: 1rem; border-radius: 14px; cursor: pointer; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .announcement-title { font-weight: 700; font-size: 0.85rem; }
-        .announcement-message { font-size: 0.75rem; margin-top: 0.2rem; opacity: 0.9; }
-        .close-announcement { position: absolute; top: 8px; right: 12px; cursor: pointer; background: rgba(0,0,0,0.2); width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; transition: all 0.2s; }
-
-        .random-carousel { margin: 1rem 0; overflow: hidden; }
-        .random-carousel-container { overflow: hidden; }
-        .random-carousel-track { display: flex; transition: transform 0.5s ease-in-out; }
-        .random-card { background: white; border: 1px solid var(--gray-light); border-radius: var(--card-radius); margin-right: 0.8rem; flex: 0 0 calc(33.333% - 0.6rem); cursor: pointer; transition: all 0.2s; }
-        .random-card:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        @media (min-width: 768px) { .random-card { flex: 0 0 calc(14.2857% - 0.6rem); } }
-        .random-img { background: #f1f5f9; height: 110px; display: flex; align-items: center; justify-content: center; font-size: 2rem; overflow: hidden; border-radius: var(--card-radius) var(--card-radius) 0 0; }
-        .random-img img { width: 100%; height: 100%; object-fit: cover; }
-        .random-info { padding: 0.5rem; }
-        .random-title-text { font-weight: 600; font-size: 0.75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .random-price { font-weight: 700; color: var(--school-blue); font-size: 0.75rem; margin-top: 0.2rem; }
-
-        .product-gallery { position: relative; margin-bottom: 1rem; }
-        .main-image-container { position: relative; width: 100%; height: 400px; overflow: hidden; border-radius: var(--card-radius); background: #f1f5f9; cursor: crosshair; }
-        @media (max-width: 768px) { .main-image-container { height: 300px; } }
-        .main-image { width: 100%; height: 100%; object-fit: contain; transition: transform 0.1s ease; }
-        .zoom-lens { position: absolute; border: 2px solid var(--school-gold); width: 150px; height: 150px; background: rgba(245, 176, 66, 0.2); border-radius: 50%; pointer-events: none; display: none; z-index: 10; }
-        .zoom-result { position: absolute; top: 0; right: -340px; width: 320px; height: 320px; background: white; border: 2px solid var(--school-gold); border-radius: var(--card-radius); background-repeat: no-repeat; display: none; z-index: 20; box-shadow: 0 4px 20px rgba(0,0,0,0.2); pointer-events: none; }
-        @media (max-width: 768px) { .zoom-result { display: none !important; } }
-        .thumbnail-container { display: flex; gap: 0.6rem; margin-top: 1rem; overflow-x: auto; padding-bottom: 0.5rem; }
-        .thumbnail { width: 75px; height: 75px; object-fit: cover; border-radius: 12px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
-        .thumbnail.active { border-color: var(--school-gold); transform: scale(1.05); }
-
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 3000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.3s; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal-card { background: white; border-radius: 28px; padding: 1.5rem; width: 90%; max-width: 500px; max-height: 85vh; overflow-y: auto; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
-        .modal-card h3 { margin-bottom: 1rem; color: var(--school-blue-dark); border-bottom: 2px solid var(--school-gold); padding-bottom: 0.5rem; font-size: 1.2rem; display: inline-block; }
-        .modal-card input, .modal-card select, .modal-card textarea { width: 100%; padding: 0.8rem 1rem; margin-bottom: 0.8rem; border: 1px solid var(--gray-light); border-radius: 14px; font-size: 0.85rem; outline: none; transition: all 0.2s; }
-        .modal-card input:focus, .modal-card select:focus, .modal-card textarea:focus { border-color: var(--school-gold); box-shadow: 0 0 0 3px rgba(245,176,66,0.2); }
-        .modal-card button { width: 100%; padding: 0.8rem; background: var(--school-blue); color: white; border: none; border-radius: 50px; cursor: pointer; margin-top: 0.4rem; font-size: 0.9rem; font-weight: 600; transition: all 0.2s; }
-        .modal-card button:hover { background: var(--school-blue-dark); transform: translateY(-2px); }
-        .close-modal { position: absolute; top: 12px; right: 15px; cursor: pointer; font-size: 1.3rem; font-weight: bold; background: rgba(0,0,0,0.1); width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.2s; }
-        .close-modal:hover { background: rgba(0,0,0,0.2); transform: rotate(90deg); }
+        .modal-card { background: white; border-radius: 20px; padding: 1.5rem; width: 90%; max-width: 700px; max-height: 90vh; overflow-y: auto; }
+        .modal-card button { margin-top: 1rem; padding: 0.6rem 1rem; margin-right: 0.5rem; border-radius: 8px; cursor: pointer; }
 
-        .wallet-modal-content { max-width: 420px; }
-        .wallet-balance-card { background: linear-gradient(135deg, var(--school-blue), var(--school-blue-dark)); color: white; padding: 1.5rem; border-radius: 24px; text-align: center; margin-bottom: 1rem; }
-        .wallet-balance-label { font-size: 0.75rem; opacity: 0.8; letter-spacing: 1px; }
-        .wallet-balance-amount { font-size: 2rem; font-weight: 700; margin-top: 0.3rem; }
-        .topup-toggle-btn { background: linear-gradient(135deg, var(--school-gold), var(--school-gold-dark)); color: var(--school-blue-dark); border: none; width: 100%; padding: 0.8rem; border-radius: 50px; font-weight: 700; cursor: pointer; margin-top: 0.5rem; transition: all 0.2s; font-size: 0.9rem; }
-        .topup-toggle-btn:hover { transform: scale(1.02); box-shadow: 0 4px 12px rgba(245,176,66,0.3); }
-        .topup-form { display: none; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--gray-light); animation: fadeIn 0.3s ease; }
-        .topup-form.show { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        .topup-info { background: #e8f5e9; padding: 0.8rem; border-radius: 16px; margin-bottom: 1rem; font-size: 0.75rem; border-left: 4px solid #2e7d32; }
-        .mixx-number { background: #fff3e0; padding: 0.6rem; border-radius: 12px; text-align: center; margin: 0.5rem 0; font-size: 1rem; font-weight: bold; color: var(--school-blue); }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 10px 20px; border-radius: 30px; font-size: 0.8rem; z-index: 2000; animation: fadeOut 3s ease; }
+        @keyframes fadeOut { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; } }
 
-        .floating-actions { position: sticky; bottom: 15px; right: 15px; display: flex; gap: 10px; justify-content: flex-end; z-index: 20; margin-top: -48px; pointer-events: none; }
-        .floating-actions button { pointer-events: auto; width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); color: white; transition: all 0.2s; }
-        .floating-actions button:hover { background: rgba(0, 0, 0, 0.8); transform: scale(1.05); }
-        .modal-actions-sticky { position: sticky; bottom: 0; background: white; padding: 1rem 0 0.4rem; margin-top: 1rem; border-top: 1px solid var(--gray-light); display: flex; gap: 1rem; }
-        .modal-actions-sticky button { flex: 1; padding: 0.8rem; font-size: 0.9rem; font-weight: 600; border: none; border-radius: 50px; cursor: pointer; transition: all 0.2s; }
-        .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); padding: 12px 24px; border-radius: 50px; font-size: 0.8rem; z-index: 10000; animation: fadeInOut 3s ease; background: #2e7d32; color: white; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        .toast-error { background: #dc2626; }
-        @keyframes fadeInOut { 0% { opacity: 0; transform: translateX(-50%) translateY(20px); } 10% { opacity: 1; transform: translateX(-50%) translateY(0); } 90% { opacity: 1; } 100% { opacity: 0; transform: translateX(-50%) translateY(-20px); } }
+        .hidden { display: none; }
+        .badge { background: #e5e7eb; padding: 0.2rem 0.5rem; border-radius: 20px; font-size: 0.6rem; }
+        .role-seller-badge { background: #f59e0b; color: white; padding: 0.2rem 0.5rem; border-radius: 20px; font-size: 0.6rem; }
+        .role-buyer-badge { background: #10b981; color: white; padding: 0.2rem 0.5rem; border-radius: 20px; font-size: 0.6rem; }
+        .image-preview { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+        .image-preview img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; cursor: pointer; }
+        .settings-group { background: var(--gray-bg); padding: 1rem; border-radius: 12px; margin-bottom: 1rem; }
+        .settings-group h4 { margin-bottom: 0.8rem; color: var(--admin-dark); }
+        .settings-group label { display: block; margin-bottom: 0.3rem; font-weight: 500; }
+        .settings-group input { padding: 0.5rem; border: 1px solid var(--gray-border); border-radius: 8px; width: 200px; margin-bottom: 0.8rem; }
 
-        .panel { background: white; padding: 1rem; border: 1px solid var(--gray-light); border-radius: var(--card-radius); margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .cart-item { display: flex; justify-content: space-between; padding: 0.8rem 0; border-bottom: 1px solid var(--gray-light); flex-wrap: wrap; gap: 0.4rem; align-items: center; }
-        .cart-item-controls { display: flex; gap: 0.5rem; align-items: center; }
-        .cart-item-controls button { background: var(--school-blue); color: white; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 1rem; transition: all 0.2s; }
-        .cart-item-controls button:hover { background: var(--school-blue-dark); transform: scale(1.05); }
-        .cart-total { font-weight: 700; text-align: right; margin-top: 1rem; font-size: 1rem; padding-top: 0.5rem; border-top: 2px solid var(--school-gold); }
-        .profile-row { background: var(--gray-bg); padding: 0.8rem; border-radius: var(--card-radius); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; font-size: 0.8rem; }
-        .dashboard-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin-bottom: 1rem; }
-        .stat-card { background: linear-gradient(135deg, var(--school-blue), var(--school-blue-dark)); color: white; padding: 1rem; border-radius: var(--card-radius); text-align: center; }
-        .stat-number { font-size: 1.3rem; font-weight: 700; }
-        .create-shop-btn { background: var(--school-gold); border: none; padding: 0.7rem; border-radius: 50px; font-weight: 600; width: 100%; cursor: pointer; margin-top: 1rem; transition: all 0.2s; font-size: 0.85rem; }
-        .create-shop-btn:hover { background: var(--school-gold-dark); transform: scale(1.02); }
-
-        .fullscreen-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 5000; display: none; align-items: center; justify-content: center; cursor: zoom-out; }
-        .fullscreen-modal.active { display: flex; }
-        .fullscreen-image { max-width: 90%; max-height: 90%; object-fit: contain; }
-        .fullscreen-close { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; background: none; border: none; }
-        .fullscreen-prev, .fullscreen-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.3); color: white; border: none; font-size: 30px; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; transition: all 0.2s; }
-        .fullscreen-prev:hover, .fullscreen-next:hover { background: rgba(255,255,255,0.6); color: var(--school-blue); }
-        .fullscreen-prev { left: 20px; }
-        .fullscreen-next { right: 20px; }
-
-        .image-upload-area { border: 2px dashed var(--gray-light); border-radius: var(--card-radius); padding: 1rem; text-align: center; margin-bottom: 0.8rem; cursor: pointer; transition: all 0.2s; font-size: 0.8rem; }
-        .image-upload-area:hover { border-color: var(--school-gold); background: rgba(245,176,66,0.05); }
-        .image-preview { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
-        .image-preview img { width: 80px; height: 80px; object-fit: cover; border-radius: var(--card-radius); cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
-        .saving-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 10000; display: flex; align-items: center; justify-content: center; flex-direction: column; }
-        .saving-spinner { width: 50px; height: 50px; border: 4px solid var(--gray-light); border-top-color: var(--school-gold); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 1rem; }
-        @keyframes spin { to { rotate: 360deg; } }
-        .saving-text { color: white; font-size: 1rem; font-weight: 500; }
-        .payment-selection-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 4000; display: flex; align-items: center; justify-content: center; }
-        .payment-selection-card { background: white; border-radius: 28px; padding: 1.5rem; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; }
-        .payment-option { padding: 0.8rem; margin: 0.5rem 0; border-radius: 60px; cursor: pointer; background: var(--gray-bg); transition: all 0.2s; font-weight: 500; font-size: 0.9rem; }
-        .payment-option:hover { background: var(--school-gold); transform: scale(1.02); }
-        .payment-option.disabled { opacity: 0.5; cursor: not-allowed; background: #e0e0e0; }
-        .buyer-contact-card { background: #e8f5e9; padding: 0.6rem; border-radius: 14px; margin-top: 0.3rem; font-size: 0.7rem; }
-        .seller-product-item { background: var(--gray-bg); padding: 0.8rem; margin-bottom: 0.5rem; border-radius: var(--card-radius); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-size: 0.75rem; }
-        .product-actions button { background: var(--school-gold); border: none; padding: 0.3rem 0.8rem; border-radius: 30px; cursor: pointer; font-size: 0.7rem; transition: all 0.2s; }
-        .delete-product-btn { background: #dc2626; color: white; margin-left: 0.3rem; }
-        .order-item, .sale-item { background: var(--gray-bg); padding: 0.8rem; margin-bottom: 0.5rem; border-radius: var(--card-radius); font-size: 0.75rem; }
-        .order-status { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 30px; font-size: 0.65rem; font-weight: 600; }
-        .status-completed { background: #d1fae5; color: #059669; }
-        .sale-amount { font-size: 0.9rem; font-weight: bold; color: var(--school-gold); }
-        .detect-location-btn { background: var(--gray-bg); border: 1px solid var(--gray-light); padding: 0.6rem; border-radius: 50px; font-size: 0.7rem; margin-bottom: 0.8rem; cursor: pointer; width: 100%; transition: all 0.2s; }
-        .detect-location-btn:hover { background: var(--gray-light); }
-        .form-row { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; }
-        .form-row > * { flex: 1; }
-        .role-btn { flex: 1; background: var(--gray-bg); padding: 0.6rem; border-radius: 50px; text-align: center; cursor: pointer; transition: all 0.2s; font-weight: 500; }
-        .role-btn.active { background: var(--school-blue); color: white; }
-        .product-list { max-height: 350px; overflow-y: auto; }
-        
-        .seller-chat-badge { background: #dc2626; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 10px; display: inline-flex; align-items: center; justify-content: center; margin-left: 0.5rem; animation: pulse-red 1.5s infinite; }
-        .seller-chat-item { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem; border-bottom: 1px solid var(--gray-light); cursor: pointer; transition: background 0.2s; }
-        .seller-chat-item:hover { background: #fff8e8; }
+        .two-columns { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+        .chat-users-column { width: 320px; flex-shrink: 0; }
+        .chat-messages-column { flex: 1; }
+        @media (max-width: 900px) { .two-columns { flex-direction: column; } .chat-users-column { width: 100%; } }
     </style>
 </head>
 <body>
 
-<header class="soko-header">
-    <div class="header-top">
-        <div class="logo-area">
-            <i class="fas fa-shopping-cart logo-icon"></i>
-            <div class="shop-title">Soko Plus+</div>
-        </div>
+<!-- Login Page -->
+<div id="loginPage" class="login-container">
+    <div class="login-card">
+        <h2><i class="fas fa-shield-alt"></i> Admin Login</h2>
+        <input type="email" id="adminEmail" placeholder="Email Address">
+        <input type="password" id="adminPassword" placeholder="Password">
+        <button onclick="adminLogin()">Login</button>
+        <div id="loginError" style="color:red; text-align:center; margin-top:0.5rem; font-size:0.8rem;"></div>
     </div>
-    <div class="header-middle">
-        <div class="search-wrapper">
-            <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search products...">
-                <button id="searchBtn"><i class="fas fa-search"></i></button>
-            </div>
+</div>
+
+<!-- Admin Dashboard -->
+<div id="adminDashboard" class="hidden">
+    <header class="admin-header">
+        <div class="logo"><i class="fas fa-store"></i><span>Soko Admin</span></div>
+        <div class="header-stats">
+            <div class="header-stat"><i class="fas fa-users"></i> <span id="headerUserCount">0</span></div>
+            <div class="header-stat"><i class="fas fa-eye"></i> <span id="liveUserCount">0</span> <span class="live-dot"></span></div>
+            <div class="header-stat"><i class="fas fa-comment"></i> <span id="headerUnreadCount">0</span> unread</div>
         </div>
-        <div class="right-group">
-            <div class="desktop-header-icons">
-                <div class="desktop-icon-btn" id="desktopProfileBtn" onclick="setPage('profile')">
-                    <i class="fas fa-user"></i>
+        <div class="admin-info">
+            <span id="adminName">Admin</span>
+            <button class="logout-btn" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+        <div class="sidebar">
+            <div class="sidebar-item active" data-panel="dashboard"><i class="fas fa-chart-line"></i> Dashboard</div>
+            <div class="sidebar-item" data-panel="chat"><i class="fas fa-comment-dots"></i> Live Chat</div>
+            <div class="sidebar-item" data-panel="live"><i class="fas fa-eye"></i> Live Activity</div>
+            <div class="sidebar-item" data-panel="users"><i class="fas fa-users"></i> Users</div>
+            <div class="sidebar-item" data-panel="products"><i class="fas fa-box"></i> Products</div>
+            <div class="sidebar-item" data-panel="orders"><i class="fas fa-shopping-cart"></i> Orders</div>
+            <div class="sidebar-item" data-panel="sales"><i class="fas fa-chart-simple"></i> Sales</div>
+            <div class="sidebar-item" data-panel="topups"><i class="fas fa-wallet"></i> Top-ups</div>
+            <div class="sidebar-item" data-panel="browsing"><i class="fas fa-history"></i> Browsing</div>
+            <div class="sidebar-item" data-panel="announcements"><i class="fas fa-bullhorn"></i> Announcements</div>
+            <div class="sidebar-item" data-panel="reports"><i class="fas fa-file-alt"></i> Reports</div>
+            <div class="sidebar-item" data-panel="settings"><i class="fas fa-cog"></i> Settings</div>
+        </div>
+
+        <div class="content">
+            <!-- Dashboard Panel -->
+            <div id="dashboardPanel" class="content-panel active">
+                <div class="stats-grid">
+                    <div class="stat-card" onclick="switchToPanel('users')"><div class="stat-number" id="statUsers">0</div><div class="stat-label">Total Users</div></div>
+                    <div class="stat-card" onclick="switchToPanel('products')"><div class="stat-number" id="statProducts">0</div><div class="stat-label">Products</div></div>
+                    <div class="stat-card" onclick="switchToPanel('orders')"><div class="stat-number" id="statOrders">0</div><div class="stat-label">Orders</div></div>
+                    <div class="stat-card"><div class="stat-number" id="statRevenue">TSh 0</div><div class="stat-label">Revenue</div></div>
+                    <div class="stat-card"><div class="stat-number" id="statSellers">0</div><div class="stat-label">Sellers</div></div>
+                    <div class="stat-card"><div class="stat-number" id="statBuyers">0</div><div class="stat-label">Buyers</div></div>
                 </div>
-                <div class="desktop-icon-btn" id="desktopCartBtn" onclick="setPage('cart')">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span id="desktopCartBadge" class="desktop-cart-badge">0</span>
+                <div class="card">
+                    <div class="card-header"><span><i class="fas fa-eye"></i> Live Users</span><span id="liveCountBadge" class="badge">0 online</span></div>
+                    <div id="liveUsersList" style="max-height: 300px; overflow-y: auto;">Loading...</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span><i class="fas fa-clock"></i> Recent Orders</span></div>
+                    <div id="recentActivity" class="table-wrapper">Loading...</div>
                 </div>
             </div>
-            <div class="wallet-section" id="walletSection" style="display: none;" onclick="showWalletModal()">
-                <i class="fas fa-wallet wallet-icon"></i>
-                <span class="wallet-amount" id="walletAmount">TSh 0</span>
+
+            <!-- Chat Panel -->
+            <div id="chatPanel" class="content-panel">
+                <div class="card">
+                    <div class="card-header"><span><i class="fas fa-comment-dots"></i> Customer Support Chat</span><button class="btn-primary" onclick="loadAllUsersForChat()"><i class="fas fa-sync-alt"></i> Refresh</button></div>
+                    <div class="two-columns">
+                        <div class="chat-users-column">
+                            <input type="text" id="chatUserSearch" placeholder="Search users..." class="search-input" onkeyup="filterChatUsers()">
+                            <div id="chatUsersList" style="max-height: 500px; overflow-y: auto;">Loading users...</div>
+                        </div>
+                        <div class="chat-messages-column">
+                            <div id="chatArea" class="chat-container">
+                                <div class="chat-header" id="chatHeader">
+                                    <div class="chat-user-avatar">💬</div>
+                                    <div><strong>Select a user</strong><br><span style="font-size:0.7rem;">Choose a user to start chatting</span></div>
+                                </div>
+                                <div class="chat-messages-area" id="chatMessagesArea">
+                                    <div style="text-align:center;padding:2rem;color:#999;">Select a user to start chatting</div>
+                                </div>
+                                <div class="chat-input-area">
+                                    <input type="text" id="chatInputMessage" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendAdminMessage()">
+                                    <button onclick="document.getElementById('chatImageInput').click()"><i class="fas fa-image"></i></button>
+                                    <input type="file" id="chatImageInput" accept="image/*" style="display:none">
+                                    <button class="chat-send-btn" onclick="sendAdminMessage()"><i class="fas fa-paper-plane"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <button class="login-btn-header" id="loginBtnHeader" onclick="showAuthModal()">Login</button>
+
+            <!-- Live Activity Panel -->
+            <div id="livePanel" class="content-panel">
+                <div class="card">
+                    <div class="card-header"><span><i class="fas fa-eye"></i> Live Users</span><button class="btn-primary" onclick="refreshLiveUsers()"><i class="fas fa-sync-alt"></i> Refresh</button></div>
+                    <div id="liveUsersFullList" style="max-height: 400px; overflow-y: auto;"></div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span><i class="fas fa-chart-line"></i> Real-time Activity</span></div>
+                    <div id="realtimeActivityFeed" style="max-height: 400px; overflow-y: auto;"></div>
+                </div>
+            </div>
+
+            <!-- Users Panel -->
+            <div id="usersPanel" class="content-panel">
+                <div class="card">
+                    <div class="card-header"><span><i class="fas fa-users"></i> All Users</span><button class="btn-primary" onclick="refreshUsers()"><i class="fas fa-sync-alt"></i> Refresh</button></div>
+                    <input type="text" id="userSearch" placeholder="Search..." class="search-input" onkeyup="filterUsers()">
+                    <div class="table-wrapper"><table><thead><tr><th>Avatar</th><th>Name</th><th>Email</th><th>Role</th><th>Wallet</th><th>Code</th><th>Joined</th><th>Actions</th></tr></thead><tbody id="usersList"></tbody></table></div>
+                </div>
+            </div>
+
+            <!-- Products Panel -->
+            <div id="productsPanel" class="content-panel">
+                <div class="card">
+                    <div class="card-header"><span><i class="fas fa-box"></i> All Products</span><button class="btn-primary" onclick="refreshProducts()"><i class="fas fa-sync-alt"></i> Refresh</button></div>
+                    <input type="text" id="productSearch" placeholder="Search..." class="search-input" onkeyup="filterProducts()">
+                    <div class="table-wrapper"><table><thead><tr><th>Image</th><th>Name</th><th>Price</th><th>Stock</th><th>Seller</th><th>Actions</th></tr></thead><tbody id="productsList"></tbody></table></div>
+                </div>
+            </div>
+
+            <!-- Orders Panel -->
+            <div id="ordersPanel" class="content-panel">
+                <div class="card"><div class="card-header"><span><i class="fas fa-shopping-cart"></i> Orders</span><button class="btn-primary" onclick="loadOrders()"><i class="fas fa-sync-alt"></i> Refresh</button></div><div class="table-wrapper"><table><thead><tr><th>Order ID</th><th>User</th><th>Items</th><th>Total</th><th>Date</th></tr></thead><tbody id="ordersList"></tbody></table></div></div>
+            </div>
+
+            <!-- Sales Panel -->
+            <div id="salesPanel" class="content-panel">
+                <div class="card"><div class="card-header"><span><i class="fas fa-chart-simple"></i> Sales</span><button class="btn-primary" onclick="loadSales()"><i class="fas fa-sync-alt"></i> Refresh</button></div><div class="table-wrapper"><table><thead><tr><th>ID</th><th>Seller</th><th>Buyer</th><th>Amount</th><th>Date</th></tr></thead><tbody id="salesList"></tbody></table></div></div>
+            </div>
+
+            <!-- Top-ups Panel -->
+            <div id="topupsPanel" class="content-panel">
+                <div class="card"><div class="card-header"><span><i class="fas fa-wallet"></i> Top-up Requests</span><button class="btn-primary" onclick="loadTopupRequests()"><i class="fas fa-sync-alt"></i> Refresh</button></div><div class="table-wrapper"><table><thead><tr><th>User</th><th>Amount</th><th>Reference</th><th>Screenshot</th><th>Status</th><th>Date</th><th>Action</th></tr></thead><tbody id="topupsList"></tbody></table></div></div>
+            </div>
+
+            <!-- Browsing Panel -->
+            <div id="browsingPanel" class="content-panel">
+                <div class="card">
+                    <div class="card-header"><span><i class="fas fa-history"></i> Browsing History</span><button class="btn-primary" onclick="loadBrowsingHistory()"><i class="fas fa-sync-alt"></i> Refresh</button></div>
+                    <input type="text" id="browsingSearch" placeholder="Search..." class="search-input" onkeyup="filterBrowsingHistory()">
+                    <div class="table-wrapper"><table><thead><tr><th>User</th><th>Product</th><th>Price</th><th>Seller</th><th>Time</th></tr></thead><tbody id="browsingHistoryList"></tbody></table></div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span><i class="fas fa-chart-bar"></i> Top Products</span></div>
+                    <div class="table-wrapper"><table><thead><tr><th>Product</th><th>Views</th><th>Last Viewed</th></tr></thead><tbody id="topProductsBody"></tbody></table></div>
+                </div>
+            </div>
+
+            <!-- Announcements Panel -->
+            <div id="announcementsPanel" class="content-panel">
+                <div class="card">
+                    <div class="card-header"><span><i class="fas fa-bullhorn"></i> Send Announcement</span></div>
+                    <input type="text" id="announcementTitle" placeholder="Title" style="width:100%; padding:0.7rem; margin-bottom:0.8rem; border-radius:10px;">
+                    <textarea id="announcementMessage" rows="3" placeholder="Message" style="width:100%; padding:0.7rem; margin-bottom:0.8rem; border-radius:10px;"></textarea>
+                    <div style="display:flex; gap:0.8rem; flex-wrap:wrap;">
+                        <button class="btn-primary" onclick="sendAnnouncementToAll()"><i class="fas fa-envelope"></i> Send to All</button>
+                        <button class="btn-warning" onclick="postHomeAnnouncement()"><i class="fas fa-home"></i> Post on Home</button>
+                        <button class="btn-warning" onclick="sendToSellersOnly()"><i class="fas fa-store"></i> To Sellers</button>
+                        <button class="btn-warning" onclick="sendToBuyersOnly()"><i class="fas fa-user"></i> To Buyers</button>
+                    </div>
+                </div>
+                <div class="card"><div class="card-header"><span><i class="fas fa-history"></i> Previous</span></div><div id="announcementsList">Loading...</div></div>
+            </div>
+
+            <!-- Reports Panel -->
+            <div id="reportsPanel" class="content-panel">
+                <div class="card">
+                    <div class="card-header"><span><i class="fas fa-file-alt"></i> Export Reports</span></div>
+                    <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+                        <button class="btn-primary" onclick="exportUsersReport()"><i class="fas fa-download"></i> Users</button>
+                        <button class="btn-primary" onclick="exportOrdersReport()"><i class="fas fa-download"></i> Orders</button>
+                        <button class="btn-primary" onclick="exportSalesReport()"><i class="fas fa-download"></i> Sales</button>
+                        <button class="btn-primary" onclick="exportProductsReport()"><i class="fas fa-download"></i> Products</button>
+                        <button class="btn-primary" onclick="exportBrowsingReport()"><i class="fas fa-download"></i> Browsing</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Panel -->
+            <div id="settingsPanel" class="content-panel">
+                <div class="card">
+                    <div class="card-header"><span><i class="fas fa-cog"></i> System Settings</span></div>
+                    <div class="settings-group"><h4><i class="fas fa-wallet"></i> Wallet</h4><label>Default Balance:</label><input type="number" id="defaultWallet" value="2500"></div>
+                    <div class="settings-group"><h4><i class="fas fa-percent"></i> Commission</h4><label>Rate (%):</label><input type="number" id="commissionRate" value="5" step="0.5"></div>
+                    <div class="settings-group"><h4><i class="fas fa-gift"></i> Referral Bonus</h4><label>Min Purchase (TSh):</label><input type="number" id="referralMinAmount" value="200000"><label>Bonus Amount:</label><input type="number" id="referralBonusAmount" value="1000"></div>
+                    <button class="btn-primary" onclick="saveSettings()"><i class="fas fa-save"></i> Save</button>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="welcome-row" id="welcomeRow" style="display: none;">
-        <div class="welcome-text" id="welcomeMessage"></div>
-    </div>
-</header>
+</div>
 
-<div class="bottom-nav-fixed">
-    <div class="nav-links">
-        <div class="nav-item" data-page="home"><i class="fas fa-home"></i><span>Home</span></div>
-        <div class="nav-item" data-page="categories"><i class="fas fa-th-large"></i><span>Categories</span></div>
-        <div class="nav-item" data-page="cart" style="position: relative;">
-            <i class="fas fa-shopping-cart"></i><span>Cart</span>
-            <span id="cartBadgeMobile" class="cart-badge-mobile">0</span>
-        </div>
-        <div class="nav-item" data-page="profile"><i class="fas fa-user-circle"></i><span>Profile</span></div>
+<!-- Edit Product Modal -->
+<div id="editProductModal" class="modal-overlay">
+    <div class="modal-card"><h3><i class="fas fa-edit"></i> Edit Product</h3>
+        <input type="text" id="editProductName" placeholder="Product Name">
+        <select id="editProductCategory"><option value="">Select Category</option><option>Cars</option><option>Motorcycles</option><option>Phones</option><option>Electronics</option><option>Laptops</option></select>
+        <input type="number" id="editProductPrice" placeholder="Price (TSh)">
+        <input type="number" id="editProductStock" placeholder="Stock">
+        <textarea id="editProductDescription" rows="3" placeholder="Description"></textarea>
+        <div id="editProductImagesPreview" class="image-preview"></div>
+        <button class="btn-primary" onclick="document.getElementById('editProductImagesInput').click()">Add Images</button>
+        <input type="file" id="editProductImagesInput" accept="image/*" multiple style="display:none">
+        <div><button class="btn-primary" onclick="saveProductEdit()">Save</button><button onclick="closeEditProductModal()">Cancel</button></div>
     </div>
 </div>
 
-<div class="light-footer" id="lightFooter">
-    <button class="support-chat-footer" id="supportChatFooterBtn">
-        <i class="fas fa-headset"></i> Support
-    </button>
-</div>
-
-<main class="main-container" id="appRoot">
-    <div id="dynamicContent"></div>
-</main>
-
-<div id="categoryModal" class="category-modal">
-    <div class="category-modal-content">
-        <div class="category-modal-header">
-            <h3><i class="fas fa-th-large"></i> All Categories</h3>
-            <button class="close-category-modal" onclick="closeCategoryModal()">&times;</button>
-        </div>
-        <div class="category-list-modal" id="categoryListModal"></div>
-    </div>
-</div>
-
-<div id="walletModal" class="modal-overlay">
-    <div class="modal-card wallet-modal-content">
-        <span class="close-modal" onclick="closeWalletModal()">&times;</span>
-        <div class="wallet-balance-card">
-            <div class="wallet-balance-label">Available Balance</div>
-            <div class="wallet-balance-amount" id="walletBalanceDisplay">TSh 0</div>
-        </div>
-        <button class="topup-toggle-btn" id="showTopupBtn" onclick="toggleTopupForm()"><i class="fas fa-plus-circle"></i> Top Up Wallet</button>
-        <div id="topupForm" class="topup-form">
-            <div class="topup-info"><i class="fas fa-info-circle"></i> <strong>Top Up Instructions:</strong><div class="mixx-number"><i class="fas fa-mobile-alt"></i> Send money to: <strong>Mixx Yas: 214253</strong></div><ol><li>Send amount to Mixx Yas number above</li><li>Copy transaction reference</li><li>Enter amount and reference below</li><li>Upload payment screenshot</li><li>Click Submit</li></ol></div>
-            <input type="number" id="topupAmount" placeholder="Amount (TSh)">
-            <input type="text" id="topupReference" placeholder="Transaction Reference">
-            <div class="image-upload-area" onclick="document.getElementById('screenshotInput').click()"><i class="fas fa-image"></i> Upload Payment Screenshot</div>
-            <input type="file" id="screenshotInput" accept="image/*" style="display:none">
-            <div id="screenshotPreview" class="image-preview"></div>
-            <button onclick="submitTopUpRequest()">Submit Top Up</button>
-        </div>
-    </div>
-</div>
-
-<div id="authModal" class="modal-overlay">
-    <div class="modal-card">
-        <span class="close-modal" onclick="closeAuthModal()">&times;</span>
-        <h3 id="authTitle">Login / Register</h3>
-        <div id="authForm">
-            <input type="email" id="loginEmail" placeholder="Email">
-            <input type="password" id="loginPassword" placeholder="Password">
-            <button onclick="handleLogin()">Login</button>
-        </div>
-        <div id="registerForm" style="display:none;">
-            <div class="form-row"><select id="regTitle"><option value="">Title*</option><option>Mr</option><option>Dr</option><option>Prof</option><option>Fr</option><option>Miss</option><option>Mrs</option><option>Ms</option></select><select id="regGender"><option value="">Gender*</option><option>Male</option><option>Female</option><option>Other</option></select></div>
-            <input type="text" id="regFullName" placeholder="Full Name*" required>
-            <input type="email" id="regEmail" placeholder="Email Address*" required>
-            <input type="tel" id="regPhone" placeholder="Phone Number*" required>
-            <input type="tel" id="regWhatsapp" placeholder="WhatsApp Number*" required>
-            <div class="form-row"><select id="regCountry"><option value="">Select Country*</option><option value="Tanzania">Tanzania</option><option value="Kenya">Kenya</option><option value="Uganda">Uganda</option><option value="Rwanda">Rwanda</option><option value="Burundi">Burundi</option><option value="DRC">DR Congo</option><option value="Malawi">Malawi</option><option value="Zambia">Zambia</option><option value="South Sudan">South Sudan</option></select><select id="regRegion"><option value="">Select Region/Province*</option></select></div>
-            <button class="detect-location-btn" onclick="detectUserLocation()"><i class="fas fa-map-marker-alt"></i> Detect My Location</button>
-            <input type="text" id="regCity" placeholder="City/District*" required>
-            <div id="sellerFields" style="display:none;"><input type="text" id="regShopName" placeholder="Shop Name*"><input type="text" id="regShopLocation" placeholder="Shop Location*"></div>
-            <input type="password" id="regPassword" placeholder="Password*" required>
-            <div style="display:flex; gap:0.5rem; margin:0.8rem 0;"><div class="role-btn active" data-role="buyer" onclick="selectRole('buyer')">Buyer</div><div class="role-btn" data-role="seller" onclick="selectRole('seller')">Seller</div></div>
-            <button onclick="handleRegister()">Register</button>
-        </div>
-        <p style="margin-top:0.8rem; text-align:center;"><a href="#" onclick="toggleAuthMode()" id="switchMode">Need an account? Register</a></p>
-    </div>
-</div>
-
-<div id="chatModal" class="chat-modal">
-    <div class="chat-header">
-        <span><i class="fas fa-headset"></i> <span id="chatTitle">Support Chat</span></span>
-        <button onclick="closeChat()" style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;">&times;</button>
-    </div>
-    <div class="chat-messages" id="chatMessages">
-        <div style="text-align:center;padding:1rem;color:#999;">Loading conversation...</div>
-    </div>
-    <div class="chat-input-area">
-        <input type="file" id="chatImageInput" accept="image/*" style="display:none">
-        <button class="image-upload-chat" onclick="document.getElementById('chatImageInput').click()"><i class="fas fa-image"></i></button>
-        <input type="text" id="chatInput" placeholder="Type a message...">
-        <button onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
-    </div>
-</div>
-
-<div id="productModal" class="modal-overlay">
-    <div class="modal-card" style="max-width: 900px; padding-bottom: 0.5rem;">
-        <span class="close-modal" onclick="closeProductModal()">&times;</span>
-        <div id="productModalContent" style="max-height: 65vh; overflow-y: auto; padding-right: 0.5rem;"></div>
-        <div class="floating-actions"><button id="shareProductBtn" class="share-btn"><i class="fas fa-share-alt"></i></button><button id="favoriteProductBtn" class="favorite-btn"><i class="fas fa-heart"></i></button></div>
-        <div class="modal-actions-sticky"><button id="modalAddToCartBtn" style="background:var(--school-gold); color:var(--school-blue-dark);">Add to Cart</button><button id="modalBuyNowBtn" style="background:var(--school-blue); color:white;">Buy Now</button></div>
-    </div>
-</div>
-
-<div id="fullscreenModal" class="fullscreen-modal" onclick="closeFullscreen()">
-    <button class="fullscreen-close" onclick="closeFullscreen()">&times;</button>
-    <button class="fullscreen-prev" onclick="prevFullscreenImage(event)">❮</button>
-    <button class="fullscreen-next" onclick="nextFullscreenImage(event)">❯</button>
-    <img id="fullscreenImage" class="fullscreen-image" src="">
-</div>
-
-<div id="sellerDashboard" class="modal-overlay">
-    <div class="modal-card" style="max-width: 750px;">
-        <span class="close-modal" onclick="closeSellerDashboard()">&times;</span>
-        <h3><i class="fas fa-store"></i> Seller Dashboard</h3>
-        <div id="sellerContent"></div>
-    </div>
+<div id="deleteModal" class="modal-overlay">
+    <div class="modal-card"><h3>Confirm Delete</h3><p id="deleteMessage"></p><button class="btn-danger" id="confirmDeleteBtn">Delete</button><button onclick="closeModal()">Cancel</button></div>
 </div>
 
 <script>
@@ -462,50 +362,512 @@
     const auth = firebase.auth();
     const IMAGEBB_API_KEY = "3e094ae1fb6f0240abca132e3d6976a0";
 
-    let currentUser = null;
-    let currentPage = "home";
-    let currentCategory = "All";
-    let selectedCategorySidebar = "All";
-    let searchQuery = "";
-    let allProducts = [];
-    let cart = [];
-    let randomCarouselInterval = null;
-    let randomCarouselIntervalDesktop = null;
-    let randomCurrentIndex = 0;
-    let currentScreenshotFile = null;
-    let isSaving = false;
-    let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-    let currentProductId = null;
-    let liveTrackingInterval = null;
-    let currentConversationId = null;
-    let messagesUnsubscribe = null;
+    let currentAdmin = null;
+    let allUsers = [], allProducts = [], allOrders = [], allSales = [], allTopups = [], allBrowsing = [];
+    let pendingDelete = null;
+    let editingProductId = null;
+    let editingProductImages = [];
+    let editingSelectedMainIndex = 0;
+    let liveUsersUnsubscribe = null;
+    let browsingUnsubscribe = null;
+    let activityUnsubscribe = null;
+    let chatMessagesUnsubscribe = null;
+    let chatUsersList = [];
+    let currentChatUserId = null;
+    let currentChatUserName = null;
     let totalUnreadCount = 0;
-    let announcements = [];
-    let lastScrollTop = 0;
-    let scrollTimeout = null;
-    let currentPaymentSellerId = null;
-    let currentPaymentSellerName = null;
-    let paymentChatUnsubscribe = null;
 
-    window.currentProductImages = [];
-    window.currentImageIndex = 0;
+    function showToast(msg) { const t = document.createElement("div"); t.className = "toast"; t.innerHTML = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+    function escapeHtml(t) { if (!t) return ''; return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
-    const allCategoriesList = ["All","Cars","Motorcycles","Phones & Tablets","Electronics","Laptops & Computers","Home Appliances","Fashion & Clothing","Shoes","Bags & Luggage","Jewelry & Watches","Health & Beauty","Baby Products","Toys & Games","Sports & Outdoors","Books & Media","Office Supplies","Pet Supplies","Garden & Tools","Furniture","Food & Groceries","Uniforms","Farming Tools","Fruit Cultivation","Aquarium","Eco Products","Accessories"];
-    const categoryIcons = {"All":"fa-layer-group","Cars":"fa-car","Motorcycles":"fa-motorcycle","Phones & Tablets":"fa-mobile-alt","Electronics":"fa-microchip","Laptops & Computers":"fa-laptop","Home Appliances":"fa-tv","Fashion & Clothing":"fa-tshirt","Shoes":"fa-shoe-prints","Bags & Luggage":"fa-bag-shopping","Jewelry & Watches":"fa-gem","Health & Beauty":"fa-heartbeat","Baby Products":"fa-baby","Toys & Games":"fa-gamepad","Sports & Outdoors":"fa-futbol","Books & Media":"fa-book","Office Supplies":"fa-pen-ruler","Pet Supplies":"fa-paw","Garden & Tools":"fa-leaf","Furniture":"fa-couch","Food & Groceries":"fa-apple-alt","Uniforms":"fa-shirt","Farming Tools":"fa-tractor","Fruit Cultivation":"fa-apple-alt","Aquarium":"fa-fish","Eco Products":"fa-recycle","Accessories":"fa-mask"};
+    function saveSettings() {
+        const settings = {
+            defaultWallet: parseInt(document.getElementById("defaultWallet").value) || 2500,
+            commissionRate: parseFloat(document.getElementById("commissionRate").value) || 5,
+            referralMinAmount: parseInt(document.getElementById("referralMinAmount").value) || 200000,
+            referralBonusAmount: parseInt(document.getElementById("referralBonusAmount").value) || 1000
+        };
+        localStorage.setItem("adminSettings", JSON.stringify(settings));
+        showToast("Settings saved!");
+    }
 
-    const regionsData = {
-        "Tanzania": ["Arusha","Dar es Salaam","Dodoma","Geita","Iringa","Kagera","Katavi","Kigoma","Kilimanjaro","Lindi","Manyara","Mara","Mbeya","Morogoro","Mtwara","Mwanza","Njombe","Pemba North","Pemba South","Pwani","Rukwa","Ruvuma","Shinyanga","Simiyu","Singida","Songwe","Tabora","Tanga","Unguja North","Unguja South","Unguja West"],
-        "Kenya": ["Nairobi","Mombasa","Kisumu","Nakuru","Eldoret","Thika","Kitale","Malindi","Garissa","Kakamega","Nyeri","Machakos","Meru","Embu","Isiolo","Kajiado","Kericho","Kiambu","Kilifi","Kirinyaga","Kisii","Kitui","Kwale","Laikipia","Lamu","Makueni","Mandera","Marsabit","Migori","Murang'a","Nandi","Narok","Nyamira","Nyandarua","Samburu","Siaya","Taita Taveta","Tana River","Tharaka Nithi","Trans Nzoia","Turkana","Uasin Gishu","Vihiga","Wajir","West Pokot"],
-        "Uganda": ["Kampala","Entebbe","Jinja","Gulu","Mbarara","Mbale","Fort Portal","Arua","Masaka","Soroti","Lira","Kabale","Kasese","Busia","Tororo","Mukono","Wakiso","Hoima","Iganga","Mityana","Nebbi","Apac","Kitgum","Moroto","Kotido","Pader","Yumbe","Adjumani","Moyo","Koboko","Maracha","Zombo","Nwoya","Amuru","Lamwo","Agago","Otuke","Alebtong","Dokolo","Amolatar","Oyam","Kole","Kwania"],
-        "Rwanda": ["Kigali","Butare","Gisenyi","Ruhengeri","Byumba","Cyangugu","Kibuye","Gitarama","Nyanza","Rwamagana","Muhanga","Musanze","Nyagatare","Rulindo","Gicumbi","Burera","Gakenke","Ngororero","Nyabihu","Rubavu","Rutsiro","Karongi","Nyamasheke","Rusizi","Kamonyi","Ruhango","Huye","Gisagara","Nyaruguru","Bugesera","Ngoma","Kirehe","Kayonza","Gatsibo"],
-        "Burundi": ["Bujumbura","Gitega","Ngozi","Ruyigi","Cankuzo","Rutana","Mwaro","Muramvya","Kayanza","Karuzi","Bubanza","Cibitoke","Makamba","Bururi","Rumonge","Muyinga","Kirundo"],
-        "DRC": ["Kinshasa","Lubumbashi","Mbuji-Mayi","Kisangani","Bukavu","Goma","Kananga","Bandundu","Matadi","Mbandaka","Bunia","Butembo","Uvira","Likasi","Kolwezi","Tshikapa","Beni","Mwene-Ditu","Kindu","Isiro","Gemena","Boma","Kikwit"],
-        "Malawi": ["Lilongwe","Blantyre","Mzuzu","Zomba","Karonga","Mangochi","Salima","Nkhotakota","Kasungu","Mchinji","Dedza","Ntcheu","Balaka","Machinga","Thyolo","Mulanje","Phalombe","Chiradzulu","Chikwawa","Nsanje","Neno","Mwanza","Ntchisi","Dowa","Mzimba","Rumphi","Nkhata Bay","Likoma","Chitipa"],
-        "Zambia": ["Lusaka","Kitwe","Ndola","Kabwe","Chingola","Mufulira","Luanshya","Livingstone","Kasama","Chipata","Solwezi","Mongu","Mansa","Mbala","Mpika","Kafue","Choma","Mazabuka","Siavonga","Nakonde","Kapiri Mposhi","Kalulushi","Chililabombwe","Mkushi","Serenje","Samfya","Kawambwa","Mwense","Nchelenge","Zambezi","Sesheke","Senanga","Kaoma","Lukulu","Kalabo"]
-    };
+    async function adminLogin() {
+        const email = document.getElementById("adminEmail").value.trim();
+        const password = document.getElementById("adminPassword").value;
+        const errorDiv = document.getElementById("loginError");
+        if (!email || !password) { errorDiv.innerText = "Enter email and password"; return; }
+        errorDiv.innerText = "Logging in...";
+        try {
+            const userCredential = await auth.signInWithEmailAndPassword(email, password);
+            const userDoc = await db.collection("users").doc(userCredential.user.uid).get();
+            if (userDoc.exists && userDoc.data().admin === true) {
+                currentAdmin = { uid: userCredential.user.uid, ...userDoc.data() };
+                document.getElementById("loginPage").style.display = "none";
+                document.getElementById("adminDashboard").classList.remove("hidden");
+                document.getElementById("adminName").innerHTML = currentAdmin.name || 'Admin';
+                loadDashboard(); loadUsers(); loadProducts(); loadOrders(); loadSales(); loadTopupRequests(); loadAnnouncements(); loadBrowsingHistory();
+                startLiveUsersListener();
+                startBrowsingHistoryListener();
+                startActivityListener();
+                loadAllUsersForChat();
+            } else { errorDiv.innerText = "Access denied. Admin only."; await auth.signOut(); }
+        } catch (error) { errorDiv.innerText = "Login failed"; }
+    }
 
-    function updateRegionsDropdown() { const c = document.getElementById("regCountry").value; const r = document.getElementById("regRegion"); r.innerHTML = '<option value="">Select Region/Province*</option>'; if(c && regionsData[c]) regionsData[c].forEach(reg => { const opt = document.createElement("option"); opt.value = reg; opt.textContent = reg; r.appendChild(opt); }); }
-    function detectUserLocation() { if(navigator.geolocation) navigator.geolocation.getCurrentPosition(async pos => { const lat = pos.coords.latitude, lng = pos.coords.longitude; try { const resp = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`); const data = await resp.json(); const addr = data.address; if(addr){ if(addr.country){ const cs = document.getElementById("regCountry"); for(let i=0;i<cs.options.length;i++) if(cs.options[i].value === addr.country){ cs.selectedIndex = i; updateRegionsDropdown(); break; } } if(addr.state || addr.province || addr.region){ const rn = addr.state || addr.province || addr.region; const rs = document.getElementById("regRegion"); for(let i=0;i<rs.options.length;i++) if(rs.options[i].value === rn){ rs.selectedIndex = i; break; } } if(addr.city || addr.town || addr.village) document.getElementById("regCity").value = addr.city || addr.town || addr.village || ""; } showToast("Location detected!", "success"); } catch(e){ document.getElementById("regCity").value = `${lat}, ${lng}`; } }, () => {}); }
-    function showToast(msg, type="success") { const t = document.createElement("div"); t.className = `toast toast-${type}`; t.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-exclamation-circle'}"></i> ${msg}`; document.body.appendChild(t); setTimeout(()=>t.remove(),3000); }
-    function showSavingOverlay(msg="Processing...") { if(document.querySelector('.saving-overlay')) return; const ov = document.createElement('div'); ov.className = 'saving-overlay'; ov.id = 'savingOverlay'; ov.innerHTML = `<div class="saving-spinner"></div><div class="saving-text">${msg}</div>`; document.body.appendChild(ov); }
-    function hideSavingOverlay() { const ov = document
+    async function adminLogout() { 
+        if (liveUsersUnsubscribe) liveUsersUnsubscribe(); 
+        if (browsingUnsubscribe) browsingUnsubscribe(); 
+        if (chatMessagesUnsubscribe) chatMessagesUnsubscribe();
+        if (activityUnsubscribe) activityUnsubscribe();
+        await auth.signOut(); 
+        currentAdmin = null; 
+        document.getElementById("loginPage").style.display = "flex"; 
+        document.getElementById("adminDashboard").classList.add("hidden"); 
+    }
+
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            const userDoc = await db.collection("users").doc(user.uid).get();
+            if (userDoc.exists && userDoc.data().admin === true) {
+                currentAdmin = { uid: user.uid, ...userDoc.data() };
+                document.getElementById("loginPage").style.display = "none";
+                document.getElementById("adminDashboard").classList.remove("hidden");
+                document.getElementById("adminName").innerHTML = currentAdmin.name || 'Admin';
+                loadDashboard(); loadUsers(); loadProducts(); loadOrders(); loadSales(); loadTopupRequests(); loadAnnouncements(); loadBrowsingHistory();
+                startLiveUsersListener();
+                startBrowsingHistoryListener();
+                startActivityListener();
+                loadAllUsersForChat();
+            } else { document.getElementById("loginPage").style.display = "flex"; document.getElementById("adminDashboard").classList.add("hidden"); }
+        } else { document.getElementById("loginPage").style.display = "flex"; document.getElementById("adminDashboard").classList.add("hidden"); }
+    });
+
+    // ==================== DATA LOADING FUNCTIONS ====================
+
+    async function loadDashboard() {
+        const usersSnap = await db.collection("users").get();
+        const productsSnap = await db.collection("products").get();
+        const ordersSnap = await db.collection("orders").get();
+        const revenue = ordersSnap.docs.reduce((s, d) => s + (d.data().total || 0), 0);
+        const sellers = usersSnap.docs.filter(d => d.data().role === 'seller').length;
+        const buyers = usersSnap.docs.filter(d => d.data().role === 'buyer').length;
+        document.getElementById("statUsers").innerText = usersSnap.size;
+        document.getElementById("statProducts").innerText = productsSnap.size;
+        document.getElementById("statOrders").innerText = ordersSnap.size;
+        document.getElementById("statRevenue").innerText = `TSh ${revenue.toLocaleString()}`;
+        document.getElementById("statSellers").innerText = sellers;
+        document.getElementById("statBuyers").innerText = buyers;
+        document.getElementById("headerUserCount").innerText = usersSnap.size;
+        const recent = await db.collection("orders").orderBy("createdAt", "desc").limit(5).get();
+        let html = '</table><thead><tr><th>Order</th><th>User</th><th>Amount</th><th>Status</th></tr></thead><tbody>';
+        recent.forEach(doc => { const d = doc.data(); html += `<tr><td>#${doc.id.slice(-6)}</td><td>${escapeHtml(d.userName)}</td><td>TSh ${(d.total || 0).toLocaleString()}</td><td><span class="badge">Completed</span></td>`; });
+        html += '</tbody></table>';
+        document.getElementById("recentActivity").innerHTML = html;
+    }
+
+    async function loadUsers() { const snap = await db.collection("users").get(); allUsers = []; snap.forEach(doc => allUsers.push({ id: doc.id, ...doc.data() })); renderUsers(); }
+    function renderUsers() { 
+        const search = document.getElementById("userSearch")?.value.toLowerCase() || ""; 
+        const filtered = allUsers.filter(u => (u.name || u.email || "").toLowerCase().includes(search));
+        document.getElementById("usersList").innerHTML = filtered.map(u => `<tr><td><div class="live-user-avatar" style="width:35px;height:35px;">${(u.name || 'U').charAt(0).toUpperCase()}</div></td><td>${escapeHtml(u.name || '-')}</td><td>${escapeHtml(u.email)}</td><td><span class="${u.role === 'seller' ? 'role-seller-badge' : 'role-buyer-badge'}">${u.role === 'seller' ? 'Seller' : 'Buyer'}</span></td><td>TSh ${(u.wallet || 0).toLocaleString()}</td><td><code>${u.referralCode || '-'}</code></td><td>${u.createdAt ? new Date(u.createdAt.toDate()).toLocaleDateString() : '-'}</td><td><button class="btn-warning" onclick="addWallet('${u.id}', ${u.wallet || 0})">Add</button> <button class="btn-success" onclick="selectChatUser('${u.id}', '${escapeHtml(u.name || u.email)}'); switchToPanel('chat')">Chat</button> <button class="btn-danger" onclick="deleteUser('${u.id}', '${escapeHtml(u.name || u.email)}')">Delete</button></td>`).join('');
+    }
+    function filterUsers() { renderUsers(); }
+    async function addWallet(userId, bal) { const amt = prompt("Amount to add (TSh):"); if(!amt || isNaN(amt)) return; await db.collection("users").doc(userId).update({ wallet: bal + parseInt(amt) }); showToast(`Added TSh ${amt}`); loadUsers(); }
+
+    async function loadProducts() { const snap = await db.collection("products").get(); allProducts = []; snap.forEach(doc => allProducts.push({ id: doc.id, ...doc.data() })); renderProducts(); }
+    function renderProducts() { 
+        const search = document.getElementById("productSearch")?.value.toLowerCase() || ""; 
+        const filtered = allProducts.filter(p => p.name?.toLowerCase().includes(search));
+        document.getElementById("productsList").innerHTML = filtered.map(p => `<tr><td>${p.images && p.images[0] ? `<img src="${p.images[0]}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;">` : '📦'}</td><td>${escapeHtml(p.name)}</td><td>TSh ${(p.price || 0).toLocaleString()}</td><td>${p.stock || 0}</td><td>${escapeHtml(p.sellerName)}</td><td><button class="btn-edit" onclick="openEditProductModal('${p.id}')">Edit</button> <button class="btn-danger" onclick="deleteProduct('${p.id}', '${escapeHtml(p.name)}')">Delete</button></td>`).join('');
+    }
+    function filterProducts() { renderProducts(); }
+
+    async function loadOrders() { const snap = await db.collection("orders").orderBy("createdAt", "desc").get(); allOrders = []; snap.forEach(doc => allOrders.push({ id: doc.id, ...doc.data() })); document.getElementById("ordersList").innerHTML = allOrders.map(o => `<tr><td>#${o.id.slice(-6)}</td><td>${escapeHtml(o.userName)}</td><td>${o.items?.length || 0} items</td><td>TSh ${(o.total || 0).toLocaleString()}</td><td>${o.createdAt ? new Date(o.createdAt.toDate()).toLocaleDateString() : 'Recent'}</td>`).join(''); }
+
+    async function loadSales() { const snap = await db.collection("sales").orderBy("createdAt", "desc").get(); allSales = []; snap.forEach(doc => allSales.push({ id: doc.id, ...doc.data() })); document.getElementById("salesList").innerHTML = allSales.map(s => `<tr><td>#${s.id.slice(-6)}</td><td>${escapeHtml(s.sellerName)}</td><td>${escapeHtml(s.buyerName)}</td><td>TSh ${(s.totalAmount || 0).toLocaleString()}</td><td>${s.createdAt ? new Date(s.createdAt.toDate()).toLocaleDateString() : 'Recent'}</td>`).join(''); }
+
+    async function loadTopupRequests() { const snap = await db.collection("topup_requests").orderBy("createdAt", "desc").get(); allTopups = []; snap.forEach(doc => allTopups.push({ id: doc.id, ...doc.data() })); document.getElementById("topupsList").innerHTML = allTopups.map(t => `<tr><td>${escapeHtml(t.userName)}</td><td>TSh ${(t.amount || 0).toLocaleString()}</td><td><code>${escapeHtml(t.reference)}</code></td><td>${t.screenshotUrl ? `<a href="${t.screenshotUrl}" target="_blank">View</a>` : '-'}</td><td><span class="badge">${t.status || 'pending'}</span></td><td>${t.createdAt ? new Date(t.createdAt.toDate()).toLocaleString() : '-'}</td><td>${t.status !== 'revoked' ? `<button class="btn-danger" onclick="revokeTopup('${t.id}', '${t.userId}', ${t.amount})">Revoke</button>` : 'Revoked'}</td>`).join(''); }
+
+    async function revokeTopup(requestId, userId, amount) { const userDoc = await db.collection("users").doc(userId).get(); const currentWallet = userDoc.data()?.wallet || 0; const newWallet = Math.max(0, currentWallet - amount); await db.collection("users").doc(userId).update({ wallet: newWallet }); await db.collection("topup_requests").doc(requestId).update({ status: "revoked" }); showToast("Top-up revoked"); loadTopupRequests(); loadUsers(); }
+
+    async function loadAnnouncements() {
+        const snap = await db.collection("announcements").orderBy("createdAt", "desc").limit(20).get();
+        if (snap.empty) { document.getElementById("announcementsList").innerHTML = '<p>No announcements</p>'; return; }
+        let html = ''; snap.forEach(doc => { const d = doc.data(); html += `<div class="card" style="margin-bottom:0.5rem;"><strong>📢 ${escapeHtml(d.title)}</strong><br>${escapeHtml(d.message)}<br><small>${d.createdAt ? new Date(d.createdAt.toDate()).toLocaleString() : ''} by ${d.postedBy || 'Admin'}</small></div>`; });
+        document.getElementById("announcementsList").innerHTML = html;
+    }
+
+    async function loadBrowsingHistory() { startBrowsingHistoryListener(); showToast("History refreshed"); }
+
+    // ==================== LIVE USERS ====================
+    function startLiveUsersListener() {
+        if (liveUsersUnsubscribe) liveUsersUnsubscribe();
+        liveUsersUnsubscribe = db.collection("live_users").onSnapshot(snapshot => {
+            const liveUsers = [];
+            snapshot.forEach(doc => { liveUsers.push({ id: doc.id, ...doc.data() }); });
+            renderLiveUsers(liveUsers);
+            document.getElementById("liveUserCount").innerText = liveUsers.length;
+            document.getElementById("liveCountBadge").innerHTML = `${liveUsers.length} online`;
+        });
+    }
+
+    async function renderLiveUsers(users) {
+        const container = document.getElementById("liveUsersList");
+        const fullContainer = document.getElementById("liveUsersFullList");
+        const enrichedUsers = await Promise.all(users.map(async (user) => {
+            let currentProduct = null;
+            try {
+                const recentView = await db.collection("browsing_history").where("userId", "==", user.uid).orderBy("timestamp", "desc").limit(1).get();
+                if (!recentView.empty) currentProduct = recentView.docs[0].data().productName;
+            } catch(e) {}
+            return { ...user, currentProduct };
+        }));
+        const html = enrichedUsers.length === 0 ? '<div style="padding:1rem;text-align:center;color:#999;">No users online</div>' : 
+            enrichedUsers.map(u => `<div class="live-user-card"><div class="live-user-avatar">${(u.name || 'U').charAt(0).toUpperCase()}</div><div class="live-user-info"><div class="live-user-name">${escapeHtml(u.name)}</div><div class="live-user-page">${u.currentPage || 'Unknown'}</div>${u.currentProduct ? `<div class="live-user-product"><i class="fas fa-eye"></i> Viewing: ${escapeHtml(u.currentProduct)}</div>` : ''}<div class="live-user-time">Last active: ${u.lastActive ? new Date(u.lastActive.toDate()).toLocaleTimeString() : 'Just now'}</div></div><div class="online-status"><i class="fas fa-circle" style="color:#10b981;"></i> Online</div></div>`).join('');
+        if (container) container.innerHTML = html;
+        if (fullContainer) fullContainer.innerHTML = html;
+    }
+
+    function refreshLiveUsers() { startLiveUsersListener(); }
+
+    // ==================== ACTIVITY FEED ====================
+    function startActivityListener() {
+        if (activityUnsubscribe) activityUnsubscribe();
+        activityUnsubscribe = db.collection("browsing_history").orderBy("timestamp", "desc").limit(50).onSnapshot(snapshot => {
+            const activities = [];
+            snapshot.forEach(doc => activities.push({ id: doc.id, ...doc.data() }));
+            const container = document.getElementById("realtimeActivityFeed");
+            if (!container) return;
+            if (activities.length === 0) { container.innerHTML = '<div style="text-align:center;padding:1rem;color:#999;">No activity</div>'; return; }
+            container.innerHTML = activities.map(a => `<div class="live-user-card"><div class="live-user-avatar">${(a.userName || 'U').charAt(0).toUpperCase()}</div><div class="live-user-info"><div class="live-user-name">${escapeHtml(a.userName)}</div><div class="live-user-product"><i class="fas fa-eye"></i> Viewed: <strong>${escapeHtml(a.productName || a.page || 'Unknown')}</strong> ${a.productPrice ? `- TSh ${a.productPrice.toLocaleString()}` : ''}</div><div class="live-user-time">${new Date(a.timestamp).toLocaleString()}</div></div></div>`).join('');
+        });
+    }
+
+    // ==================== BROWSING HISTORY ====================
+    function startBrowsingHistoryListener() {
+        if (browsingUnsubscribe) browsingUnsubscribe();
+        browsingUnsubscribe = db.collection("browsing_history").orderBy("timestamp", "desc").limit(200).onSnapshot(snapshot => {
+            allBrowsing = [];
+            snapshot.forEach(doc => { allBrowsing.push({ id: doc.id, ...doc.data() }); });
+            renderBrowsingHistory();
+            renderTopProducts();
+        });
+    }
+
+    function renderBrowsingHistory() {
+        const tbody = document.getElementById("browsingHistoryList");
+        if (!tbody) return;
+        const search = document.getElementById("browsingSearch")?.value.toLowerCase() || "";
+        const filtered = allBrowsing.filter(b => (b.userName || "").toLowerCase().includes(search) || (b.productName || "").toLowerCase().includes(search));
+        tbody.innerHTML = filtered.slice(0, 100).map(b => `<tr><td><strong>${escapeHtml(b.userName)}</strong><br><small>${b.userId?.slice(-6)}</small></td><td>${escapeHtml(b.productName || b.page || 'Unknown')}${b.productPrice ? `<br><small>TSh ${b.productPrice.toLocaleString()}</small>` : ''}</td><td>${escapeHtml(b.sellerName || '-')}</td><td>${new Date(b.viewedAt?.toDate() || b.timestamp).toLocaleString()}</td>`).join('');
+    }
+
+    function renderTopProducts() {
+        const productViews = new Map();
+        allBrowsing.forEach(b => {
+            if (b.productId && b.productName) {
+                if (!productViews.has(b.productId)) productViews.set(b.productId, { name: b.productName, views: 0, lastViewed: 0 });
+                const p = productViews.get(b.productId);
+                p.views++;
+                p.lastViewed = Math.max(p.lastViewed, b.timestamp || 0);
+            }
+        });
+        const top = Array.from(productViews.entries()).map(([id, data]) => ({ id, ...data })).sort((a, b) => b.views - a.views).slice(0, 20);
+        const tbody = document.getElementById("topProductsBody");
+        if (tbody) tbody.innerHTML = top.map(p => `<tr><td>${escapeHtml(p.name)}</td><td><span class="badge">${p.views} views</span></td><td>${new Date(p.lastViewed).toLocaleString()}</td>`).join('');
+    }
+
+    function filterBrowsingHistory() { renderBrowsingHistory(); }
+
+    // ==================== CHAT FUNCTIONS ====================
+    async function loadAllUsersForChat() {
+        const usersSnap = await db.collection("users").get();
+        chatUsersList = [];
+        usersSnap.forEach(doc => {
+            if (doc.id !== currentAdmin?.uid) {
+                chatUsersList.push({ id: doc.id, name: doc.data().name || doc.data().email || 'User', email: doc.data().email, role: doc.data().role });
+            }
+        });
+        for (const user of chatUsersList) {
+            const convId = [currentAdmin.uid, user.id].sort().join('_');
+            const convDoc = await db.collection("conversations").doc(convId).get();
+            if (convDoc.exists) {
+                const data = convDoc.data();
+                user.lastMessage = data.lastMessage || '';
+                user.lastMessageTime = data.lastMessageTime || 0;
+            } else {
+                user.lastMessage = 'No messages';
+                user.lastMessageTime = 0;
+            }
+            const unreadSnap = await db.collection("conversations").doc(convId).collection("messages").where("read", "==", false).where("receiverId", "==", currentAdmin.uid).get();
+            user.unreadCount = unreadSnap.size;
+        }
+        chatUsersList.sort((a, b) => (b.lastMessageTime || 0) - (a.lastMessageTime || 0));
+        totalUnreadCount = chatUsersList.reduce((sum, u) => sum + (u.unreadCount || 0), 0);
+        document.getElementById("headerUnreadCount").innerText = totalUnreadCount;
+        renderChatUsersList();
+    }
+
+    function renderChatUsersList() {
+        const container = document.getElementById("chatUsersList");
+        if (!container) return;
+        const search = document.getElementById("chatUserSearch")?.value.toLowerCase() || "";
+        const filtered = chatUsersList.filter(u => u.name.toLowerCase().includes(search) || u.email.toLowerCase().includes(search));
+        container.innerHTML = filtered.map(u => `
+            <div class="chat-user-item ${currentChatUserId === u.id ? 'selected' : ''}" onclick="selectChatUser('${u.id}', '${escapeHtml(u.name)}')">
+                <div class="chat-user-avatar">${(u.name.charAt(0) || 'U').toUpperCase()}</div>
+                <div class="chat-user-info">
+                    <div class="chat-user-name">${escapeHtml(u.name)}</div>
+                    <div class="chat-last-message">${escapeHtml(u.lastMessage?.substring(0, 40) || 'No messages')}</div>
+                </div>
+                <div class="chat-time">${u.lastMessageTime ? new Date(u.lastMessageTime).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : ''}</div>
+                ${u.unreadCount > 0 ? `<div class="chat-unread-badge">${u.unreadCount}</div>` : ''}
+            </div>
+        `).join('');
+    }
+
+    function filterChatUsers() { renderChatUsersList(); }
+
+    async function selectChatUser(userId, userName) {
+        if (chatMessagesUnsubscribe) chatMessagesUnsubscribe();
+        currentChatUserId = userId;
+        currentChatUserName = userName;
+        const header = document.getElementById("chatHeader");
+        header.innerHTML = `<div class="chat-user-avatar">${(userName.charAt(0) || 'U').toUpperCase()}</div><div><strong>${escapeHtml(userName)}</strong><br><span style="font-size:0.7rem;">Click to view profile</span></div>`;
+        header.onclick = () => viewUserProfile(userId);
+        const convId = [currentAdmin.uid, userId].sort().join('_');
+        const unreadSnap = await db.collection("conversations").doc(convId).collection("messages").where("read", "==", false).where("receiverId", "==", currentAdmin.uid).get();
+        const batch = db.batch();
+        unreadSnap.forEach(doc => batch.update(doc.ref, { read: true }));
+        await batch.commit();
+        const user = chatUsersList.find(u => u.id === userId);
+        if (user) user.unreadCount = 0;
+        totalUnreadCount = chatUsersList.reduce((sum, u) => sum + (u.unreadCount || 0), 0);
+        document.getElementById("headerUnreadCount").innerText = totalUnreadCount;
+        renderChatUsersList();
+        chatMessagesUnsubscribe = db.collection("conversations").doc(convId).collection("messages").orderBy("timestamp", "asc").onSnapshot(snapshot => {
+            const messages = [];
+            snapshot.forEach(doc => messages.push({ id: doc.id, ...doc.data() }));
+            const container = document.getElementById("chatMessagesArea");
+            if (container) {
+                container.innerHTML = messages.map(msg => `<div class="chat-message ${msg.senderId === currentAdmin.uid ? 'admin' : 'user'}"><div>${escapeHtml(msg.message || '')}</div>${msg.imageUrl ? `<img src="${msg.imageUrl}" class="chat-message-image" onclick="window.open('${msg.imageUrl}','_blank')">` : ''}<div class="chat-message-time">${new Date(msg.timestamp).toLocaleTimeString()}</div></div>`).join('');
+                container.scrollTop = container.scrollHeight;
+            }
+        });
+    }
+
+    async function sendAdminMessage() {
+        const input = document.getElementById("chatInputMessage");
+        const message = input.value.trim();
+        const imgFile = document.getElementById("chatImageInput").files[0];
+        if (!message && !imgFile) return;
+        if (!currentChatUserId) { showToast("Select a user first"); return; }
+        let imageUrl = null;
+        if (imgFile) {
+            try {
+                const fd = new FormData(); fd.append('image', imgFile); fd.append('key', IMAGEBB_API_KEY);
+                const res = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: fd });
+                const data = await res.json();
+                if (data.success) imageUrl = data.data.url;
+                document.getElementById("chatImageInput").value = "";
+            } catch(e) { showToast("Upload failed"); return; }
+        }
+        const convId = [currentAdmin.uid, currentChatUserId].sort().join('_');
+        const convRef = db.collection("conversations").doc(convId);
+        const convDoc = await convRef.get();
+        if (!convDoc.exists) {
+            await convRef.set({ participants: [currentAdmin.uid, currentChatUserId], participantNames: { [currentAdmin.uid]: currentAdmin.name || 'Admin', [currentChatUserId]: currentChatUserName }, lastMessage: message || 'Image', lastMessageTime: Date.now(), createdAt: Date.now() });
+        } else {
+            await convRef.update({ lastMessage: message || 'Image', lastMessageTime: Date.now() });
+        }
+        await convRef.collection("messages").add({ senderId: currentAdmin.uid, senderName: currentAdmin.name || 'Admin', receiverId: currentChatUserId, message: message || '', imageUrl: imageUrl, timestamp: Date.now(), read: false });
+        input.value = "";
+        const user = chatUsersList.find(u => u.id === currentChatUserId);
+        if (user) { user.lastMessage = message || 'Image sent'; user.lastMessageTime = Date.now(); chatUsersList.sort((a, b) => (b.lastMessageTime || 0) - (a.lastMessageTime || 0)); renderChatUsersList(); }
+        showToast("Message sent");
+    }
+
+    async function viewUserProfile(userId) {
+        const userDoc = await db.collection("users").doc(userId).get();
+        if (!userDoc.exists) { showToast("User not found"); return; }
+        const user = userDoc.data();
+        showToast(`User: ${user.name || 'Unknown'} | Role: ${user.role || 'buyer'} | Wallet: TSh ${(user.wallet || 0).toLocaleString()}`);
+    }
+
+    // ==================== ANNOUNCEMENTS ====================
+    async function sendAnnouncementToAll() { await sendAnnouncementByRole(null); }
+    async function sendToSellersOnly() { await sendAnnouncementByRole('seller'); }
+    async function sendToBuyersOnly() { await sendAnnouncementByRole('buyer'); }
+
+    async function sendAnnouncementByRole(role) {
+        const title = document.getElementById("announcementTitle").value.trim();
+        const message = document.getElementById("announcementMessage").value.trim();
+        if (!title || !message) { showToast("Enter title and message"); return; }
+        let query = db.collection("users");
+        if (role) query = query.where("role", "==", role);
+        const usersSnap = await query.get();
+        let count = 0;
+        for (const userDoc of usersSnap.docs) {
+            if (userDoc.id === currentAdmin.uid) continue;
+            const participants = [currentAdmin.uid, userDoc.id].sort();
+            const convId = participants.join('_');
+            const convRef = db.collection('conversations').doc(convId);
+            const convExists = await convRef.get();
+            if (!convExists.exists) { await convRef.set({ participants, participantNames: { [currentAdmin.uid]: currentAdmin.name, [userDoc.id]: userDoc.data().name || 'User' }, lastMessage: '', lastMessageTime: Date.now(), createdAt: Date.now() }); }
+            await convRef.collection('messages').add({ senderId: currentAdmin.uid, senderName: "📢 ANNOUNCEMENT", receiverId: userDoc.id, message: `🔔 ${title}\n\n${message}`, timestamp: Date.now(), read: false });
+            count++;
+        }
+        showToast(`Sent to ${count} users`);
+        document.getElementById("announcementTitle").value = "";
+        document.getElementById("announcementMessage").value = "";
+        loadAnnouncements();
+    }
+
+    async function postHomeAnnouncement() {
+        const title = document.getElementById("announcementTitle").value.trim();
+        const message = document.getElementById("announcementMessage").value.trim();
+        if (!title || !message) { showToast("Enter title and message"); return; }
+        await db.collection("announcements").add({ title, message, createdAt: new Date(), postedBy: currentAdmin.name });
+        showToast("Posted on home page");
+        document.getElementById("announcementTitle").value = "";
+        document.getElementById("announcementMessage").value = "";
+        loadAnnouncements();
+    }
+
+    // ==================== REPORTS ====================
+    function exportToCSV(data, filename) { if(!data.length) { showToast("No data to export"); return; } const headers = Object.keys(data[0]); const rows = data.map(obj => headers.map(h => JSON.stringify(obj[h] || '')).join(',')); const csv = [headers.join(','), ...rows].join('\n'); const blob = new Blob([csv], { type: 'text/csv' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `${filename}_${new Date().toISOString().slice(0,19)}.csv`; a.click(); URL.revokeObjectURL(url); showToast("Export complete"); }
+    function exportUsersReport() { exportToCSV(allUsers.map(u => ({ Name: u.name, Email: u.email, Role: u.role, Wallet: u.wallet, ReferralCode: u.referralCode })), 'users_report'); }
+    function exportOrdersReport() { exportToCSV(allOrders.map(o => ({ OrderID: o.id, User: o.userName, Total: o.total, Date: o.createdAt?.toDate() })), 'orders_report'); }
+    function exportSalesReport() { exportToCSV(allSales.map(s => ({ SaleID: s.id, Seller: s.sellerName, Buyer: s.buyerName, Amount: s.totalAmount })), 'sales_report'); }
+    function exportProductsReport() { exportToCSV(allProducts.map(p => ({ Name: p.name, Price: p.price, Stock: p.stock, Seller: p.sellerName })), 'products_report'); }
+    function exportBrowsingReport() { exportToCSV(allBrowsing.map(b => ({ User: b.userName, Product: b.productName, Price: b.productPrice, Seller: b.sellerName, ViewedAt: new Date(b.timestamp).toLocaleString() })), 'browsing_report'); }
+
+    // ==================== DELETE ====================
+    async function deleteUser(userId, name) { pendingDelete = { id: userId, name: name, type: 'user' }; document.getElementById("deleteMessage").innerHTML = `Delete user "${name}"?`; document.getElementById("deleteModal").classList.add("active"); }
+    async function deleteProduct(id, name) { pendingDelete = { id: id, name: name, type: 'product' }; document.getElementById("deleteMessage").innerHTML = `Delete product "${name}"?`; document.getElementById("deleteModal").classList.add("active"); }
+
+    async function confirmDelete() {
+        if (pendingDelete.type === 'user') {
+            const products = await db.collection("products").where("sellerId", "==", pendingDelete.id).get();
+            for (const p of products.docs) await db.collection("products").doc(p.id).delete();
+            await db.collection("users").doc(pendingDelete.id).delete();
+            showToast(`Deleted: ${pendingDelete.name}`);
+            loadUsers(); loadProducts(); loadDashboard();
+        } else if (pendingDelete.type === 'product') {
+            await db.collection("products").doc(pendingDelete.id).delete();
+            showToast(`Deleted: ${pendingDelete.name}`);
+            loadProducts(); loadDashboard();
+        }
+        closeModal();
+        pendingDelete = null;
+    }
+    function closeModal() { document.getElementById("deleteModal").classList.remove("active"); }
+    document.getElementById("confirmDeleteBtn").onclick = confirmDelete;
+
+    // ==================== EDIT PRODUCT ====================
+    async function openEditProductModal(productId) {
+        const product = allProducts.find(p => p.id === productId);
+        if (!product) return;
+        editingProductId = productId;
+        editingProductImages = [...(product.images || [])];
+        document.getElementById("editProductName").value = product.name || '';
+        document.getElementById("editProductCategory").value = product.category || '';
+        document.getElementById("editProductPrice").value = product.price || 0;
+        document.getElementById("editProductStock").value = product.stock || 0;
+        document.getElementById("editProductDescription").value = product.description || '';
+        renderEditProductImages();
+        document.getElementById("editProductModal").classList.add("active");
+        document.getElementById("editProductImagesInput").onchange = async (e) => {
+            if (e.target.files) {
+                for (let i = 0; i < e.target.files.length; i++) {
+                    try {
+                        const fd = new FormData(); fd.append('image', e.target.files[i]); fd.append('key', IMAGEBB_API_KEY);
+                        const res = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: fd });
+                        const data = await res.json();
+                        if (data.success) editingProductImages.push(data.data.url);
+                    } catch(err) {}
+                }
+                renderEditProductImages();
+                e.target.value = "";
+            }
+        };
+    }
+    function renderEditProductImages() {
+        const container = document.getElementById("editProductImagesPreview");
+        container.innerHTML = editingProductImages.map((img, idx) => `<div style="display:inline-block; margin:0.3rem; position:relative;"><img src="${img}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;border:2px solid ${idx === editingSelectedMainIndex ? '#f59e0b' : 'transparent'}" onclick="selectMainImageForEdit(${idx})"><button onclick="removeProductImage(${idx})" style="position:absolute; top:-5px; right:-5px; background:red; color:white; border:none; border-radius:50%; width:18px; height:18px; cursor:pointer;">×</button></div>`).join('');
+    }
+    function selectMainImageForEdit(index) { editingSelectedMainIndex = index; renderEditProductImages(); }
+    function removeProductImage(index) { editingProductImages.splice(index, 1); renderEditProductImages(); }
+    async function saveProductEdit() {
+        const name = document.getElementById("editProductName").value;
+        const price = parseInt(document.getElementById("editProductPrice").value);
+        const stock = parseInt(document.getElementById("editProductStock").value);
+        const description = document.getElementById("editProductDescription").value;
+        if (!name || !price) { showToast("Name and price required"); return; }
+        let finalImages = [...editingProductImages];
+        if (editingSelectedMainIndex > 0 && editingSelectedMainIndex < finalImages.length) {
+            const mainImg = finalImages[editingSelectedMainIndex];
+            finalImages = [mainImg, ...finalImages.filter((_, idx) => idx !== editingSelectedMainIndex)];
+        }
+        await db.collection("products").doc(editingProductId).update({ name, price, stock, description, images: finalImages, updatedByAdmin: true });
+        showToast("Product updated!");
+        closeEditProductModal();
+        loadProducts();
+    }
+    function closeEditProductModal() { document.getElementById("editProductModal").classList.remove("active"); editingProductId = null; editingProductImages = []; }
+
+    // ==================== NAVIGATION ====================
+    function toggleSidebar() { document.querySelector('.sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('active'); }
+    function closeSidebar() { document.querySelector('.sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('active'); }
+    function refreshUsers() { loadUsers(); }
+    function refreshProducts() { loadProducts(); }
+
+    function switchToPanel(panel) { 
+        document.querySelectorAll(".sidebar-item").forEach(i => i.classList.remove("active")); 
+        document.querySelectorAll(".content-panel").forEach(p => p.classList.remove("active")); 
+        document.getElementById(`${panel}Panel`).classList.add("active"); 
+        const sidebarItem = Array.from(document.querySelectorAll(".sidebar-item")).find(i => i.dataset.panel === panel); 
+        if(sidebarItem) sidebarItem.classList.add("active"); 
+        if(window.innerWidth <= 768) closeSidebar();
+        // Refresh data when switching to a panel
+        if(panel === 'browsing') loadBrowsingHistory();
+        if(panel === 'live') refreshLiveUsers();
+        if(panel === 'chat') loadAllUsersForChat();
+        if(panel === 'users') loadUsers();
+        if(panel === 'products') loadProducts();
+        if(panel === 'orders') loadOrders();
+        if(panel === 'sales') loadSales();
+        if(panel === 'topups') loadTopupRequests();
+        if(panel === 'announcements') loadAnnouncements();
+    }
+
+    document.querySelectorAll(".sidebar-item").forEach(item => { 
+        item.onclick = () => { 
+            switchToPanel(item.dataset.panel); 
+        }; 
+    });
+
+    // Expose global functions
+    window.adminLogin = adminLogin; window.adminLogout = adminLogout; 
+    window.refreshUsers = refreshUsers; window.refreshProducts = refreshProducts;
+    window.loadOrders = loadOrders; window.loadSales = loadSales; window.loadTopupRequests = loadTopupRequests; window.revokeTopup = revokeTopup;
+    window.filterUsers = filterUsers; window.filterProducts = filterProducts; window.addWallet = addWallet; 
+    window.deleteUser = deleteUser; window.deleteProduct = deleteProduct;
+    window.sendAnnouncementToAll = sendAnnouncementToAll; window.postHomeAnnouncement = postHomeAnnouncement; 
+    window.sendToSellersOnly = sendToSellersOnly; window.sendToBuyersOnly = sendToBuyersOnly;
+    window.closeModal = closeModal; window.toggleSidebar = toggleSidebar; window.closeSidebar = closeSidebar;
+    window.exportUsersReport = exportUsersReport; window.exportOrdersReport = exportOrdersReport; 
+    window.exportSalesReport = exportSalesReport; window.exportProductsReport = exportProductsReport; 
+    window.exportBrowsingReport = exportBrowsingReport;
+    window.saveSettings = saveSettings; window.switchToPanel = switchToPanel;
+    window.openEditProductModal = openEditProductModal; window.closeEditProductModal = closeEditProductModal; 
+    window.saveProductEdit = saveProductEdit;
+    window.selectMainImageForEdit = selectMainImageForEdit; window.removeProductImage = removeProductImage;
+    window.loadBrowsingHistory = loadBrowsingHistory; window.filterBrowsingHistory = filterBrowsingHistory;
+    window.refreshLiveUsers = refreshLiveUsers;
+    window.selectChatUser = selectChatUser; window.sendAdminMessage = sendAdminMessage; 
+    window.filterChatUsers = filterChatUsers; window.loadAllUsersForChat = loadAllUsersForChat; 
+    window.viewUserProfile = viewUserProfile;
+</script>
+</body>
+</html>
