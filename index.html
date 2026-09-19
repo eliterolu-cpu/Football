@@ -556,23 +556,12 @@
     function getGreeting() { const h = new Date().getHours(); if(h<12) return "Good morning"; if(h<18) return "Good afternoon"; return "Good evening"; }
     async function uploadImageToImgBB(file) { const fd = new FormData(); fd.append('image',file); fd.append('key',IMAGEBB_API_KEY); const res = await fetch('https://api.imgbb.com/1/upload',{method:'POST',body:fd}); const data = await res.json(); if(data.success) return data.data.url; throw new Error("Upload failed"); }
 
-    /* ============================================================
-       FIXED: Robust image extraction helper
-       Handles multiple possible image field structures
-       ============================================================ */
     function getProductImage(p) {
         if (!p) return null;
-        // Case 1: images array with URL
-        if (Array.isArray(p.images) && p.images.length > 0 && p.images[0] && typeof p.images[0] === 'string' && p.images[0].startsWith('http')) {
-            return p.images[0];
-        }
-        // Case 2: images is a single string URL
+        if (Array.isArray(p.images) && p.images.length > 0 && p.images[0] && typeof p.images[0] === 'string' && p.images[0].startsWith('http')) return p.images[0];
         if (typeof p.images === 'string' && p.images.startsWith('http')) return p.images;
-        // Case 3: imageUrl field
         if (p.imageUrl && typeof p.imageUrl === 'string' && p.imageUrl.startsWith('http')) return p.imageUrl;
-        // Case 4: imageIcon field
         if (p.imageIcon && typeof p.imageIcon === 'string' && p.imageIcon.startsWith('http')) return p.imageIcon;
-        // Case 5: image field
         if (p.image && typeof p.image === 'string' && p.image.startsWith('http')) return p.image;
         return null;
     }
@@ -589,7 +578,6 @@
         if (p.image && p.image.startsWith('http')) return [p.image];
         return ['https://via.placeholder.com/400/e8f5e9/2e7d32?text=Product'];
     }
-    /* ============================================================ */
 
     async function geocodeAddress(address) { try { const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1`); const data = await res.json(); if(data.length) return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) }; } catch(e) {} return null; }
     function getDistance(lat1, lng1, lat2, lng2) { const R = 6371; const dLat = (lat2-lat1)*Math.PI/180; const dLng = (lng2-lng1)*Math.PI/180; const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2; return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); }
@@ -601,42 +589,25 @@
     const sizeOptions = ["XS","S","M","L","XL","XXL","3XL"];
     const colorOptions = ["Red","Blue","Green","Black","White","Yellow","Brown","Purple","Orange"];
 
-    /* ============================================================
-       FIXED: loadProducts now reads from "products" collection 
-       (the original collection that has your data)
-       and falls back to "tashe_products" if products is empty
-       ============================================================ */
     async function loadProducts() { 
         try { 
-            // Try "products" collection first (original)
             let snap = await db.collection("products").get();
-            // If empty, try "tashe_products"
-            if (snap.empty) {
-                snap = await db.collection("tashe_products").get();
-            }
+            if (snap.empty) { snap = await db.collection("tashe_products").get(); }
             allProducts = []; 
             for(const doc of snap.docs) {
                 const data = doc.data();
                 let sellerCoords = null;
                 if(data.sellerId) {
-                    try {
-                        const sellerDoc = await db.collection("users").doc(data.sellerId).get();
-                        if(sellerDoc.exists && sellerDoc.data().coords) sellerCoords = sellerDoc.data().coords;
-                    } catch(e) {}
+                    try { const sellerDoc = await db.collection("users").doc(data.sellerId).get(); if(sellerDoc.exists && sellerDoc.data().coords) sellerCoords = sellerDoc.data().coords; } catch(e) {}
                 }
                 allProducts.push({id:doc.id, ...data, sellerCoords});
             }
-            // Only seed samples if BOTH collections are empty
             if (allProducts.length === 0) await seedAgroProducts();
             displayedProductCount = 12;
             renderCurrentPage(); 
             setupInfiniteScroll();
-        } catch(e) { 
-            console.error("Load products error:", e);
-            renderCurrentPage(); 
-        } 
+        } catch(e) { console.error("Load products error:", e); renderCurrentPage(); } 
     }
-    /* ============================================================ */
 
     async function seedAgroProducts() {
         const samples = [
@@ -668,9 +639,6 @@
     function loadMoreProducts() { if (isLoadingMore) return; isLoadingMore = true; const trigger = document.getElementById('loadingTrigger'); if (trigger) trigger.classList.add('loading'); setTimeout(() => { const filtered = getFilteredProducts(); displayedProductCount = Math.min(displayedProductCount + 12, filtered.length); renderHomeGridOnly(); isLoadingMore = false; if (trigger) { trigger.classList.remove('loading'); if (displayedProductCount >= filtered.length) trigger.style.display = 'none'; else trigger.style.display = 'block'; } }, 300); }
     function renderHomeGridOnly() { const container = document.getElementById("dynamicContent"); if(!container || currentPage !== "home") return; const desktopMode = window.innerWidth >= 768; let filtered = getFilteredProducts(); const productsToShow = filtered.slice(0, displayedProductCount); let productsHtml = `<div class="product-grid">${productsToShow.map((p,idx)=>productCardHTML(p, idx)).join('')}</div>`; if(desktopMode) { const existingSidebar = document.querySelector('.desktop-layout'); if(existingSidebar) { const mainContent = existingSidebar.querySelector('.main-content-desktop'); if(mainContent) { const oldGrid = mainContent.querySelector('.product-grid'); if(oldGrid) oldGrid.outerHTML = productsHtml; else mainContent.innerHTML += productsHtml; } } } else { const existingGrid = container.querySelector('.product-grid'); if(existingGrid) existingGrid.outerHTML = productsHtml; else container.innerHTML += productsHtml; } attachEvents(); }
     
-    /* ============================================================
-       FIXED: Uses getProductImage() helper for robust image display
-       ============================================================ */
     function productCardHTML(p, index) { 
         const imgUrl = getProductImage(p);
         const img = imgUrl ? `<img src="${imgUrl}" alt="${escapeHtml(p.name)}" onerror="this.onerror=null; this.src='https://via.placeholder.com/400/e8f5e9/2e7d32?text=No+Image';">` : `<div style="font-size:2.5rem;">📦</div>`;
@@ -679,7 +647,6 @@
         if (index < 4 && discountValues[index]) { const discountPercent = Math.abs(discountValues[index]); displayPrice = p.price - (p.price * discountPercent / 100); discountHtml = `<div class="discount-badge">-${discountPercent}% OFF</div>`; } 
         return `<div class="product-card" data-product-id="${p.id}">${discountHtml}<div class="product-img">${img}</div><div class="product-info"><div class="product-title">${escapeHtml(p.name)}</div><div class="rating"><span class="stars">${stars}</span></div><div class="price">TSh ${Math.floor(displayPrice).toLocaleString()}${index < 4 ? `<span class="original-price">TSh ${p.price.toLocaleString()}</span>` : ''}</div><div class="stock-badge">✓ ${p.stock||0} ${t('inStock')}</div></div></div>`; 
     }
-    /* ============================================================ */
 
     async function renderHome() { 
         const nearby = await loadNearbyProducts();
@@ -970,38 +937,110 @@
         c.removeEventListener('mousemove',move); c.removeEventListener('mouseleave',leave); c.addEventListener('mousemove',move); c.addEventListener('mouseleave',leave); 
     }
 
+    /* ==========================================================
+       ORIGINAL TOUCH TO ZOOM — Pinch only (2 fingers)
+       No double-tap. No single-tap zoom.
+       ========================================================== */
     function initTouchZoom(imgEl) {
         if (!imgEl) return;
         let initialDist = 0, initialScale = 1, currentScale = 1;
-        let lastTap = 0, panX = 0, panY = 0, initialPanX = 0, initialPanY = 0, isPanning = false;
+        let panX = 0, panY = 0, initialPanX = 0, initialPanY = 0, isPanning = false;
         const hint = document.getElementById('zoomHint');
+        const maxScale = 4;
+
         imgEl.addEventListener('touchstart', function(e) {
-            if (e.touches.length === 2) { e.preventDefault(); initialDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); initialScale = currentScale; if (hint) hint.style.opacity = '0'; }
-            else if (e.touches.length === 1) {
-                if (currentScale > 1) { isPanning = true; initialPanX = e.touches[0].clientX - panX; initialPanY = e.touches[0].clientY - panY; }
-                const now = Date.now();
-                if (now - lastTap < 300 && currentScale === 1) { currentScale = 2; imgEl.style.transform = `scale(${currentScale})`; imgEl.style.transition = 'transform .3s'; if (hint) hint.style.opacity = '0'; setTimeout(() => imgEl.style.transition = '', 300); }
-                else if (now - lastTap < 300 && currentScale > 1) { currentScale = 1; panX = 0; panY = 0; imgEl.style.transform = 'scale(1) translate(0, 0)'; imgEl.style.transition = 'transform .3s'; setTimeout(() => imgEl.style.transition = '', 300); }
-                lastTap = now;
+            if (e.touches.length === 2) {
+                // Pinch start
+                e.preventDefault();
+                initialDist = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+                initialScale = currentScale;
+                if (hint) hint.style.opacity = '0';
+            } else if (e.touches.length === 1 && currentScale > 1) {
+                // Pan when zoomed
+                isPanning = true;
+                initialPanX = e.touches[0].clientX - panX;
+                initialPanY = e.touches[0].clientY - panY;
             }
         }, { passive: false });
+
         imgEl.addEventListener('touchmove', function(e) {
-            if (e.touches.length === 2) { e.preventDefault(); const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); currentScale = Math.min(4, Math.max(1, initialScale * (d / initialDist))); imgEl.style.transform = `scale(${currentScale}) translate(${panX}px, ${panY}px)`; }
-            else if (e.touches.length === 1 && isPanning && currentScale > 1) { e.preventDefault(); panX = e.touches[0].clientX - initialPanX; panY = e.touches[0].clientY - initialPanY; const max = 100 * (currentScale - 1); panX = Math.max(-max, Math.min(max, panX)); panY = Math.max(-max, Math.min(max, panY)); imgEl.style.transform = `scale(${currentScale}) translate(${panX}px, ${panY}px)`; }
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                const d = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+                currentScale = Math.min(maxScale, Math.max(1, initialScale * (d / initialDist)));
+                imgEl.style.transform = `scale(${currentScale}) translate(${panX}px, ${panY}px)`;
+            } else if (e.touches.length === 1 && isPanning && currentScale > 1) {
+                e.preventDefault();
+                panX = e.touches[0].clientX - initialPanX;
+                panY = e.touches[0].clientY - initialPanY;
+                const max = 100 * (currentScale - 1);
+                panX = Math.max(-max, Math.min(max, panX));
+                panY = Math.max(-max, Math.min(max, panY));
+                imgEl.style.transform = `scale(${currentScale}) translate(${panX}px, ${panY}px)`;
+            }
         }, { passive: false });
-        imgEl.addEventListener('touchend', function(e) { if (e.touches.length < 2) initialDist = 0; if (e.touches.length === 0) { isPanning = false; if (currentScale <= 1.05) { currentScale = 1; panX = 0; panY = 0; imgEl.style.transform = 'scale(1) translate(0, 0)'; } } });
+
+        imgEl.addEventListener('touchend', function(e) {
+            if (e.touches.length < 2) initialDist = 0;
+            if (e.touches.length === 0) {
+                isPanning = false;
+                if (currentScale <= 1.05) {
+                    currentScale = 1;
+                    panX = 0;
+                    panY = 0;
+                    imgEl.style.transform = 'scale(1) translate(0, 0)';
+                }
+            }
+        });
     }
 
+    /* ==========================================================
+       ORIGINAL TOUCH TO ZOOM — Pinch only in fullscreen
+       ========================================================== */
     function initFullscreenTouchZoom() {
         const img = document.getElementById('fullscreenImage');
         if (!img) return;
-        let initialDist = 0, initialScale = 1, currentScale = 1, lastTap = 0;
+        let initialDist = 0, initialScale = 1, currentScale = 1;
+        const maxScale = 5;
+
         img.addEventListener('touchstart', function(e) {
-            if (e.touches.length === 2) { e.preventDefault(); initialDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); initialScale = currentScale; }
-            else if (e.touches.length === 1) { const now = Date.now(); if (now - lastTap < 300) { currentScale = currentScale === 1 ? 2 : 1; img.style.transform = `scale(${currentScale})`; img.style.transition = 'transform .3s'; setTimeout(() => img.style.transition = '', 300); } lastTap = now; }
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                initialDist = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+                initialScale = currentScale;
+            }
         }, { passive: false });
-        img.addEventListener('touchmove', function(e) { if (e.touches.length === 2) { e.preventDefault(); const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); currentScale = Math.min(5, Math.max(1, initialScale * (d / initialDist))); img.style.transform = `scale(${currentScale})`; } }, { passive: false });
+
+        img.addEventListener('touchmove', function(e) {
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                const d = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+                currentScale = Math.min(maxScale, Math.max(1, initialScale * (d / initialDist)));
+                img.style.transform = `scale(${currentScale})`;
+            }
+        }, { passive: false });
+
+        img.addEventListener('touchend', function(e) {
+            if (e.touches.length < 2) initialDist = 0;
+            if (e.touches.length === 0 && currentScale <= 1.05) {
+                currentScale = 1;
+                img.style.transform = 'scale(1)';
+            }
+        });
     }
+    /* ========================================================== */
 
     function setMainImage(idx) { if(!window.currentProductImages||!window.currentProductImages.length) return; window.currentImageIndex = idx; const main = document.getElementById('mainProductImage'); if(main && window.currentProductImages[idx]){ main.src = window.currentProductImages[idx]; main.style.transform = 'scale(1)'; initZoom(main,'mainImageContainer'); initTouchZoom(main); } document.querySelectorAll('.thumbnail').forEach((t,i)=>{ if(i===idx) t.classList.add('active'); else t.classList.remove('active'); }); }
     function nextImage() { if(!window.currentProductImages||!window.currentProductImages.length) return; window.currentImageIndex = (window.currentImageIndex+1)%window.currentProductImages.length; setMainImage(window.currentImageIndex); }
@@ -1021,7 +1060,7 @@
         let variantsHtml = '';
         const variantAttrs = variantCategories[p.category];
         if(variantAttrs) { variantsHtml = '<div class="variant-selector">'; if(variantAttrs.includes("Size")) { variantsHtml += `<div class="variant-group"><label>${t('size')}</label><select id="variantSize">${sizeOptions.map(s=>`<option>${s}</option>`).join('')}</select></div>`; } if(variantAttrs.includes("Color")) { variantsHtml += `<div class="variant-group"><label>${t('color')}</label><select id="variantColor">${colorOptions.map(c=>`<option>${c}</option>`).join('')}</select></div>`; } variantsHtml += '</div>'; }
-        const gallery = `<div class="product-gallery"><div class="main-image-container" id="mainImageContainer"><img id="mainProductImage" class="main-image" src="${window.currentProductImages[0]}" onclick="openFullscreen()" style="cursor:pointer;" onerror="this.src='https://via.placeholder.com/400'"><div class="zoom-hint" id="zoomHint"><i class="fas fa-search-plus"></i> Pinch or double-tap to zoom</div></div><div class="thumbnail-container">${thumbs}</div>${window.currentProductImages.length>1?`<div style="display:flex;justify-content:center;gap:1rem;margin-top:0.5rem;"><button onclick="prevImage()" style="background:var(--school-green);color:white;border:none;padding:0.3rem 1rem;border-radius:20px;">◀ Prev</button><button onclick="nextImage()" style="background:var(--school-green);color:white;border:none;padding:0.3rem 1rem;border-radius:20px;">Next ▶</button><button onclick="openFullscreen()" style="background:var(--school-gold);color:var(--school-blue-dark);border:none;padding:0.3rem 1rem;border-radius:20px;">🔍 Fullscreen</button></div>`:''}</div>`; 
+        const gallery = `<div class="product-gallery"><div class="main-image-container" id="mainImageContainer"><img id="mainProductImage" class="main-image" src="${window.currentProductImages[0]}" onclick="openFullscreen()" style="cursor:pointer;" onerror="this.src='https://via.placeholder.com/400'"><div class="zoom-hint" id="zoomHint"><i class="fas fa-search-plus"></i> Pinch to zoom</div></div><div class="thumbnail-container">${thumbs}</div>${window.currentProductImages.length>1?`<div style="display:flex;justify-content:center;gap:1rem;margin-top:0.5rem;"><button onclick="prevImage()" style="background:var(--school-green);color:white;border:none;padding:0.3rem 1rem;border-radius:20px;">◀ Prev</button><button onclick="nextImage()" style="background:var(--school-green);color:white;border:none;padding:0.3rem 1rem;border-radius:20px;">Next ▶</button><button onclick="openFullscreen()" style="background:var(--school-gold);color:var(--school-blue-dark);border:none;padding:0.3rem 1rem;border-radius:20px;">🔍 Fullscreen</button></div>`:''}</div>`; 
         document.getElementById("productModalContent").innerHTML = `${gallery}<h2 style="margin:1rem 0 0.5rem;color:var(--school-blue-dark);">${escapeHtml(p.name)}</h2><div class="seller-name" style="color:var(--gray-text);font-size:0.85rem;">🌾 Farm: ${escapeHtml(p.sellerName)}</div><div class="rating"><span class="stars">${stars}</span> <span class="review-count" style="color:var(--gray-text);font-size:0.75rem;">(${p.reviews||0} ${t('reviews')})</span></div><div class="price" style="font-size:1.2rem;margin:0.5rem 0;">TSh ${(p.price||0).toLocaleString()}</div><div class="stock-badge">✓ ${t('inStock')}: ${p.stock||0}</div><div style="margin:1rem 0;">${p.description||"No description available."}</div>${variantsHtml}<div class="modal-quantity" style="display:flex;align-items:center;gap:0.8rem;margin:1rem 0;"><label>${t('quantity')}:</label><div style="display:flex;align-items:center;border:1px solid var(--gray-light);border-radius:40px;overflow:hidden;"><button id="modalQtyDown" style="background:white;border:none;width:32px;height:32px;">-</button><span id="modalQtyValue" style="width:40px;text-align:center;">1</span><button id="modalQtyUp" style="background:white;border:none;width:32px;height:32px;">+</button></div></div>`; 
         showProductFullModal(); 
         let qty=1; const upd=()=>document.getElementById("modalQtyValue").innerText=qty; 
