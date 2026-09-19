@@ -199,9 +199,9 @@
         .random-price { font-weight: 700; color: var(--school-green); font-size: 0.75rem; margin-top: 0.2rem; }
 
         .product-gallery { position: relative; margin-bottom: 1rem; }
-        .main-image-container { position: relative; width: 100%; height: 400px; overflow: hidden; border-radius: var(--card-radius); background: #e8f5e9; cursor: crosshair; touch-action: none; }
+        .main-image-container { position: relative; width: 100%; height: 400px; overflow: hidden; border-radius: var(--card-radius); background: #e8f5e9; cursor: crosshair; touch-action: manipulation; }
         @media (max-width: 768px) { .main-image-container { height: 300px; } }
-        .main-image { width: 100%; height: 100%; object-fit: contain; transition: transform 0.1s ease; cursor: pointer; transform-origin: center center; }
+        .main-image { width: 100%; height: 100%; object-fit: contain; cursor: pointer; transform-origin: center center; transition: transform 0.3s ease; }
         .zoom-lens { position: absolute; border: 2px solid var(--school-gold); width: 150px; height: 150px; background: rgba(255,215,0,0.2); border-radius: 50%; pointer-events: none; display: none; z-index: 10; }
         .zoom-result { position: absolute; top: 0; right: -340px; width: 320px; height: 320px; background: white; border: 2px solid var(--school-gold); border-radius: var(--card-radius); background-repeat: no-repeat; display: none; z-index: 20; box-shadow: 0 4px 20px rgba(0,0,0,0.2); pointer-events: none; }
         @media (max-width: 768px) { .zoom-result { display: none !important; } }
@@ -271,9 +271,9 @@
         .create-shop-btn { background: linear-gradient(135deg, #FFD700, #E6C200); border: none; padding: 0.7rem; border-radius: 50px; font-weight: 600; width: 100%; cursor: pointer; margin-top: 1rem; transition: all 0.2s; font-size: 0.85rem; color: var(--school-blue-dark); }
         .create-shop-btn:hover { transform: scale(1.02); box-shadow: 0 4px 15px rgba(255,215,0,0.4); }
 
-        .fullscreen-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 5000; display: none; align-items: center; justify-content: center; cursor: zoom-out; touch-action: none; }
+        .fullscreen-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 5000; display: none; align-items: center; justify-content: center; cursor: zoom-out; }
         .fullscreen-modal.active { display: flex; }
-        .fullscreen-image { max-width: 90%; max-height: 90%; object-fit: contain; transform-origin: center center; transition: transform 0.1s; }
+        .fullscreen-image { max-width: 90%; max-height: 90%; object-fit: contain; transform-origin: center center; transition: transform 0.3s ease; }
         .fullscreen-close { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; background: none; border: none; }
         .fullscreen-prev, .fullscreen-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.3); color: white; border: none; font-size: 30px; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; transition: all 0.2s; }
         .fullscreen-prev:hover, .fullscreen-next:hover { background: rgba(255,255,255,0.6); color: var(--school-blue); }
@@ -938,117 +938,129 @@
     }
 
     /* ==========================================================
-       ORIGINAL TOUCH TO ZOOM — Pinch only (2 fingers)
-       No double-tap. No single-tap zoom.
+       ORIGINAL TOUCH-TO-ZOOM
+       Touch anywhere on the image → zooms INTO that exact point.
+       Touch anywhere again → resets back to normal.
        ========================================================== */
     function initTouchZoom(imgEl) {
         if (!imgEl) return;
-        let initialDist = 0, initialScale = 1, currentScale = 1;
-        let panX = 0, panY = 0, initialPanX = 0, initialPanY = 0, isPanning = false;
-        const hint = document.getElementById('zoomHint');
-        const maxScale = 4;
+        // Remove any previous listener by cloning (safety)
+        if (imgEl._tzHandler) {
+            imgEl.removeEventListener('click', imgEl._tzHandler);
+            imgEl.removeEventListener('touchstart', imgEl._tzTouchHandler);
+        }
 
-        imgEl.addEventListener('touchstart', function(e) {
-            if (e.touches.length === 2) {
-                // Pinch start
-                e.preventDefault();
-                initialDist = Math.hypot(
-                    e.touches[0].clientX - e.touches[1].clientX,
-                    e.touches[0].clientY - e.touches[1].clientY
-                );
-                initialScale = currentScale;
+        let isZoomed = false;
+        const zoomScale = 2.5; // how far to zoom in
+
+        // Handler to zoom to a specific point on the image
+        function zoomToPoint(clientX, clientY) {
+            const rect = imgEl.getBoundingClientRect();
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
+
+            if (!isZoomed) {
+                // Zoom IN — origin at tap point
+                const percX = (x / rect.width) * 100;
+                const percY = (y / rect.height) * 100;
+                imgEl.style.transformOrigin = `${percX}% ${percY}%`;
+                imgEl.style.transform = `scale(${zoomScale})`;
+                imgEl.style.cursor = 'zoom-out';
+                isZoomed = true;
+                const hint = document.getElementById('zoomHint');
                 if (hint) hint.style.opacity = '0';
-            } else if (e.touches.length === 1 && currentScale > 1) {
-                // Pan when zoomed
-                isPanning = true;
-                initialPanX = e.touches[0].clientX - panX;
-                initialPanY = e.touches[0].clientY - panY;
+            } else {
+                // Zoom OUT — reset
+                imgEl.style.transformOrigin = 'center center';
+                imgEl.style.transform = 'scale(1)';
+                imgEl.style.cursor = 'zoom-in';
+                isZoomed = false;
             }
-        }, { passive: false });
+        }
 
-        imgEl.addEventListener('touchmove', function(e) {
-            if (e.touches.length === 2) {
-                e.preventDefault();
-                const d = Math.hypot(
-                    e.touches[0].clientX - e.touches[1].clientX,
-                    e.touches[0].clientY - e.touches[1].clientY
-                );
-                currentScale = Math.min(maxScale, Math.max(1, initialScale * (d / initialDist)));
-                imgEl.style.transform = `scale(${currentScale}) translate(${panX}px, ${panY}px)`;
-            } else if (e.touches.length === 1 && isPanning && currentScale > 1) {
-                e.preventDefault();
-                panX = e.touches[0].clientX - initialPanX;
-                panY = e.touches[0].clientY - initialPanY;
-                const max = 100 * (currentScale - 1);
-                panX = Math.max(-max, Math.min(max, panX));
-                panY = Math.max(-max, Math.min(max, panY));
-                imgEl.style.transform = `scale(${currentScale}) translate(${panX}px, ${panY}px)`;
-            }
-        }, { passive: false });
+        // CLICK handler (works on desktop + modern mobile)
+        imgEl._tzHandler = function(e) {
+            // Skip if it's a programmatic fullscreen-open click
+            if (e.stopPropagation) e.stopPropagation();
+            zoomToPoint(e.clientX, e.clientY);
+        };
+        imgEl.addEventListener('click', imgEl._tzHandler);
 
-        imgEl.addEventListener('touchend', function(e) {
-            if (e.touches.length < 2) initialDist = 0;
-            if (e.touches.length === 0) {
-                isPanning = false;
-                if (currentScale <= 1.05) {
-                    currentScale = 1;
-                    panX = 0;
-                    panY = 0;
-                    imgEl.style.transform = 'scale(1) translate(0, 0)';
-                }
+        // TOUCH handler (fallback for older mobile)
+        imgEl._tzTouchHandler = function(e) {
+            if (e.touches && e.touches.length === 1) {
+                e.preventDefault();
+                const t = e.touches[0];
+                zoomToPoint(t.clientX, t.clientY);
             }
-        });
+        };
+        imgEl.addEventListener('touchstart', imgEl._tzTouchHandler, { passive: false });
+
+        imgEl.style.cursor = 'zoom-in';
     }
 
     /* ==========================================================
-       ORIGINAL TOUCH TO ZOOM — Pinch only in fullscreen
+       ORIGINAL TOUCH-TO-ZOOM in FULLSCREEN
        ========================================================== */
     function initFullscreenTouchZoom() {
         const img = document.getElementById('fullscreenImage');
         if (!img) return;
-        let initialDist = 0, initialScale = 1, currentScale = 1;
-        const maxScale = 5;
+        if (img._tzHandler) {
+            img.removeEventListener('click', img._tzHandler);
+            img.removeEventListener('touchstart', img._tzTouchHandler);
+        }
 
-        img.addEventListener('touchstart', function(e) {
-            if (e.touches.length === 2) {
-                e.preventDefault();
-                initialDist = Math.hypot(
-                    e.touches[0].clientX - e.touches[1].clientX,
-                    e.touches[0].clientY - e.touches[1].clientY
-                );
-                initialScale = currentScale;
-            }
-        }, { passive: false });
+        let isZoomed = false;
+        const zoomScale = 2.5;
 
-        img.addEventListener('touchmove', function(e) {
-            if (e.touches.length === 2) {
-                e.preventDefault();
-                const d = Math.hypot(
-                    e.touches[0].clientX - e.touches[1].clientX,
-                    e.touches[0].clientY - e.touches[1].clientY
-                );
-                currentScale = Math.min(maxScale, Math.max(1, initialScale * (d / initialDist)));
-                img.style.transform = `scale(${currentScale})`;
-            }
-        }, { passive: false });
+        function zoomToPoint(clientX, clientY) {
+            const rect = img.getBoundingClientRect();
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
 
-        img.addEventListener('touchend', function(e) {
-            if (e.touches.length < 2) initialDist = 0;
-            if (e.touches.length === 0 && currentScale <= 1.05) {
-                currentScale = 1;
+            if (!isZoomed) {
+                const percX = (x / rect.width) * 100;
+                const percY = (y / rect.height) * 100;
+                img.style.transformOrigin = `${percX}% ${percY}%`;
+                img.style.transform = `scale(${zoomScale})`;
+                isZoomed = true;
+            } else {
+                img.style.transformOrigin = 'center center';
                 img.style.transform = 'scale(1)';
+                isZoomed = false;
             }
-        });
+        }
+
+        img._tzHandler = function(e) {
+            e.stopPropagation();
+            zoomToPoint(e.clientX, e.clientY);
+        };
+        img.addEventListener('click', img._tzHandler);
+
+        img._tzTouchHandler = function(e) {
+            if (e.touches && e.touches.length === 1) {
+                e.stopPropagation();
+                e.preventDefault();
+                const t = e.touches[0];
+                zoomToPoint(t.clientX, t.clientY);
+            }
+        };
+        img.addEventListener('touchstart', img._tzTouchHandler, { passive: false });
     }
     /* ========================================================== */
 
-    function setMainImage(idx) { if(!window.currentProductImages||!window.currentProductImages.length) return; window.currentImageIndex = idx; const main = document.getElementById('mainProductImage'); if(main && window.currentProductImages[idx]){ main.src = window.currentProductImages[idx]; main.style.transform = 'scale(1)'; initZoom(main,'mainImageContainer'); initTouchZoom(main); } document.querySelectorAll('.thumbnail').forEach((t,i)=>{ if(i===idx) t.classList.add('active'); else t.classList.remove('active'); }); }
+    function setMainImage(idx) { if(!window.currentProductImages||!window.currentProductImages.length) return; window.currentImageIndex = idx; const main = document.getElementById('mainProductImage'); if(main && window.currentProductImages[idx]){ main.src = window.currentProductImages[idx]; main.style.transform = 'scale(1)'; main.style.transformOrigin = 'center center'; initZoom(main,'mainImageContainer'); initTouchZoom(main); } document.querySelectorAll('.thumbnail').forEach((t,i)=>{ if(i===idx) t.classList.add('active'); else t.classList.remove('active'); }); }
     function nextImage() { if(!window.currentProductImages||!window.currentProductImages.length) return; window.currentImageIndex = (window.currentImageIndex+1)%window.currentProductImages.length; setMainImage(window.currentImageIndex); }
     function prevImage() { if(!window.currentProductImages||!window.currentProductImages.length) return; window.currentImageIndex = (window.currentImageIndex-1+window.currentProductImages.length)%window.currentProductImages.length; setMainImage(window.currentImageIndex); }
-    function openFullscreen() { document.getElementById('fullscreenModal').classList.add('active'); const img = document.getElementById('fullscreenImage'); if(window.currentProductImages && window.currentProductImages[window.currentImageIndex]) img.src = window.currentProductImages[window.currentImageIndex]; setTimeout(()=>initFullscreenTouchZoom(), 100); }
-    function closeFullscreen() { const img = document.getElementById('fullscreenImage'); if(img) { img.style.transform = 'scale(1)'; } document.getElementById('fullscreenModal').classList.remove('active'); }
-    function nextFullscreenImage(e) { if(e) e.stopPropagation(); nextImage(); const img = document.getElementById('fullscreenImage'); if(window.currentProductImages && window.currentProductImages[window.currentImageIndex]) img.src = window.currentProductImages[window.currentImageIndex]; }
-    function prevFullscreenImage(e) { if(e) e.stopPropagation(); prevImage(); const img = document.getElementById('fullscreenImage'); if(window.currentProductImages && window.currentProductImages[window.currentImageIndex]) img.src = window.currentProductImages[window.currentImageIndex]; }
+    function openFullscreen() { 
+        document.getElementById('fullscreenModal').classList.add('active'); 
+        const img = document.getElementById('fullscreenImage'); 
+        if(window.currentProductImages && window.currentProductImages[window.currentImageIndex]) img.src = window.currentProductImages[window.currentImageIndex]; 
+        setTimeout(()=>initFullscreenTouchZoom(), 100); 
+    }
+    function closeFullscreen() { const img = document.getElementById('fullscreenImage'); if(img) { img.style.transform = 'scale(1)'; img.style.transformOrigin = 'center center'; } document.getElementById('fullscreenModal').classList.remove('active'); }
+    function nextFullscreenImage(e) { if(e) e.stopPropagation(); nextImage(); const img = document.getElementById('fullscreenImage'); if(window.currentProductImages && window.currentProductImages[window.currentImageIndex]) img.src = window.currentProductImages[window.currentImageIndex]; setTimeout(()=>initFullscreenTouchZoom(), 100); }
+    function prevFullscreenImage(e) { if(e) e.stopPropagation(); prevImage(); const img = document.getElementById('fullscreenImage'); if(window.currentProductImages && window.currentProductImages[window.currentImageIndex]) img.src = window.currentProductImages[window.currentImageIndex]; setTimeout(()=>initFullscreenTouchZoom(), 100); }
 
     function openProductModal(pid) { 
         const p = getProductById(pid); if(!p) return; 
@@ -1060,7 +1072,7 @@
         let variantsHtml = '';
         const variantAttrs = variantCategories[p.category];
         if(variantAttrs) { variantsHtml = '<div class="variant-selector">'; if(variantAttrs.includes("Size")) { variantsHtml += `<div class="variant-group"><label>${t('size')}</label><select id="variantSize">${sizeOptions.map(s=>`<option>${s}</option>`).join('')}</select></div>`; } if(variantAttrs.includes("Color")) { variantsHtml += `<div class="variant-group"><label>${t('color')}</label><select id="variantColor">${colorOptions.map(c=>`<option>${c}</option>`).join('')}</select></div>`; } variantsHtml += '</div>'; }
-        const gallery = `<div class="product-gallery"><div class="main-image-container" id="mainImageContainer"><img id="mainProductImage" class="main-image" src="${window.currentProductImages[0]}" onclick="openFullscreen()" style="cursor:pointer;" onerror="this.src='https://via.placeholder.com/400'"><div class="zoom-hint" id="zoomHint"><i class="fas fa-search-plus"></i> Pinch to zoom</div></div><div class="thumbnail-container">${thumbs}</div>${window.currentProductImages.length>1?`<div style="display:flex;justify-content:center;gap:1rem;margin-top:0.5rem;"><button onclick="prevImage()" style="background:var(--school-green);color:white;border:none;padding:0.3rem 1rem;border-radius:20px;">◀ Prev</button><button onclick="nextImage()" style="background:var(--school-green);color:white;border:none;padding:0.3rem 1rem;border-radius:20px;">Next ▶</button><button onclick="openFullscreen()" style="background:var(--school-gold);color:var(--school-blue-dark);border:none;padding:0.3rem 1rem;border-radius:20px;">🔍 Fullscreen</button></div>`:''}</div>`; 
+        const gallery = `<div class="product-gallery"><div class="main-image-container" id="mainImageContainer"><img id="mainProductImage" class="main-image" src="${window.currentProductImages[0]}" style="cursor:zoom-in;" onerror="this.src='https://via.placeholder.com/400'"><div class="zoom-hint" id="zoomHint"><i class="fas fa-search-plus"></i> Tap image to zoom</div></div><div class="thumbnail-container">${thumbs}</div>${window.currentProductImages.length>1?`<div style="display:flex;justify-content:center;gap:1rem;margin-top:0.5rem;"><button onclick="prevImage()" style="background:var(--school-green);color:white;border:none;padding:0.3rem 1rem;border-radius:20px;">◀ Prev</button><button onclick="nextImage()" style="background:var(--school-green);color:white;border:none;padding:0.3rem 1rem;border-radius:20px;">Next ▶</button><button onclick="openFullscreen()" style="background:var(--school-gold);color:var(--school-blue-dark);border:none;padding:0.3rem 1rem;border-radius:20px;">🔍 Fullscreen</button></div>`:''}</div>`; 
         document.getElementById("productModalContent").innerHTML = `${gallery}<h2 style="margin:1rem 0 0.5rem;color:var(--school-blue-dark);">${escapeHtml(p.name)}</h2><div class="seller-name" style="color:var(--gray-text);font-size:0.85rem;">🌾 Farm: ${escapeHtml(p.sellerName)}</div><div class="rating"><span class="stars">${stars}</span> <span class="review-count" style="color:var(--gray-text);font-size:0.75rem;">(${p.reviews||0} ${t('reviews')})</span></div><div class="price" style="font-size:1.2rem;margin:0.5rem 0;">TSh ${(p.price||0).toLocaleString()}</div><div class="stock-badge">✓ ${t('inStock')}: ${p.stock||0}</div><div style="margin:1rem 0;">${p.description||"No description available."}</div>${variantsHtml}<div class="modal-quantity" style="display:flex;align-items:center;gap:0.8rem;margin:1rem 0;"><label>${t('quantity')}:</label><div style="display:flex;align-items:center;border:1px solid var(--gray-light);border-radius:40px;overflow:hidden;"><button id="modalQtyDown" style="background:white;border:none;width:32px;height:32px;">-</button><span id="modalQtyValue" style="width:40px;text-align:center;">1</span><button id="modalQtyUp" style="background:white;border:none;width:32px;height:32px;">+</button></div></div>`; 
         showProductFullModal(); 
         let qty=1; const upd=()=>document.getElementById("modalQtyValue").innerText=qty; 
