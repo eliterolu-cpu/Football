@@ -4,6 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>Tashe Agro Marketplace – Growing Tomorrow, Today</title>
+    
+    <!-- ========== PWA ADDITIONS ========== -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0a1a4a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Tashe Agro">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/V0B7NGHK/Screenshot-20260813-220008-Cam-Scanner-removebg-preview.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Tashe Agro">
+    <link rel="icon" type="image/png" href="https://i.ibb.co/V0B7NGHK/Screenshot-20260813-220008-Cam-Scanner-removebg-preview.png">
+    <!-- ========== END PWA ADDITIONS ========== -->
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -938,29 +951,26 @@
     }
 
     /* ==========================================================
-       ORIGINAL TOUCH-TO-ZOOM
+       TOUCH-TO-ZOOM
        Touch anywhere on the image → zooms INTO that exact point.
        Touch anywhere again → resets back to normal.
        ========================================================== */
     function initTouchZoom(imgEl) {
         if (!imgEl) return;
-        // Remove any previous listener by cloning (safety)
         if (imgEl._tzHandler) {
             imgEl.removeEventListener('click', imgEl._tzHandler);
             imgEl.removeEventListener('touchstart', imgEl._tzTouchHandler);
         }
 
         let isZoomed = false;
-        const zoomScale = 2.5; // how far to zoom in
+        const zoomScale = 2.5;
 
-        // Handler to zoom to a specific point on the image
         function zoomToPoint(clientX, clientY) {
             const rect = imgEl.getBoundingClientRect();
             const x = clientX - rect.left;
             const y = clientY - rect.top;
 
             if (!isZoomed) {
-                // Zoom IN — origin at tap point
                 const percX = (x / rect.width) * 100;
                 const percY = (y / rect.height) * 100;
                 imgEl.style.transformOrigin = `${percX}% ${percY}%`;
@@ -970,7 +980,6 @@
                 const hint = document.getElementById('zoomHint');
                 if (hint) hint.style.opacity = '0';
             } else {
-                // Zoom OUT — reset
                 imgEl.style.transformOrigin = 'center center';
                 imgEl.style.transform = 'scale(1)';
                 imgEl.style.cursor = 'zoom-in';
@@ -978,15 +987,12 @@
             }
         }
 
-        // CLICK handler (works on desktop + modern mobile)
         imgEl._tzHandler = function(e) {
-            // Skip if it's a programmatic fullscreen-open click
             if (e.stopPropagation) e.stopPropagation();
             zoomToPoint(e.clientX, e.clientY);
         };
         imgEl.addEventListener('click', imgEl._tzHandler);
 
-        // TOUCH handler (fallback for older mobile)
         imgEl._tzTouchHandler = function(e) {
             if (e.touches && e.touches.length === 1) {
                 e.preventDefault();
@@ -999,9 +1005,6 @@
         imgEl.style.cursor = 'zoom-in';
     }
 
-    /* ==========================================================
-       ORIGINAL TOUCH-TO-ZOOM in FULLSCREEN
-       ========================================================== */
     function initFullscreenTouchZoom() {
         const img = document.getElementById('fullscreenImage');
         if (!img) return;
@@ -1047,7 +1050,6 @@
         };
         img.addEventListener('touchstart', img._tzTouchHandler, { passive: false });
     }
-    /* ========================================================== */
 
     function setMainImage(idx) { if(!window.currentProductImages||!window.currentProductImages.length) return; window.currentImageIndex = idx; const main = document.getElementById('mainProductImage'); if(main && window.currentProductImages[idx]){ main.src = window.currentProductImages[idx]; main.style.transform = 'scale(1)'; main.style.transformOrigin = 'center center'; initZoom(main,'mainImageContainer'); initTouchZoom(main); } document.querySelectorAll('.thumbnail').forEach((t,i)=>{ if(i===idx) t.classList.add('active'); else t.classList.remove('active'); }); }
     function nextImage() { if(!window.currentProductImages||!window.currentProductImages.length) return; window.currentImageIndex = (window.currentImageIndex+1)%window.currentProductImages.length; setMainImage(window.currentImageIndex); }
