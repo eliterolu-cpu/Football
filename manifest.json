@@ -1,0 +1,63 @@
+{
+  "name": "Tashe Agro Marketplace",
+  "short_name": "Tashe Agro",
+  "description": "Growing Tomorrow, Today - Agricultural marketplace for Tanzania and East Africa",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a1a4a",
+  "theme_color": "#0a1a4a",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["shopping", "business", "agriculture"],
+  "icons": [
+    {
+      "src": "https://i.ibb.co/V0B7NGHK/Screenshot-20260813-220008-Cam-Scanner-removebg-preview.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://i.ibb.co/V0B7NGHK/Screenshot-20260813-220008-Cam-Scanner-removebg-preview.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://i.ibb.co/V0B7NGHK/Screenshot-20260813-220008-Cam-Scanner-removebg-preview.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "https://i.ibb.co/V0B7NGHK/Screenshot-20260813-220008-Cam-Scanner-removebg-preview.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Browse Products",
+      "short_name": "Products",
+      "description": "Browse all products",
+      "url": "/?page=home",
+      "icons": [{ "src": "https://i.ibb.co/V0B7NGHK/Screenshot-20260813-220008-Cam-Scanner-removebg-preview.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "My Cart",
+      "short_name": "Cart",
+      "description": "View your shopping cart",
+      "url": "/?page=cart",
+      "icons": [{ "src": "https://i.ibb.co/V0B7NGHK/Screenshot-20260813-220008-Cam-Scanner-removebg-preview.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "My Wallet",
+      "short_name": "Wallet",
+      "description": "View your wallet balance",
+      "url": "/?page=wallet",
+      "icons": [{ "src": "https://i.ibb.co/V0B7NGHK/Screenshot-20260813-220008-Cam-Scanner-removebg-preview.png", "sizes": "192x192" }]
+    }
+  ]
+}
