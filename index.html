@@ -951,9 +951,7 @@
     }
 
     /* ==========================================================
-       TOUCH-TO-ZOOM
-       Touch anywhere on the image → zooms INTO that exact point.
-       Touch anywhere again → resets back to normal.
+       TOUCH-TO-ZOOM — tap anywhere to zoom to that point
        ========================================================== */
     function initTouchZoom(imgEl) {
         if (!imgEl) return;
@@ -1153,5 +1151,18 @@
 
     init();
 </script>
+
+<!-- ========== SERVICE WORKER REGISTRATION ========== -->
+<script>
+  if (typeof navigator.serviceWorker !== 'undefined') {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then((reg) => console.log('[SW] Registered:', reg.scope))
+        .catch((err) => console.log('[SW] Registration failed:', err));
+    });
+  }
+</script>
+<!-- ========== END SERVICE WORKER REGISTRATION ========== -->
+
 </body>
 </html>
