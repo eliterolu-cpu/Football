@@ -2,234 +2,1241 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GSM TECH HUB — Your Gateway to Mobile Technology</title>
-<meta name="description" content="IMEI unlocks, FRP removal, tool activations, server credits, and digital goods. Instant delivery at wholesale prices.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>GSM TECH HUB — Professional GSM Services Platform</title>
+<meta name="description" content="IMEI unlocks, FRP removal, tool activations, server credits, and digital goods. 300+ services delivered instantly at wholesale prices. Built for resellers.">
+<meta name="keywords" content="IMEI unlock, FRP bypass, GSM tool activation, server credits, gift cards, digital goods, reseller platform">
+<meta name="theme-color" content="#0a0a14">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <style>
-.hero { min-height: 92vh; display: flex; align-items: center; padding: 6rem 2rem 4rem; position: relative; overflow: hidden; }
-.hero::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(37,99,235,0.18), transparent 60%),
-              radial-gradient(ellipse 50% 50% at 90% 80%, rgba(6,182,212,0.12), transparent 60%);
+:root {
+  --primary: #00b4d8;
+  --primary-light: #48cae4;
+  --primary-dark: #0096c7;
+  --secondary: #10b981;
+  --secondary-light: #34d399;
+  --accent: #8b5cf6;
+  --accent-light: #a78bfa;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --success: #10b981;
+
+  --dark-bg: #0a0a14;
+  --card-bg: #11121c;
+  --card-hover: #151624;
+  --card-border: #1e1f30;
+  --card-border-hover: #2d2f45;
+
+  --nav-bg-glass: rgba(10, 10, 20, 0.85);
+  --nav-border: #1e1f30;
+  --nav-text: #8b8da3;
+  --nav-text-hover: #f1f5f9;
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #8b8da3;
+  --text-muted: #5a5c70;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--dark-bg);
+  color: var(--text-primary);
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-x: hidden;
+  letter-spacing: -0.01em;
+  padding-top: 66px;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--dark-bg); }
+::-webkit-scrollbar-thumb { background: #2d2f45; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+.container {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ============ NAVIGATION ============ */
+.main-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: var(--nav-bg-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--nav-border);
+  height: 66px;
+  display: flex;
+  align-items: center;
+}
+
+.nav-container {
+  max-width: 1320px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  gap: 16px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+.logo:hover { transform: translateY(-1px); }
+
+.logo-icon {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  box-shadow: 0 2px 12px rgba(0, 180, 216, 0.35);
+}
+
+.logo-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+.logo-text .accent {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  color: var(--nav-text);
+  font-weight: 500;
+  font-size: 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.nav-link i { font-size: 11px; color: var(--text-muted); transition: color 0.15s ease; }
+.nav-link:hover { color: var(--nav-text-hover); background: rgba(255,255,255,0.04); }
+.nav-link:hover i { color: var(--primary-light); }
+.nav-link.active { color: var(--primary-light); background: rgba(0, 180, 216, 0.08); }
+.nav-link.active i { color: var(--primary); }
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-nav-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: var(--secondary-light);
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.btn-nav-download i { font-size: 10px; }
+.btn-nav-download:hover {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: var(--secondary);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.btn-nav-login {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: rgba(0, 180, 216, 0.1);
+  border: 1px solid rgba(0, 180, 216, 0.25);
+  color: var(--primary-light);
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.btn-nav-login:hover {
+  background: rgba(0, 180, 216, 0.2);
+  border-color: var(--primary);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 6px;
+}
+
+/* ============ HERO ============ */
+.hero-section {
+  padding: 40px 0 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 400px;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(0, 180, 216, 0.12), transparent 65%),
+    radial-gradient(ellipse 40% 40% at 80% 20%, rgba(139, 92, 246, 0.08), transparent 60%);
   pointer-events: none;
 }
-.hero-inner { position: relative; max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: center; width: 100%; }
-.hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(37,99,235,0.1); border: 1px solid rgba(37,99,235,0.3); padding: 0.4rem 0.9rem; border-radius: 100px; font-size: 0.78rem; color: #93C5FD; margin-bottom: 1.5rem; }
-.hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); box-shadow: 0 0 8px var(--success); animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-.hero h1 { font-size: clamp(2.4rem, 4.5vw, 3.8rem); line-height: 1.05; margin-bottom: 1.5rem; }
-.hero h1 .gradient { background: linear-gradient(135deg, var(--primary), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.hero p.lead { font-size: 1.1rem; color: var(--muted); margin-bottom: 2rem; max-width: 520px; }
-.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
-.hero-visual { position: relative; height: 440px; }
-.float-card { position: absolute; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1rem 1.25rem; display: flex; align-items: center; gap: 0.8rem; box-shadow: 0 20px 50px rgba(0,0,0,0.4); animation: float 6s ease-in-out infinite; }
-.float-card .fc-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(37,99,235,0.15); display: grid; place-items: center; font-size: 1.2rem; }
-.float-card .fc-title { font-size: 0.85rem; font-weight: 600; }
-.float-card .fc-sub { font-size: 0.72rem; color: var(--muted); }
-.float-card:nth-child(1) { top: 5%; left: 10%; }
-.float-card:nth-child(2) { top: 32%; right: 5%; animation-delay: 1.2s; }
-.float-card:nth-child(3) { top: 60%; left: 2%; animation-delay: 2.4s; }
-.float-card:nth-child(4) { bottom: 5%; right: 10%; animation-delay: 3.6s; }
-@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
 
-.stats { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--surface); }
-.stats-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); padding: 2.5rem 2rem; gap: 1rem; }
-.stat { text-align: center; }
-.stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 2.2rem; font-weight: 700; background: linear-gradient(135deg, var(--primary), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.stat-label { font-size: 0.82rem; color: var(--muted); margin-top: 0.25rem; }
+.hero-content {
+  position: relative;
+  text-align: center;
+  max-width: 820px;
+  margin: 0 auto;
+}
 
-.services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
-.service-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.75rem; display: flex; flex-direction: column; transition: all .3s; position: relative; overflow: hidden; }
-.service-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--primary), var(--cyan)); transform: scaleX(0); transform-origin: left; transition: transform .3s; }
-.service-card:hover { border-color: rgba(37,99,235,0.4); transform: translateY(-4px); box-shadow: 0 20px 50px rgba(37,99,235,0.12); }
+.version-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  background: rgba(0, 180, 216, 0.08);
+  border: 1px solid rgba(0, 180, 216, 0.25);
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--primary-light);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 16px;
+}
+.version-badge .dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--secondary);
+  box-shadow: 0 0 8px var(--secondary);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.hero-title {
+  font-size: clamp(26px, 5vw, 42px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 12px;
+}
+.hero-title .version-accent {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 580px;
+  margin: 0 auto 24px;
+}
+.hero-subtitle strong {
+  color: var(--primary-light);
+  font-weight: 600;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-hero-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 24px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 20px rgba(0, 180, 216, 0.35);
+}
+.btn-hero-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 180, 216, 0.45);
+}
+.btn-hero-primary i { font-size: 11px; }
+
+.btn-hero-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 24px;
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--card-border);
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.btn-hero-secondary:hover {
+  border-color: var(--primary);
+  color: var(--primary-light);
+  background: rgba(0, 180, 216, 0.05);
+}
+.btn-hero-secondary i { font-size: 11px; }
+
+/* Hero floating cards */
+.hero-visual {
+  position: relative;
+  height: 280px;
+  margin-top: 32px;
+  display: none;
+}
+@media (min-width: 900px) {
+  .hero-visual { display: block; }
+}
+
+.float-card {
+  position: absolute;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+  animation: float 6s ease-in-out infinite;
+}
+.float-card .fc-icon {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  background: rgba(0, 180, 216, 0.12);
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+.float-card .fc-title { font-size: 11px; font-weight: 600; }
+.float-card .fc-sub { font-size: 9px; color: var(--text-muted); }
+
+.float-card:nth-child(1) { top: 0; left: 5%; animation-delay: 0s; }
+.float-card:nth-child(2) { top: 20%; right: 5%; animation-delay: 1.2s; }
+.float-card:nth-child(3) { bottom: 10%; left: 10%; animation-delay: 2.4s; }
+.float-card:nth-child(4) { bottom: 0; right: 15%; animation-delay: 3.6s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ============ STATS ============ */
+.stats-section {
+  padding: 28px 0;
+  margin: 20px 0;
+  border-top: 1px solid var(--card-border);
+  border-bottom: 1px solid var(--card-border);
+  background: rgba(17, 18, 28, 0.5);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 8px;
+}
+.stat-number {
+  font-size: 24px;
+  font-weight: 800;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.stat-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* ============ SECTION HEADERS ============ */
+.section-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.section-eyebrow {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--primary-light);
+  margin-bottom: 8px;
+}
+.section-title {
+  font-size: clamp(18px, 3vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.section-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  max-width: 480px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ============ FLAGSHIP FEATURES ============ */
+.flagship-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.flagship-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+.flagship-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.flagship-card:hover {
+  border-color: rgba(0, 180, 216, 0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(0, 180, 216, 0.08);
+}
+.flagship-card:hover::before { transform: scaleX(1); }
+
+.flagship-icon {
+  width: 44px; height: 44px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.15), rgba(139, 92, 246, 0.1));
+  border: 1px solid rgba(0, 180, 216, 0.2);
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  margin-bottom: 14px;
+}
+
+.flagship-card h3 {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+.flagship-card p {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ============ SERVICE CATEGORIES ============ */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.service-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  overflow: hidden;
+}
+.service-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.service-card:hover {
+  border-color: rgba(0, 180, 216, 0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(0, 180, 216, 0.08);
+}
 .service-card:hover::after { transform: scaleX(1); }
-.service-icon { width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg, rgba(37,99,235,0.15), rgba(6,182,212,0.1)); display: grid; place-items: center; font-size: 1.5rem; margin-bottom: 1.25rem; border: 1px solid rgba(37,99,235,0.2); }
-.service-card h3 { font-size: 1.12rem; margin-bottom: 0.6rem; }
-.service-card p { font-size: 0.88rem; color: var(--muted); margin-bottom: 1.5rem; flex-grow: 1; }
-.service-meta { display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border); }
-.service-price { font-size: 0.82rem; color: var(--success); font-weight: 600; }
-.service-arrow { color: var(--primary); font-size: 0.82rem; font-weight: 600; transition: transform .2s; }
+
+.service-icon {
+  width: 44px; height: 44px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.12), rgba(139, 92, 246, 0.08));
+  border: 1px solid rgba(0, 180, 216, 0.18);
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  margin-bottom: 14px;
+}
+
+.service-card h3 {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+.service-card p {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  flex-grow: 1;
+  margin-bottom: 14px;
+}
+
+.service-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--card-border);
+}
+.service-price {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--secondary-light);
+}
+.service-arrow {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary-light);
+  transition: transform 0.2s ease;
+}
 .service-card:hover .service-arrow { transform: translateX(4px); }
 
-.how { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-.how-inner { max-width: 1280px; margin: 0 auto; padding: 5rem 2rem; }
-.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-.step { text-align: center; padding: 2rem 1.5rem; background: var(--bg); border: 1px solid var(--border); border-radius: 16px; }
-.step-num { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--cyan)); display: grid; place-items: center; font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 700; color: #fff; margin: 0 auto 1.25rem; box-shadow: 0 8px 24px rgba(37,99,235,0.35); }
-.step h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
-.step p { font-size: 0.88rem; color: var(--muted); }
+/* ============ WHY US ============ */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
 
-.features-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.25rem; }
-.feature { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; }
-.feature-icon { width: 42px; height: 42px; border-radius: 10px; background: rgba(6,182,212,0.1); display: grid; place-items: center; font-size: 1.15rem; margin-bottom: 1rem; }
-.feature h4 { font-size: 1rem; margin-bottom: 0.4rem; }
-.feature p { font-size: 0.84rem; color: var(--muted); }
+.feature-item {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 16px;
+  transition: border-color 0.2s ease;
+}
+.feature-item:hover { border-color: var(--card-border-hover); }
 
-.cta-box { max-width: 900px; margin: 0 auto; background: linear-gradient(135deg, rgba(37,99,235,0.15), rgba(6,182,212,0.08)), var(--surface); border: 1px solid rgba(37,99,235,0.25); border-radius: 24px; padding: 4rem 2rem; text-align: center; position: relative; overflow: hidden; }
-.cta-box::before { content: ''; position: absolute; top: -50%; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(37,99,235,0.15), transparent 70%); pointer-events: none; }
-.cta-box h2 { font-size: clamp(1.6rem, 3vw, 2.3rem); margin-bottom: 1rem; position: relative; }
-.cta-box p { color: var(--muted); max-width: 500px; margin: 0 auto 2rem; position: relative; }
+.feature-icon {
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  background: rgba(0, 180, 216, 0.1);
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
 
+.feature-item h4 {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.feature-item p {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ============ HOW IT WORKS ============ */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.step-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 24px 20px;
+  text-align: center;
+  transition: all 0.25s ease;
+}
+.step-card:hover {
+  border-color: rgba(0, 180, 216, 0.3);
+  transform: translateY(-3px);
+}
+
+.step-num {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 auto 16px;
+  box-shadow: 0 6px 20px rgba(0, 180, 216, 0.35);
+}
+
+.step-card h3 {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.step-card p {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ============ CTA ============ */
+.cta-section {
+  padding: 40px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-box {
+  max-width: 700px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.1), rgba(139, 92, 246, 0.06)), var(--card-bg);
+  border: 1px solid rgba(0, 180, 216, 0.25);
+  border-radius: 18px;
+  padding: 40px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.cta-box::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: 50%;
+  transform: translateX(-50%);
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(0, 180, 216, 0.12), transparent 70%);
+  pointer-events: none;
+}
+
+.cta-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  position: relative;
+}
+.cta-title i { color: var(--primary); font-size: 0.9em; }
+
+.cta-subtitle {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.cta-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.btn-cta-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 28px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 20px rgba(0, 180, 216, 0.35);
+}
+.btn-cta-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 180, 216, 0.45);
+}
+
+.cta-meta {
+  margin-top: 18px;
+  font-size: 10px;
+  color: var(--text-muted);
+  position: relative;
+}
+.cta-meta i { color: var(--primary-light); font-size: 11px; }
+.cta-meta strong { color: var(--text-secondary); font-weight: 600; }
+
+/* ============ FOOTER ============ */
+.main-footer {
+  background: #08080f;
+  border-top: 1px solid var(--card-border);
+  padding: 40px 0 20px;
+  margin-top: 20px;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.footer-brand .logo { margin-bottom: 12px; }
+.footer-about {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 14px;
+  max-width: 280px;
+}
+
+.social-links {
+  display: flex;
+  gap: 8px;
+}
+.social-link {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--card-border);
+  display: grid;
+  place-items: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.social-link:hover {
+  background: rgba(0, 180, 216, 0.1);
+  border-color: rgba(0, 180, 216, 0.3);
+  color: var(--primary-light);
+  transform: translateY(-2px);
+}
+.social-link .fa-whatsapp { color: #25D366; }
+.social-link .fa-telegram { color: #0088cc; }
+.social-link .fa-youtube { color: #FF0000; }
+
+.footer-heading {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  position: relative;
+  padding-bottom: 8px;
+}
+.footer-heading::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 20px; height: 2px;
+  background: var(--primary);
+  border-radius: 2px;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.footer-links a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 11px;
+  transition: all 0.15s ease;
+}
+.footer-links a i {
+  font-size: 9px;
+  width: 12px;
+  color: var(--text-muted);
+  transition: color 0.15s ease;
+}
+.footer-links a:hover { color: var(--text-primary); padding-left: 3px; }
+.footer-links a:hover i { color: var(--primary-light); }
+
+.footer-bottom {
+  border-top: 1px solid var(--card-border);
+  padding-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+.footer-bottom a { color: var(--text-secondary); text-decoration: none; }
+.footer-bottom a:hover { color: var(--primary-light); }
+
+/* ============ RESPONSIVE ============ */
 @media (max-width: 968px) {
-  .hero-inner { grid-template-columns: 1fr; }
-  .hero-visual { display: none; }
-  .stats-inner { grid-template-columns: repeat(2, 1fr); }
-  .steps { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .nav-toggle { display: block; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .steps-grid { grid-template-columns: 1fr; }
+  .footer-content { grid-template-columns: 1fr 1fr; }
+  .hero-title { font-size: clamp(22px, 6vw, 32px); }
+}
+
+@media (max-width: 600px) {
+  .container { padding: 0 12px; }
+  .hero-section { padding: 24px 0 20px; }
+  .hero-title { font-size: 24px; }
+  .hero-subtitle { font-size: 12px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .stat-number { font-size: 20px; }
+  .services-grid { grid-template-columns: 1fr; }
+  .flagship-grid { grid-template-columns: 1fr; }
+  .features-grid { grid-template-columns: 1fr 1fr; }
+  .footer-content { grid-template-columns: 1fr; gap: 24px; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  .nav-actions .btn-nav-login { display: none; }
+}
+
+/* ============ FADE IN ============ */
+.fade-in {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>
 </head>
 <body>
 
-<nav class="navbar">
-  <div class="nav-inner">
-    <a href="index.html" class="brand">
-      <div class="brand-icon">⚡</div>
-      <div class="brand-text">GSM <span class="accent">TECH HUB</span></div>
+<!-- ============ NAVIGATION ============ -->
+<nav class="main-nav">
+  <div class="nav-container">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">⚡</div>
+      <div class="logo-text">GSM <span class="accent">TECH HUB</span></div>
     </a>
-    <ul class="nav-menu">
-      <li><a href="#services">Services</a></li>
-      <li><a href="#how">How It Works</a></li>
-      <li><a href="pages/support.html">Support</a></li>
-      <li><a href="pages/about.html">About</a></li>
-    </ul>
-    <div class="nav-actions">
-      <a href="pages/login.html" class="btn btn-ghost">Sign In</a>
-      <a href="pages/register.html" class="btn btn-primary">Get Started</a>
+
+    <div class="nav-links">
+      <a href="#services" class="nav-link active"><i class="fas fa-th-large"></i> Services</a>
+      <a href="#flagship" class="nav-link"><i class="fas fa-bolt"></i> Flagship</a>
+      <a href="#how" class="nav-link"><i class="fas fa-route"></i> How It Works</a>
+      <a href="#why" class="nav-link"><i class="fas fa-shield-halved"></i> Why Us</a>
+      <a href="pages/support.html" class="nav-link"><i class="fas fa-headset"></i> Support</a>
     </div>
-    <button class="nav-toggle" aria-label="Menu">☰</button>
+
+    <div class="nav-actions">
+      <a href="pages/register.html" class="btn-nav-download"><i class="fas fa-user-plus"></i> Get Started</a>
+      <a href="pages/login.html" class="btn-nav-login"><i class="fas fa-right-to-bracket"></i> Sign In</a>
+      <button class="nav-toggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+    </div>
   </div>
 </nav>
 
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-content">
-      <div class="hero-badge"><span class="dot"></span> Live · Instant Delivery · Trusted by 12,400+</div>
-      <h1>Your Gateway to<br><span class="gradient">Mobile Technology.</span></h1>
-      <p class="lead">Wholesale IMEI unlocks, FRP removal, tool activations, server credits, and digital goods. Instant delivery. Real margins.</p>
+<!-- ============ HERO ============ -->
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-content fade-in">
+      <div class="version-badge">
+        <span class="dot"></span>
+        Live · 300+ Services · Instant Delivery
+      </div>
+
+      <h1 class="hero-title">
+        Your Gateway to<br>
+        <span class="version-accent">Mobile Technology.</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Wholesale <strong>IMEI unlocks</strong>, <strong>FRP removal</strong>,
+        <strong>tool activations</strong>, <strong>server credits</strong>, and
+        <strong>digital goods</strong> — all in one platform. Built for resellers who
+        demand speed, reliability, and real margins.
+      </p>
+
       <div class="hero-actions">
-        <a href="pages/register.html" class="btn btn-primary btn-lg">Create Free Account →</a>
-        <a href="#services" class="btn btn-ghost btn-lg">Browse Services</a>
+        <a href="pages/register.html" class="btn-hero-primary">
+          <i class="fas fa-rocket"></i> Create Free Account
+        </a>
+        <a href="#services" class="btn-hero-secondary">
+          <i class="fas fa-th-large"></i> Browse Services
+        </a>
       </div>
     </div>
+
     <div class="hero-visual">
-      <div class="float-card"><div class="fc-icon">🔓</div><div><div class="fc-title">IMEI Unlock</div><div class="fc-sub">Delivered in 90s</div></div></div>
-      <div class="float-card"><div class="fc-icon">⚙️</div><div><div class="fc-title">Chimera License</div><div class="fc-sub">Instant activation</div></div></div>
-      <div class="float-card"><div class="fc-icon">🎁</div><div><div class="fc-title">Gift Cards</div><div class="fc-sub">Wholesale rates</div></div></div>
-      <div class="float-card"><div class="fc-icon">⚡</div><div><div class="fc-title">Server Credits</div><div class="fc-sub">Any quantity</div></div></div>
-    </div>
-  </div>
-</section>
-
-<div class="stats">
-  <div class="stats-inner">
-    <div class="stat"><div class="stat-num">12,400+</div><div class="stat-label">Active Customers</div></div>
-    <div class="stat"><div class="stat-num">98.6%</div><div class="stat-label">Success Rate</div></div>
-    <div class="stat"><div class="stat-num">2.4M</div><div class="stat-label">Orders Fulfilled</div></div>
-    <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Automated Delivery</div></div>
-  </div>
-</div>
-
-<section class="section" id="services">
-  <div class="section-header">
-    <div class="section-eyebrow">Our Services</div>
-    <h2>Everything You Need in One Hub</h2>
-    <p>Nine categories covering the full GSM service ecosystem.</p>
-  </div>
-  <div class="services-grid" id="servicesGrid">
-    <div class="card text-center" style="grid-column: 1/-1;">Loading services…</div>
-  </div>
-</section>
-
-<section class="how" id="how">
-  <div class="how-inner">
-    <div class="section-header">
-      <div class="section-eyebrow">How It Works</div>
-      <h2>Start Buying in 3 Steps</h2>
-      <p>No monthly fees. No contracts. Pay only for what you order.</p>
-    </div>
-    <div class="steps">
-      <div class="step"><div class="step-num">1</div><h3>Create Account</h3><p>Sign up free. Top up your wallet via M-Pesa, bank, or crypto.</p></div>
-      <div class="step"><div class="step-num">2</div><h3>Place Orders</h3><p>Choose your service, fill the form, and pay. Bulk orders supported.</p></div>
-      <div class="step"><div class="step-num">3</div><h3>Get Results</h3><p>Receive your unlock codes, activations, or gift cards instantly.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="section-header">
-    <div class="section-eyebrow">Why GSM TECH HUB</div>
-    <h2>Built for Serious Buyers</h2>
-  </div>
-  <div class="features-grid">
-    <div class="feature"><div class="feature-icon">⚡</div><h4>Instant Delivery</h4><p>Most orders complete in under 2 minutes.</p></div>
-    <div class="feature"><div class="feature-icon">💰</div><h4>Wholesale Pricing</h4><p>Direct supplier access means lower prices.</p></div>
-    <div class="feature"><div class="feature-icon">🌍</div><h4>Global Coverage</h4><p>Unlock codes for 500+ carriers worldwide.</p></div>
-    <div class="feature"><div class="feature-icon">🔔</div><h4>Live Status</h4><p>Track your order in real time on your dashboard.</p></div>
-    <div class="feature"><div class="feature-icon">🎧</div><h4>24/7 Support</h4><p>Telegram and email with fast response.</p></div>
-    <div class="feature"><div class="feature-icon">💳</div><h4>Flexible Payments</h4><p>M-Pesa, Binance Pay, bank transfer, or card.</p></div>
-  </div>
-</section>
-
-<div class="section">
-  <div class="cta-box">
-    <h2>Ready to Place Your First Order?</h2>
-    <p>Create a free account and start buying in under a minute. No monthly fees.</p>
-    <a href="pages/register.html" class="btn btn-primary btn-lg">Create Free Account →</a>
-  </div>
-</div>
-
-<footer>
-  <div class="footer-inner">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a href="index.html" class="brand"><div class="brand-icon">⚡</div><div class="brand-text">GSM <span class="accent">TECH HUB</span></div></a>
-        <p>Professional reseller platform for IMEI unlocks, GSM tool activations, and digital goods. Delivered worldwide.</p>
+      <div class="float-card">
+        <div class="fc-icon">🔓</div>
+        <div>
+          <div class="fc-title">IMEI Unlock</div>
+          <div class="fc-sub">Delivered in 90s</div>
+        </div>
       </div>
-      <div class="footer-col"><h4>Services</h4><ul>
-        <li><a href="pages/service.html?cat=unlock">IMEI Unlock</a></li>
-        <li><a href="pages/service.html?cat=frp">FRP Removal</a></li>
-        <li><a href="pages/service.html?cat=tools">Tool Activations</a></li>
-        <li><a href="pages/service.html?cat=credits">Server Credits</a></li>
-      </ul></div>
-      <div class="footer-col"><h4>Account</h4><ul>
-        <li><a href="pages/dashboard.html">Dashboard</a></li>
-        <li><a href="pages/orders.html">My Orders</a></li>
-        <li><a href="pages/login.html">Sign In</a></li>
-        <li><a href="pages/register.html">Register</a></li>
-      </ul></div>
-      <div class="footer-col"><h4>Company</h4><ul>
-        <li><a href="pages/about.html">About Us</a></li>
-        <li><a href="pages/support.html">Support</a></li>
-        <li><a href="pages/terms.html">Terms</a></li>
-        <li><a href="pages/privacy.html">Privacy</a></li>
-      </ul></div>
+      <div class="float-card">
+        <div class="fc-icon">⚙️</div>
+        <div>
+          <div class="fc-title">Tool Activation</div>
+          <div class="fc-sub">Instant license</div>
+        </div>
+      </div>
+      <div class="float-card">
+        <div class="fc-icon">⚡</div>
+        <div>
+          <div class="fc-title">Server Credits</div>
+          <div class="fc-sub">Any quantity</div>
+        </div>
+      </div>
+      <div class="float-card">
+        <div class="fc-icon">🎁</div>
+        <div>
+          <div class="fc-title">Gift Cards</div>
+          <div class="fc-sub">Wholesale rates</div>
+        </div>
+      </div>
     </div>
+  </div>
+</section>
+
+<!-- ============ STATS ============ -->
+<div class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">12,400+</div>
+        <div class="stat-label">Active Customers</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">195+</div>
+        <div class="stat-label">Countries Served</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">99.6%</div>
+        <div class="stat-label">Success Rate</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">300+</div>
+        <div class="stat-label">Premium Services</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FLAGSHIP FEATURES ============ -->
+<section class="container" id="flagship" style="padding-top: 40px;">
+  <div class="section-header fade-in">
+    <div class="section-eyebrow">Flagship Services</div>
+    <h2 class="section-title">Our Most Popular Tools</h2>
+    <p class="section-desc">Four flagship services plus hundreds more across the full GSM ecosystem.</p>
+  </div>
+
+  <div class="flagship-grid">
+    <div class="flagship-card fade-in">
+      <div class="flagship-icon">🔓</div>
+      <h3>IMEI & Network Unlock</h3>
+      <p>Factory unlock codes for Samsung, LG, Alcatel, TINNO, Google Pixel, Moto, and 500+ carriers worldwide. Delivered instantly via automated API.</p>
+    </div>
+
+    <div class="flagship-card fade-in">
+      <div class="flagship-icon">🛡️</div>
+      <h3>FRP Removal Tools</h3>
+      <p>Xiaomi, Samsung, Realme, OPPO, and MTK/Qualcomm FRP bypass. Credits for F-KEY, Falcon, FCK, GFT, FRP BOSS, and every major FRP tool.</p>
+    </div>
+
+    <div class="flagship-card fade-in">
+      <div class="flagship-icon">⚙️</div>
+      <h3>Tool Activations & Licenses</h3>
+      <p>Chimera, Hydra, EFT Pro, TFM, Griffin, TSM, CM2, DC-Unlocker, Avator, BMT Pro, and 100+ GSM tools. 1–24 month licenses delivered instantly.</p>
+    </div>
+
+    <div class="flagship-card fade-in">
+      <div class="flagship-icon">⚡</div>
+      <h3>Server Credits & Refills</h3>
+      <p>Instant refills for Chimera, Hydra, T-Unlock, HalabTech, GCPro, Furious Gold, Cheetah, and every major server. Any quantity, any time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICE CATEGORIES ============ -->
+<section class="container" id="services" style="padding-top: 40px;">
+  <div class="section-header fade-in">
+    <div class="section-eyebrow">All Services</div>
+    <h2 class="section-title">Nine Categories. One Hub.</h2>
+    <p class="section-desc">Everything you need to run a profitable GSM business — from unlocks to digital goods.</p>
+  </div>
+
+  <div class="services-grid" id="servicesGrid">
+    <!-- Populated by JS -->
+  </div>
+</section>
+
+<!-- ============ WHY US ============ -->
+<section class="container" id="why" style="padding-top: 40px;">
+  <div class="section-header fade-in">
+    <div class="section-eyebrow">Why GSM TECH HUB</div>
+    <h2 class="section-title">Built for Serious Buyers</h2>
+    <p class="section-desc">Every feature designed to save you time and maximize your margins.</p>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-item fade-in">
+      <div class="feature-icon">⚡</div>
+      <h4>Instant Delivery</h4>
+      <p>Most orders complete in under 2 minutes via automated fulfillment.</p>
+    </div>
+    <div class="feature-item fade-in">
+      <div class="feature-icon">💰</div>
+      <h4>Wholesale Pricing</h4>
+      <p>Direct supplier access means lower prices and higher margins.</p>
+    </div>
+    <div class="feature-item fade-in">
+      <div class="feature-icon">🌍</div>
+      <h4>Global Coverage</h4>
+      <p>Unlock codes and services for 500+ carriers across 195+ countries.</p>
+    </div>
+    <div class="feature-item fade-in">
+      <div class="feature-icon">🔔</div>
+      <h4>Live Status Tracking</h4>
+      <p>Track every order in real time on your customer dashboard.</p>
+    </div>
+    <div class="feature-item fade-in">
+      <div class="feature-icon">🎧</div>
+      <h4>24/7 Support</h4>
+      <p>Telegram and email support with response time under 30 minutes.</p>
+    </div>
+    <div class="feature-item fade-in">
+      <div class="feature-icon">💳</div>
+      <h4>Flexible Payments</h4>
+      <p>M-Pesa, Binance Pay, bank transfer, card, or crypto.</p>
+    </div>
+    <div class="feature-item fade-in">
+      <div class="feature-icon">🔒</div>
+      <h4>Secure Checkout</h4>
+      <p>Bank-grade encryption on every transaction.</p>
+    </div>
+    <div class="feature-item fade-in">
+      <div class="feature-icon">📊</div>
+      <h4>Real-Time Dashboard</h4>
+      <p>Wallet balance, order history, and success rate at a glance.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="container" id="how" style="padding-top: 40px;">
+  <div class="section-header fade-in">
+    <div class="section-eyebrow">How It Works</div>
+    <h2 class="section-title">Start Buying in 3 Steps</h2>
+    <p class="section-desc">No monthly fees. No contracts. Pay only for what you order.</p>
+  </div>
+
+  <div class="steps-grid">
+    <div class="step-card fade-in">
+      <div class="step-num">1</div>
+      <h3>Create Account</h3>
+      <p>Sign up free in seconds. Top up your wallet via M-Pesa, bank transfer, or crypto.</p>
+    </div>
+    <div class="step-card fade-in">
+      <div class="step-num">2</div>
+      <h3>Place Orders</h3>
+      <p>Choose your service, fill the form, and pay. Single or bulk orders supported.</p>
+    </div>
+    <div class="step-card fade-in">
+      <div class="step-num">3</div>
+      <h3>Get Results</h3>
+      <p>Receive your unlock codes, activations, or gift cards instantly via email and dashboard.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta-section">
+  <div class="cta-box fade-in">
+    <h2 class="cta-title"><i class="fas fa-rocket"></i> Ready to Place Your First Order?</h2>
+    <p class="cta-subtitle">Join 12,400+ customers already buying with GSM TECH HUB. Free signup. No monthly fees.</p>
+    <div class="cta-actions">
+      <a href="pages/register.html" class="btn-cta-primary">
+        <i class="fas fa-user-plus"></i> Create Free Account
+      </a>
+    </div>
+    <div class="cta-meta">
+      <i class="fas fa-shield-halved"></i> Secure checkout · <strong>SSL encrypted</strong> · Instant delivery
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="main-footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">⚡</div>
+          <div class="logo-text">GSM <span class="accent">TECH HUB</span></div>
+        </a>
+        <p class="footer-about">
+          Professional reseller platform for IMEI unlocks, GSM tool activations,
+          server credits, and digital goods. Delivered worldwide with instant
+          automated fulfillment.
+        </p>
+        <div class="social-links">
+          <a href="#" class="social-link" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="social-link" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+          <a href="#" class="social-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Services</h4>
+        <ul class="footer-links">
+          <li><a href="pages/service.html?cat=unlock"><i class="fas fa-chevron-right"></i> IMEI Unlock</a></li>
+          <li><a href="pages/service.html?cat=frp"><i class="fas fa-chevron-right"></i> FRP Removal</a></li>
+          <li><a href="pages/service.html?cat=tools"><i class="fas fa-chevron-right"></i> Tool Activations</a></li>
+          <li><a href="pages/service.html?cat=credits"><i class="fas fa-chevron-right"></i> Server Credits</a></li>
+          <li><a href="pages/service.html?cat=digital"><i class="fas fa-chevron-right"></i> Digital Goods</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Account</h4>
+        <ul class="footer-links">
+          <li><a href="pages/dashboard.html"><i class="fas fa-chevron-right"></i> Dashboard</a></li>
+          <li><a href="pages/orders.html"><i class="fas fa-chevron-right"></i> My Orders</a></li>
+          <li><a href="pages/login.html"><i class="fas fa-chevron-right"></i> Sign In</a></li>
+          <li><a href="pages/register.html"><i class="fas fa-chevron-right"></i> Register</a></li>
+          <li><a href="pages/support.html"><i class="fas fa-chevron-right"></i> Support</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Company</h4>
+        <ul class="footer-links">
+          <li><a href="pages/about.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
+          <li><a href="pages/support.html"><i class="fas fa-chevron-right"></i> Contact</a></li>
+          <li><a href="pages/terms.html"><i class="fas fa-chevron-right"></i> Terms of Service</a></li>
+          <li><a href="pages/privacy.html"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> System Status</a></li>
+        </ul>
+      </div>
+    </div>
+
     <div class="footer-bottom">
       <span>© 2026 GSM TECH HUB. All rights reserved.</span>
-      <span>Delivered worldwide ⚡</span>
+      <span>Built with ⚡ · Delivered worldwide</span>
     </div>
   </div>
 </footer>
 
-<script src="assets/js/app.js"></script>
+<!-- ============ SCRIPTS ============ -->
 <script>
 const CATEGORIES = [
-  { slug: 'unlock',  icon: '🔓', name: 'IMEI & Network Unlock',        desc: 'Factory unlock codes for Samsung, LG, Alcatel, TINNO, Google Pixel, Moto, and more.', from: 0.50 },
+  { slug: 'unlock',  icon: '🔓', name: 'IMEI & Network Unlock',        desc: 'Factory unlock codes for Samsung, LG, Alcatel, TINNO, Google Pixel, Moto, and 500+ carriers.', from: 0.50 },
   { slug: 'frp',     icon: '🛡️', name: 'FRP Removal Tools',            desc: 'Xiaomi, Samsung, Realme, OPPO, and MTK/Qualcomm FRP bypass credits.', from: 0.30 },
-  { slug: 'mdm',     icon: '🔐', name: 'MDM & iCloud Bypass',           desc: 'Permanent MDM removal, iCloud activation lock bypass, Knox reset.', from: 3.00 },
-  { slug: 'tools',   icon: '⚙️', name: 'Tool Activations & Licenses',   desc: 'Chimera, Hydra, EFT Pro, TFM, Griffin, TSM, CM2, and 100+ tools.', from: 5.00 },
-  { slug: 'credits', icon: '⚡', name: 'Server Credits & Refills',       desc: 'Instant refills for Chimera, Hydra, T-Unlock, HalabTech, GCPro.', from: 1.00 },
-  { slug: 'dongle',  icon: '📦', name: 'Dongle & Box Software',         desc: 'Infinity-Box, Micro-Box, USTPRO2, SPT-Box, CM2 Dongle, ATF.', from: 8.00 },
-  { slug: 'digital', icon: '🎁', name: 'Digital Goods & Gift Cards',    desc: 'Google Play, Canva Pro, Telegram Premium, Free Fire diamonds.', from: 2.00 },
-  { slug: 'social',  icon: '📱', name: 'Social Media Growth',           desc: 'Facebook, Instagram, TikTok followers with 30-day refill.', from: 1.50 },
-  { slug: 'dhru',    icon: '🔌', name: 'DHRU Fusion & Panel Services',  desc: 'DHRU Fusion licenses, Telegram modules, GSM Pay codes.', from: 20.00 },
+  { slug: 'mdm',     icon: '🔐', name: 'MDM & iCloud Bypass',           desc: 'Permanent MDM removal, iCloud activation lock bypass, Knox reset, Mi Cloud unlock.', from: 3.00 },
+  { slug: 'tools',   icon: '⚙️', name: 'Tool Activations & Licenses',   desc: 'Chimera, Hydra, EFT Pro, TFM, Griffin, TSM, CM2, and 100+ GSM tools.', from: 5.00 },
+  { slug: 'credits', icon: '⚡', name: 'Server Credits & Refills',       desc: 'Instant refills for Chimera, Hydra, T-Unlock, HalabTech, GCPro, Furious Gold.', from: 1.00 },
+  { slug: 'dongle',  icon: '📦', name: 'Dongle & Box Software',         desc: 'Infinity-Box, Micro-Box, USTPRO2, SPT-Box, CM2 Dongle, ATF activations.', from: 8.00 },
+  { slug: 'digital', icon: '🎁', name: 'Digital Goods & Gift Cards',    desc: 'Google Play, Canva Pro, Telegram Premium, Free Fire diamonds, and more.', from: 2.00 },
+  { slug: 'social',  icon: '📱', name: 'Social Media Growth',           desc: 'Facebook, Instagram, and TikTok followers with 30-day refill guarantee.', from: 1.50 },
+  { slug: 'dhru',    icon: '🔌', name: 'DHRU Fusion & Panel Services',  desc: 'DHRU Fusion licenses, Telegram modules, GSM Pay activation codes.', from: 20.00 },
 ];
 
 document.getElementById('servicesGrid').innerHTML = CATEGORIES.map(c => `
-  <a href="pages/service.html?cat=${c.slug}" class="service-card">
+  <a href="pages/service.html?cat=${c.slug}" class="service-card fade-in">
     <div class="service-icon">${c.icon}</div>
     <h3>${c.name}</h3>
     <p>${c.desc}</p>
@@ -239,6 +1246,47 @@ document.getElementById('servicesGrid').innerHTML = CATEGORIES.map(c => `
     </div>
   </a>
 `).join('');
+
+// ============ MOBILE MENU ============
+document.querySelector('.nav-toggle')?.addEventListener('click', () => {
+  const menu = document.querySelector('.nav-links');
+  const isOpen = menu.style.display === 'flex';
+  menu.style.display = isOpen ? 'none' : 'flex';
+  if (!isOpen) {
+    Object.assign(menu.style, {
+      position: 'absolute',
+      top: '66px', left: '0', right: '0',
+      flexDirection: 'column',
+      padding: '16px',
+      background: '#0a0a14',
+      borderBottom: '1px solid #1e1f30',
+      gap: '4px'
+    });
+  }
+});
+
+// ============ FADE IN ON SCROLL ============
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// ============ SMOOTH SCROLL ============
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
 </script>
+
 </body>
 </html>
