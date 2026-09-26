@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Terms of Service — GSM TECH HUB</title>
+<meta name="description" content="Terms of Service for GSM TECH HUB — read our user agreement, refund policy, and service rules.">
+<meta name="theme-color" content="#0a0a14">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root {
+  --primary: #00b4d8; --primary-light: #48cae4; --primary-dark: #0096c7;
+  --secondary: #10b981; --secondary-light: #34d399;
+  --accent: #8b5cf6; --accent-light: #a78bfa;
+  --danger: #ef4444; --warning: #f59e0b;
+  --dark-bg: #0a0a14; --card-bg: #11121c; --card-hover: #151624;
+  --card-border: #1e1f30; --card-border-hover: #2d2f45;
+  --nav-bg-glass: rgba(10, 10, 20, 0.85); --nav-border: #1e1f30;
+  --nav-text: #8b8da3; --nav-text-hover: #f1f5f9;
+  --text-primary: #f1f5f9; --text-secondary: #8b8da3; --text-muted: #5a5c70;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; scroll-padding-top: 90px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--dark-bg); color: var(--text-primary);
+  font-size: 13px; line-height: 1.6; overflow-x: hidden;
+  letter-spacing: -0.01em; padding-top: 66px;
+}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--dark-bg); }
+::-webkit-scrollbar-thumb { background: #2d2f45; border-radius: 3px; }
+.container { max-width: 1320px; margin: 0 auto; padding: 0 16px; }
+
+/* NAV */
+.main-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: var(--nav-bg-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--nav-border);
+  height: 66px; display: flex; align-items: center;
+}
+.nav-container {
+  max-width: 1320px; width: 100%; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; gap: 16px;
+}
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; }
+.logo-icon {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius: 9px; display: grid; place-items: center; font-size: 16px;
+  box-shadow: 0 2px 12px rgba(0, 180, 216, 0.35);
+}
+.logo-text { font-size: 14px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; }
+.logo-text .accent { background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.nav-links { display: flex; gap: 2px; align-items: center; }
+.nav-link {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 12px; color: var(--nav-text);
+  font-weight: 500; font-size: 12px;
+  border-radius: 6px; text-decoration: none;
+  transition: all 0.15s ease;
+}
+.nav-link i { font-size: 11px; color: var(--text-muted); }
+.nav-link:hover { color: var(--nav-text-hover); background: rgba(255,255,255,0.04); }
+.nav-link:hover i { color: var(--primary-light); }
+.nav-toggle { display: none; background: none; border: none; color: var(--text-primary); font-size: 18px; cursor: pointer; padding: 6px; }
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+.btn-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px;
+  color: var(--text-secondary);
+  border: 1px solid var(--card-border);
+  border-radius: 7px;
+  font-size: 11px; font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.btn-back:hover { border-color: var(--primary); color: var(--primary-light); }
+.btn-back i { font-size: 10px; }
+
+/* LEGAL LAYOUT */
+.legal-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 16px 60px;
+}
+
+.legal-header {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--card-border);
+}
+.legal-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--primary-light);
+  margin-bottom: 12px;
+}
+.legal-title {
+  font-size: clamp(24px, 4vw, 34px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+.legal-meta {
+  display: flex; gap: 20px; flex-wrap: wrap;
+  font-size: 11px; color: var(--text-muted);
+}
+.legal-meta span {
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.legal-meta i { color: var(--primary-light); font-size: 10px; }
+
+/* TOC */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-left: 3px solid var(--primary);
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin-bottom: 32px;
+}
+.toc-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.toc-title i { color: var(--primary); }
+.toc ol {
+  list-style: none;
+  counter-reset: toc;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 20px;
+}
+.toc li {
+  counter-increment: toc;
+  font-size: 12px;
+}
+.toc li::before {
+  content: counter(toc) ".";
+  color: var(--primary-light);
+  font-weight: 700;
+  margin-right: 6px;
+}
+.toc a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.toc a:hover { color: var(--primary-light); }
+
+/* CONTENT */
+.legal-content h2 {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  padding-top: 8px;
+  scroll-margin-top: 90px;
+  display: flex; align-items: center; gap: 10px;
+}
+.legal-content h2 .h2-num {
+  display: inline-grid;
+  place-items: center;
+  width: 26px; height: 26px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.legal-content h3 {
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 20px;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.legal-content p {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin-bottom: 12px;
+}
+
+.legal-content ul, .legal-content ol {
+  margin: 8px 0 14px 20px;
+  display: flex; flex-direction: column;
+  gap: 6px;
+}
+.legal-content li {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+.legal-content strong { color: var(--text-primary); font-weight: 600; }
+.legal-content a { color: var(--primary-light); text-decoration: none; }
+.legal-content a:hover { text-decoration: underline; }
+.legal-content code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  padding: 1px 6px;
+  background: rgba(0, 180, 216, 0.08);
+  border: 1px solid rgba(0, 180, 216, 0.15);
+  border-radius: 5px;
+  color: var(--primary-light);
+}
+
+.highlight-box {
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin: 16px 0;
+  font-size: 12px;
+  line-height: 1.7;
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.highlight-box i { font-size: 14px; margin-top: 2px; flex-shrink: 0; }
+.highlight-box.info {
+  background: rgba(0, 180, 216, 0.05);
+  border: 1px solid rgba(0, 180, 216, 0.2);
+  color: #a5d8f3;
+}
+.highlight-box.warn {
+  background: rgba(245, 158, 11, 0.06);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  color: #fcd34d;
+}
+.highlight-box.danger {
+  background: rgba(239, 68, 68, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+}
+.highlight-box strong { color: inherit; }
+
+/* FOOTER */
+.main-footer {
+  background: #08080f;
+  border-top: 1px solid var(--card-border);
+  padding: 40px 0 20px;
+}
+.footer-content {
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+  gap: 32px; margin-bottom: 32px;
+}
+.footer-brand .logo { margin-bottom: 12px; }
+.footer-about {
+  font-size: 11px; color: var(--text-secondary);
+  line-height: 1.7; margin-bottom: 14px; max-width: 280px;
+}
+.social-links { display: flex; gap: 8px; }
+.social-link {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--card-border);
+  display: grid; place-items: center;
+  color: var(--text-secondary); font-size: 13px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.social-link:hover {
+  background: rgba(0, 180, 216, 0.1);
+  border-color: rgba(0, 180, 216, 0.3);
+  color: var(--primary-light);
+  transform: translateY(-2px);
+}
+.footer-heading {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 14px; position: relative;
+  padding-bottom: 8px;
+}
+.footer-heading::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 0; width: 20px; height: 2px;
+  background: var(--primary); border-radius: 2px;
+}
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.footer-links a {
+  display: flex; align-items: center; gap: 6px;
+  color: var(--text-secondary); text-decoration: none;
+  font-size: 11px; transition: all 0.15s ease;
+}
+.footer-links a i { font-size: 9px; width: 12px; color: var(--text-muted); }
+.footer-links a:hover { color: var(--text-primary); padding-left: 3px; }
+.footer-links a:hover i { color: var(--primary-light); }
+.footer-bottom {
+  border-top: 1px solid var(--card-border);
+  padding-top: 18px;
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 10px;
+  font-size: 10px; color: var(--text-muted);
+}
+
+@media (max-width: 968px) {
+  .nav-links { display: none; }
+  .nav-toggle { display: block; }
+  .footer-content { grid-template-columns: 1fr 1fr; }
+  .toc ol { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .container { padding: 0 12px; }
+  .legal-wrap { padding: 24px 12px 40px; }
+  .footer-content { grid-template-columns: 1fr; gap: 24px; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+}
+
+.fade-in { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<nav class="main-nav">
+  <div class="nav-container">
+    <a href="../index.html" class="logo">
+      <div class="logo-icon">⚡</div>
+      <div class="logo-text">GSM <span class="accent">TECH HUB</span></div>
+    </a>
+
+    <div class="nav-links">
+      <a href="../index.html#services" class="nav-link"><i class="fas fa-th-large"></i> Services</a>
+      <a href="about.html" class="nav-link"><i class="fas fa-circle-info"></i> About</a>
+      <a href="terms.html" class="nav-link active"><i class="fas fa-file-contract"></i> Terms</a>
+      <a href="privacy.html" class="nav-link"><i class="fas fa-shield"></i> Privacy</a>
+    </div>
+
+    <div class="nav-actions">
+      <a href="javascript:history.back()" class="btn-back"><i class="fas fa-arrow-left"></i> Back</a>
+      <button class="nav-toggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+</nav>
+
+<div class="legal-wrap fade-in">
+
+  <div class="legal-header">
+    <div class="legal-eyebrow"><i class="fas fa-file-contract"></i> Legal</div>
+    <h1 class="legal-title">Terms of Service</h1>
+    <div class="legal-meta">
+      <span><i class="fas fa-calendar"></i> Last updated: April 3, 2026</span>
+      <span><i class="fas fa-file-lines"></i> Version 2.1</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <div class="toc-title"><i class="fas fa-list"></i> Table of Contents</div>
+    <ol>
+      <li><a href="#acceptance">Acceptance of Terms</a></li>
+      <li><a href="#eligibility">Eligibility</a></li>
+      <li><a href="#account">Your Account</a></li>
+      <li><a href="#services">Our Services</a></li>
+      <li><a href="#payment">Payment & Wallet</a></li>
+      <li><a href="#refund">Refund Policy</a></li>
+      <li><a href="#prohibited">Prohibited Uses</a></li>
+      <li><a href="#ip">Intellectual Property</a></li>
+      <li><a href="#liability">Limitation of Liability</a></li>
+      <li><a href="#termination">Termination</a></li>
+      <li><a href="#changes">Changes to Terms</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ol>
+  </div>
+
+  <div class="legal-content">
+
+    <h2 id="acceptance"><span class="h2-num">1</span> Acceptance of Terms</h2>
+    <p>
+      By accessing or using GSM TECH HUB (the "Service", "we", "us", or "our"),
+      you agree to be bound by these Terms of Service ("Terms"). If you do not
+      agree to these Terms, you must not use the Service.
+    </p>
+    <p>
+      These Terms apply to all visitors, registered users, and others who access
+      or use our platform, whether through a web browser, mobile device, or
+      programmatic API.
+    </p>
+
+    <h2 id="eligibility"><span class="h2-num">2</span> Eligibility</h2>
+    <p>
+      You must be at least <strong>18 years of age</strong> to use this Service.
+      By using GSM TECH HUB, you represent and warrant that:
+    </p>
+    <ul>
+      <li>You have the legal capacity to enter into a binding contract</li>
+      <li>You are not prohibited from using the Service under the laws of your jurisdiction</li>
+      <li>All information you provide during registration is accurate and complete</li>
+    </ul>
+
+    <h2 id="account"><span class="h2-num">3</span> Your Account</h2>
+    <p>
+      You are responsible for maintaining the confidentiality of your account
+      credentials and for all activities that occur under your account.
+    </p>
+    <ul>
+      <li>You must provide accurate, current, and complete information during registration</li>
+      <li>You must not share your account with any third party</li>
+      <li>You must notify us immediately of any unauthorized access or security breach</li>
+      <li>We reserve the right to suspend or terminate accounts that violate these Terms</li>
+    </ul>
+
+    <div class="highlight-box warn">
+      <i class="fas fa-exclamation-triangle"></i>
+      <div>
+        <strong>Account sharing is prohibited.</strong> Each account is for a single
+        individual or organization. Reselling access to your account without our
+        written consent will result in immediate termination without refund.
+      </div>
+    </div>
+
+    <h2 id="services"><span class="h2-num">4</span> Our Services</h2>
+    <p>
+      GSM TECH HUB provides a reseller platform for purchasing and delivering
+      the following categories of services:
+    </p>
+    <ul>
+      <li><strong>IMEI & Network Unlocks</strong> — factory unlock codes for mobile devices</li>
+      <li><strong>FRP Removal</strong> — Google FRP bypass credits and services</li>
+      <li><strong>MDM & iCloud Bypass</strong> — enterprise MDM removal, activation lock bypass</li>
+      <li><strong>Tool Activations & Licenses</strong> — GSM software licenses from third-party vendors</li>
+      <li><strong>Server Credits & Refills</strong> — credit refills for third-party GSM tools</li>
+      <li><strong>Dongle & Box Software</strong> — software activations for hardware dongles</li>
+      <li><strong>Digital Goods</strong> — gift cards, subscription activations, and digital codes</li>
+      <li><strong>Social Media Services</strong> — follower, engagement, and account services</li>
+    </ul>
+    <p>
+      Services are provided on an <strong>"as-is"</strong> basis. While we strive
+      for 100% success rates, some orders may fail due to device incompatibility,
+      supplier limitations, or incorrect information provided by you.
+    </p>
+
+    <h2 id="payment"><span class="h2-num">5</span> Payment & Wallet</h2>
+    <p>
+      GSM TECH HUB operates on a <strong>prepaid wallet model</strong>. You must
+      top up your wallet balance before placing orders. Wallet funds are deducted
+      immediately when an order is submitted.
+    </p>
+    <ul>
+      <li>All prices are shown in USD unless otherwise stated</li>
+      <li>We accept payment via mobile money, cryptocurrency, bank transfer, and card</li>
+      <li>Wallet balances do not expire and can be withdrawn on request (subject to a processing fee)</li>
+      <li>We reserve the right to adjust prices at any time; existing wallet balances are not affected</li>
+      <li>Fraudulent payments, chargebacks, or reversed transactions will result in account suspension and possible legal action</li>
+    </ul>
+
+    <div class="highlight-box info">
+      <i class="fas fa-info-circle"></i>
+      <div>
+        <strong>No minimum deposit.</strong> You can top up any amount starting from
+        <code>$1.00</code>. Wallet funds are refundable minus payment processor fees.
+      </div>
+    </div>
+
+    <h2 id="refund"><span class="h2-num">6</span> Refund Policy</h2>
+    <p>
+      We offer <strong>automatic refunds</strong> in the following cases:
+    </p>
+    <ul>
+      <li>The service provider <strong>rejects</strong> your order (wrong device, unsupported model, etc.)</li>
+      <li>The unlock code cannot be found for your device after full processing</li>
+      <li>Delivery fails to complete within 24 hours of order submission</li>
+      <li>We discover that a service you purchased is temporarily unavailable</li>
+    </ul>
+    <p>
+      In eligible cases, refunds are credited to your wallet balance instantly,
+      or returned to your original payment method within <strong>3–5 business
+      days</strong> if requested.
+    </p>
+
+    <h3>Non-refundable cases:</h3>
+    <ul>
+      <li>Successful delivery of an unlock code that you've already submitted to a device</li>
+      <li>Failed orders due to incorrect IMEI, serial number, or device information provided by you</li>
+      <li>Services marked as "no refund" on the service listing page</li>
+      <li>Tool licenses and digital goods once the activation code has been revealed to you</li>
+      <li>Social media services once delivery has started (partial completion is not refundable)</li>
+    </ul>
+
+    <div class="highlight-box danger">
+      <i class="fas fa-ban"></i>
+      <div>
+        <strong>Chargeback policy.</strong> Filing a chargeback or payment dispute
+        without first contacting our support team will result in immediate and
+        permanent account termination. We investigate every dispute and will
+        provide evidence of delivery to the payment processor.
+      </div>
+    </div>
+
+    <h2 id="prohibited"><span class="h2-num">7</span> Prohibited Uses</h2>
+    <p>You agree NOT to use the Service for:</p>
+    <ul>
+      <li>Unlocking devices you do not legally own or have authorization to unlock</li>
+      <li>Any activity that violates local, national, or international law</li>
+      <li>Fraud, identity theft, or unauthorized access to third-party accounts</li>
+      <li>Reverse-engineering, scraping, or attempting to bypass our API rate limits</li>
+      <li>Automated attacks, denial-of-service attempts, or network exploitation</li>
+      <li>Reselling our services as your own without disclosure that you are a reseller</li>
+      <li>Uploading malware, viruses, or harmful code through any part of the Service</li>
+      <li>Any commercial use of our brand, logo, or trademarks without written permission</li>
+    </ul>
+    <p>
+      We reserve the right to terminate your account immediately if we detect any
+      prohibited use. In such cases, <strong>no refund will be issued</strong>.
+    </p>
+
+    <h2 id="ip"><span class="h2-num">8</span> Intellectual Property</h2>
+    <p>
+      All content on GSM TECH HUB — including but not limited to logos, text,
+      graphics, source code, and design elements — is the exclusive property of
+      GSM TECH HUB or its licensors and is protected by copyright, trademark,
+      and other intellectual property laws.
+    </p>
+    <p>
+      Third-party tool names, logos, and trademarks (Chimera, Hydra, EFT Pro,
+      etc.) are the property of their respective owners. We are an independent
+      reseller and are not affiliated with, endorsed by, or sponsored by these
+      companies.
+    </p>
+
+    <h2 id="liability"><span class="h2-num">9</span> Limitation of Liability</h2>
+    <p>
+      To the maximum extent permitted by law, GSM TECH HUB shall not be liable
+      for any indirect, incidental, special, consequential, or punitive damages
+      arising from your use of the Service, including but not limited to:
+    </p>
+    <ul>
+      <li>Loss of profits, revenue, data, or business opportunities</li>
+      <li>Damage to devices resulting from incorrect use of an unlock code or service</li>
+      <li>Delays caused by upstream suppliers, network outages, or force majeure</li>
+      <li>Losses resulting from unauthorized access to your account</li>
+    </ul>
+    <p>
+      Our total liability to you for any claim arising from these Terms shall not
+      exceed the amount you paid to us in the <strong>12 months preceding the
+      claim</strong>.
+    </p>
+
+    <h2 id="termination"><span class="h2-num">10</span> Termination</h2>
+    <p>
+      We may suspend or terminate your account at any time, with or without
+      notice, if we believe you have violated these Terms or engaged in
+      fraudulent, abusive, or illegal activity.
+    </p>
+    <p>
+      You may close your account at any time by contacting
+      <a href="mailto:support@gsmtechhub.com">support@gsmtechhub.com</a>. Upon
+      closure, any remaining wallet balance will be refunded to your original
+      payment method within 7 business days.
+    </p>
+
+    <h2 id="changes"><span class="h2-num">11</span> Changes to Terms</h2>
+    <p>
+      We may update these Terms from time to time. When we do, we will:
+    </p>
+    <ul>
+      <li>Update the "Last updated" date at the top of this page</li>
+      <li>Notify registered users via email if the changes are material</li>
+      <li>Give you 14 days to review the changes before they take effect</li>
+    </ul>
+    <p>
+      Your continued use of the Service after changes take effect constitutes
+      acceptance of the new Terms.
+    </p>
+
+    <h2 id="contact"><span class="h2-num">12</span> Contact</h2>
+    <p>
+      For questions about these Terms of Service, contact us at:
+    </p>
+    <ul>
+      <li><strong>Email:</strong> <a href="mailto:support@gsmtechhub.com">support@gsmtechhub.com</a></li>
+      <li><strong>Telegram:</strong> <a href="https://t.me/GSMTechHubSupport" target="_blank">@GSMTechHubSupport</a></li>
+      <li><strong>Support page:</strong> <a href="support.html">gsmtechhub.com/support</a></li>
+    </ul>
+
+    <div class="highlight-box info" style="margin-top:32px;">
+      <i class="fas fa-file-signature"></i>
+      <div>
+        By creating an account on GSM TECH HUB, you acknowledge that you have
+        read, understood, and agree to be bound by these Terms of Service and
+        our <a href="privacy.html">Privacy Policy</a>.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="main-footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <div class="logo-icon">⚡</div>
+          <div class="logo-text">GSM <span class="accent">TECH HUB</span></div>
+        </a>
+        <p class="footer-about">
+          Professional reseller platform for IMEI unlocks, GSM tool activations,
+          server credits, and digital goods. Delivered worldwide.
+        </p>
+        <div class="social-links">
+          <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Legal</h4>
+        <ul class="footer-links">
+          <li><a href="terms.html"><i class="fas fa-chevron-right"></i> Terms of Service</a></li>
+          <li><a href="privacy.html"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+          <li><a href="terms.html#refund"><i class="fas fa-chevron-right"></i> Refund Policy</a></li>
+          <li><a href="terms.html#prohibited"><i class="fas fa-chevron-right"></i> Acceptable Use</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Account</h4>
+        <ul class="footer-links">
+          <li><a href="dashboard.html"><i class="fas fa-chevron-right"></i> Dashboard</a></li>
+          <li><a href="orders.html"><i class="fas fa-chevron-right"></i> My Orders</a></li>
+          <li><a href="login.html"><i class="fas fa-chevron-right"></i> Sign In</a></li>
+          <li><a href="register.html"><i class="fas fa-chevron-right"></i> Register</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Company</h4>
+        <ul class="footer-links">
+          <li><a href="about.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
+          <li><a href="support.html"><i class="fas fa-chevron-right"></i> Contact</a></li>
+          <li><a href="../index.html#services"><i class="fas fa-chevron-right"></i> Services</a></li>
+          <li><a href="support.html"><i class="fas fa-chevron-right"></i> Support</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 GSM TECH HUB. All rights reserved.</span>
+      <span>Last updated: April 3, 2026</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.querySelector('.nav-toggle')?.addEventListener('click', () => {
+  const menu = document.querySelector('.nav-links');
+  const isOpen = menu.style.display === 'flex';
+  menu.style.display = isOpen ? 'none' : 'flex';
+  if (!isOpen) {
+    Object.assign(menu.style, {
+      position: 'absolute', top: '66px', left: '0', right: '0',
+      flexDirection: 'column', padding: '16px',
+      background: '#0a0a14', borderBottom: '1px solid #1e1f30', gap: '4px',
+    });
+  }
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.05 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
