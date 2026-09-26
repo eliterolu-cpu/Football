@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Sign In — GSM TECH HUB</title>
+<meta name="description" content="Sign in to your GSM TECH HUB account to manage orders, wallet, and services.">
+<meta name="theme-color" content="#0a0a14">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root {
+  --primary: #00b4d8; --primary-light: #48cae4; --primary-dark: #0096c7;
+  --secondary: #10b981; --secondary-light: #34d399;
+  --accent: #8b5cf6; --accent-light: #a78bfa;
+  --danger: #ef4444; --warning: #f59e0b;
+  --dark-bg: #0a0a14; --card-bg: #11121c; --card-hover: #151624;
+  --card-border: #1e1f30; --card-border-hover: #2d2f45;
+  --nav-bg-glass: rgba(10, 10, 20, 0.85); --nav-border: #1e1f30;
+  --nav-text: #8b8da3; --nav-text-hover: #f1f5f9;
+  --text-primary: #f1f5f9; --text-secondary: #8b8da3; --text-muted: #5a5c70;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--dark-bg); color: var(--text-primary);
+  font-size: 13px; line-height: 1.5; overflow-x: hidden;
+  letter-spacing: -0.01em; padding-top: 66px; min-height: 100vh;
+}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--dark-bg); }
+::-webkit-scrollbar-thumb { background: #2d2f45; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+.container { max-width: 1320px; margin: 0 auto; padding: 0 16px; }
+
+/* NAV */
+.main-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: var(--nav-bg-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--nav-border);
+  height: 66px; display: flex; align-items: center;
+}
+.nav-container {
+  max-width: 1320px; width: 100%; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; gap: 16px;
+}
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; transition: transform 0.2s ease; }
+.logo:hover { transform: translateY(-1px); }
+.logo-icon {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius: 9px; display: grid; place-items: center; font-size: 16px;
+  box-shadow: 0 2px 12px rgba(0, 180, 216, 0.35);
+}
+.logo-text { font-size: 14px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; }
+.logo-text .accent { background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+.btn-nav-register {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: var(--secondary-light); border-radius: 7px;
+  font-size: 11px; font-weight: 600; text-decoration: none;
+  transition: all 0.15s ease;
+}
+.btn-nav-register:hover {
+  background: rgba(16, 185, 129, 0.2); border-color: var(--secondary); color: #fff; transform: translateY(-1px);
+}
+
+/* LAYOUT */
+.auth-wrap {
+  min-height: calc(100vh - 66px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+}
+
+/* LEFT SIDE — BRAND PANEL */
+.auth-brand-side {
+  background:
+    radial-gradient(ellipse 60% 60% at 30% 20%, rgba(0, 180, 216, 0.1), transparent 65%),
+    radial-gradient(ellipse 50% 50% at 80% 80%, rgba(139, 92, 246, 0.08), transparent 60%),
+    var(--card-bg);
+  border-right: 1px solid var(--card-border);
+  padding: 60px 48px;
+  display: flex; flex-direction: column; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.auth-brand-side::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+.auth-brand-content { position: relative; max-width: 440px; }
+.auth-brand-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 5px 12px;
+  background: rgba(0, 180, 216, 0.08);
+  border: 1px solid rgba(0, 180, 216, 0.25);
+  border-radius: 100px;
+  font-size: 10px; font-weight: 600;
+  color: var(--primary-light);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  margin-bottom: 20px;
+}
+.auth-brand-eyebrow .dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--secondary);
+  box-shadow: 0 0 8px var(--secondary);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.auth-brand-title {
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 800; letter-spacing: -0.03em;
+  line-height: 1.15; margin-bottom: 14px;
+}
+.auth-brand-title .gradient {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.auth-brand-desc {
+  font-size: 13px; color: var(--text-secondary);
+  line-height: 1.7; margin-bottom: 32px;
+}
+
+.auth-features { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+.auth-feature {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 12px; color: var(--text-secondary); line-height: 1.5;
+}
+.auth-feature-icon {
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  background: rgba(0, 180, 216, 0.1);
+  border: 1px solid rgba(0, 180, 216, 0.2);
+  display: grid; place-items: center;
+  color: var(--primary-light); font-size: 12px;
+  flex-shrink: 0;
+}
+.auth-feature strong { display: block; color: var(--text-primary); font-weight: 600; margin-bottom: 1px; }
+
+.auth-stats {
+  display: flex; gap: 24px; flex-wrap: wrap;
+  padding-top: 24px;
+  border-top: 1px solid var(--card-border);
+}
+.auth-stat-num {
+  font-size: 18px; font-weight: 800;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em; line-height: 1.1;
+}
+.auth-stat-lbl {
+  font-size: 10px; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  font-weight: 600; margin-top: 2px;
+}
+
+/* RIGHT SIDE — FORM */
+.auth-form-side {
+  display: flex; align-items: center; justify-content: center;
+  padding: 40px 24px;
+}
+
+.auth-form-card {
+  width: 100%; max-width: 400px;
+}
+
+.auth-form-head { margin-bottom: 24px; }
+.auth-form-title {
+  font-size: 22px; font-weight: 800;
+  letter-spacing: -0.02em; margin-bottom: 6px;
+}
+.auth-form-sub {
+  font-size: 12px; color: var(--text-secondary);
+}
+
+/* FORM */
+.form-group { margin-bottom: 14px; }
+.form-label {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 11px; font-weight: 600;
+  color: var(--text-secondary); margin-bottom: 6px;
+}
+.form-label .link {
+  color: var(--primary-light);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 10px;
+}
+.form-label .link:hover { text-decoration: underline; }
+.form-input-wrap { position: relative; }
+.form-input-wrap .input-icon {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px; color: var(--text-muted);
+  pointer-events: none;
+}
+.form-input-wrap .toggle-pass {
+  position: absolute; right: 12px; top: 50%;
+  transform: translateY(-50%);
+  background: none; border: none;
+  font-size: 12px; color: var(--text-muted);
+  cursor: pointer; padding: 4px;
+  transition: color 0.15s ease;
+}
+.form-input-wrap .toggle-pass:hover { color: var(--primary-light); }
+.form-input {
+  width: 100%;
+  padding: 11px 12px 11px 36px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 9px;
+  color: var(--text-primary);
+  font-family: inherit; font-size: 12px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.12);
+  background: #0d0d1a;
+}
+.form-input::placeholder { color: var(--text-muted); }
+
+/* CHECKBOX */
+.checkbox-row {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  font-size: 11px; color: var(--text-secondary);
+}
+.checkbox-row input {
+  width: 14px; height: 14px;
+  accent-color: var(--primary);
+  cursor: pointer; flex-shrink: 0;
+}
+
+/* BUTTONS */
+.btn-primary-full {
+  width: 100%;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff; border: none;
+  border-radius: 10px;
+  font-family: inherit; font-size: 13px; font-weight: 700;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 18px rgba(0, 180, 216, 0.3);
+}
+.btn-primary-full:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 26px rgba(0, 180, 216, 0.45);
+}
+.btn-primary-full:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-primary-full i { font-size: 12px; }
+
+/* DIVIDER */
+.auth-divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 20px 0;
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+.auth-divider::before, .auth-divider::after {
+  content: '';
+  flex: 1; height: 1px;
+  background: var(--card-border);
+}
+
+/* FOOT */
+.auth-form-foot {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.auth-form-foot a {
+  color: var(--primary-light);
+  text-decoration: none;
+  font-weight: 600;
+}
+.auth-form-foot a:hover { text-decoration: underline; }
+
+/* ALERT */
+.alert {
+  padding: 11px 14px;
+  border-radius: 9px;
+  font-size: 11px;
+  line-height: 1.5;
+  display: flex; align-items: flex-start; gap: 9px;
+  margin-bottom: 14px;
+}
+.alert i { font-size: 12px; margin-top: 1px; flex-shrink: 0; }
+.alert-error { background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25); color: #fca5a5; }
+.alert-success { background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); color: #6ee7b7; }
+.alert-info { background: rgba(0, 180, 216, 0.08); border: 1px solid rgba(0, 180, 216, 0.25); color: #93c5fd; }
+
+/* RESPONSIVE */
+@media (max-width: 968px) {
+  .auth-wrap { grid-template-columns: 1fr; }
+  .auth-brand-side { display: none; }
+  .auth-form-side { padding: 30px 20px; }
+}
+@media (max-width: 600px) {
+  .container { padding: 0 12px; }
+  .auth-form-title { font-size: 20px; }
+}
+
+.fade-in {
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="main-nav">
+  <div class="nav-container">
+    <a href="../index.html" class="logo">
+      <div class="logo-icon">⚡</div>
+      <div class="logo-text">GSM <span class="accent">TECH HUB</span></div>
+    </a>
+    <div class="nav-actions">
+      <a href="register.html" class="btn-nav-register"><i class="fas fa-user-plus"></i> Create Account</a>
+    </div>
+  </div>
+</nav>
+
+<div class="auth-wrap">
+
+  <!-- LEFT — BRAND -->
+  <div class="auth-brand-side">
+    <div class="auth-brand-content">
+      <div class="auth-brand-eyebrow">
+        <span class="dot"></span> Welcome Back
+      </div>
+      <h1 class="auth-brand-title">
+        Sign in to your<br>
+        <span class="gradient">GSM TECH HUB.</span>
+      </h1>
+      <p class="auth-brand-desc">
+        Access your order history, wallet, and instant delivery services —
+        all in one dashboard.
+      </p>
+
+      <div class="auth-features">
+        <div class="auth-feature">
+          <div class="auth-feature-icon"><i class="fas fa-bolt"></i></div>
+          <div>
+            <strong>Instant Delivery</strong>
+            Most orders complete in under 2 minutes.
+          </div>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon"><i class="fas fa-shield-halved"></i></div>
+          <div>
+            <strong>Secure Account</strong>
+            Bank-grade encryption on every login.
+          </div>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon"><i class="fas fa-clock-rotate-left"></i></div>
+          <div>
+            <strong>Full Order History</strong>
+            Track every order, anytime, from any device.
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-stats">
+        <div>
+          <div class="auth-stat-num">12,400+</div>
+          <div class="auth-stat-lbl">Customers</div>
+        </div>
+        <div>
+          <div class="auth-stat-num">300+</div>
+          <div class="auth-stat-lbl">Services</div>
+        </div>
+        <div>
+          <div class="auth-stat-num">99.6%</div>
+          <div class="auth-stat-lbl">Success</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT — FORM -->
+  <div class="auth-form-side">
+    <div class="auth-form-card fade-in">
+      <div class="auth-form-head">
+        <h2 class="auth-form-title">Welcome back</h2>
+        <p class="auth-form-sub">Sign in to continue to your dashboard.</p>
+      </div>
+
+      <div id="msg"></div>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <div class="form-input-wrap">
+            <i class="fas fa-envelope input-icon"></i>
+            <input type="email" id="email" name="email" class="form-input"
+                   placeholder="you@example.com" autocomplete="email" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">
+            Password
+            <a href="forgot-password.html" class="link">Forgot?</a>
+          </label>
+          <div class="form-input-wrap">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" id="password" name="password" class="form-input"
+                   placeholder="Enter your password" autocomplete="current-password" required>
+            <button type="button" class="toggle-pass" onclick="togglePassword()">
+              <i class="fas fa-eye" id="eyeIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <label class="checkbox-row">
+          <input type="checkbox" name="remember" checked>
+          <span>Keep me signed in</span>
+        </label>
+
+        <button type="submit" class="btn-primary-full" id="submitBtn">
+          <i class="fas fa-right-to-bracket"></i>
+          <span id="submitText">Sign In</span>
+        </button>
+      </form>
+
+      <div class="auth-divider">New here?</div>
+
+      <div class="auth-form-foot">
+        Don't have an account? <a href="register.html">Create one free →</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   LOGIN HANDLER
+   ============================================================ */
+const form = document.getElementById('loginForm');
+const submitBtn = document.getElementById('submitBtn');
+const submitText = document.getElementById('submitText');
+const msg = document.getElementById('msg');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  msg.innerHTML = '';
+
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  if (!email || !password) {
+    return showError('Please enter your email and password.');
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return showError('Please enter a valid email address.');
+  }
+
+  submitBtn.disabled = true;
+  submitText.textContent = 'Signing in…';
+  submitBtn.querySelector('i').className = 'fas fa-spinner fa-spin';
+
+  try {
+    const res = await fetch('../api/auth.php?action=login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+
+    if (data.status === 'success') {
+      submitText.textContent = 'Redirecting…';
+      submitBtn.querySelector('i').className = 'fas fa-check';
+      showSuccess('Signed in! Redirecting…');
+
+      // Route admins to admin panel, customers to dashboard
+      const dest = data.user && data.user.role === 'admin'
+        ? '../admin/dashboard.php'
+        : 'dashboard.html';
+
+      setTimeout(() => { window.location.href = dest; }, 500);
+    } else {
+      throw new Error(data.message || 'Invalid credentials');
+    }
+  } catch (err) {
+    showError(err.message || 'Login failed. Please try again.');
+    submitBtn.disabled = false;
+    submitText.textContent = 'Sign In';
+    submitBtn.querySelector('i').className = 'fas fa-right-to-bracket';
+  }
+});
+
+/* ============================================================
+   PASSWORD TOGGLE
+   ============================================================ */
+function togglePassword() {
+  const input = document.getElementById('password');
+  const icon = document.getElementById('eyeIcon');
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.className = 'fas fa-eye-slash';
+  } else {
+    input.type = 'password';
+    icon.className = 'fas fa-eye';
+  }
+}
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function showError(message) {
+  msg.innerHTML = `
+    <div class="alert alert-error">
+      <i class="fas fa-circle-exclamation"></i>
+      <span>${escapeHtml(message)}</span>
+    </div>
+  `;
+}
+function showSuccess(message) {
+  msg.innerHTML = `
+    <div class="alert alert-success">
+      <i class="fas fa-circle-check"></i>
+      <span>${escapeHtml(message)}</span>
+    </div>
+  `;
+}
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = String(str);
+  return d.innerHTML;
+}
+
+/* Fade in */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.05 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
