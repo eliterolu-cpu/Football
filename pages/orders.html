@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>My Orders — GSM TECH HUB</title>
+<meta name="description" content="Track all your orders — pending, processing, completed, or failed.">
+<meta name="theme-color" content="#0a0a14">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root {
+  --primary: #00b4d8; --primary-light: #48cae4; --primary-dark: #0096c7;
+  --secondary: #10b981; --secondary-light: #34d399;
+  --accent: #8b5cf6; --accent-light: #a78bfa;
+  --danger: #ef4444; --warning: #f59e0b;
+  --dark-bg: #0a0a14; --card-bg: #11121c; --card-hover: #151624;
+  --card-border: #1e1f30; --card-border-hover: #2d2f45;
+  --nav-bg-glass: rgba(10, 10, 20, 0.85); --nav-border: #1e1f30;
+  --nav-text: #8b8da3; --nav-text-hover: #f1f5f9;
+  --text-primary: #f1f5f9; --text-secondary: #8b8da3; --text-muted: #5a5c70;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--dark-bg); color: var(--text-primary);
+  font-size: 13px; line-height: 1.5; overflow-x: hidden;
+  letter-spacing: -0.01em; padding-top: 66px; min-height: 100vh;
+}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--dark-bg); }
+::-webkit-scrollbar-thumb { background: #2d2f45; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+.container { max-width: 1320px; margin: 0 auto; padding: 0 16px; }
+
+/* NAV */
+.main-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: var(--nav-bg-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--nav-border);
+  height: 66px; display: flex; align-items: center;
+}
+.nav-container {
+  max-width: 1320px; width: 100%; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; gap: 16px;
+}
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; transition: transform 0.2s ease; }
+.logo:hover { transform: translateY(-1px); }
+.logo-icon {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius: 9px; display: grid; place-items: center; font-size: 16px;
+  box-shadow: 0 2px 12px rgba(0, 180, 216, 0.35);
+}
+.logo-text { font-size: 14px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; }
+.logo-text .accent { background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+.nav-links { display: flex; gap: 2px; align-items: center; }
+.nav-link {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 12px; color: var(--nav-text);
+  font-weight: 500; font-size: 12px;
+  border-radius: 6px; text-decoration: none;
+  transition: all 0.15s ease;
+}
+.nav-link i { font-size: 11px; color: var(--text-muted); transition: color 0.15s ease; }
+.nav-link:hover { color: var(--nav-text-hover); background: rgba(255,255,255,0.04); }
+.nav-link:hover i { color: var(--primary-light); }
+.nav-link.active { color: var(--primary-light); background: rgba(0, 180, 216, 0.08); }
+.nav-link.active i { color: var(--primary); }
+
+.nav-actions { display: flex; align-items: center; gap: 8px; position: relative; }
+.user-chip {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 10px 5px 5px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--card-border);
+  border-radius: 100px;
+  cursor: pointer; transition: all 0.15s ease; user-select: none;
+}
+.user-chip:hover { border-color: var(--card-border-hover); background: rgba(255,255,255,0.06); }
+.user-avatar {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: grid; place-items: center;
+  font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.user-name { font-size: 11px; font-weight: 600; }
+.user-menu {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  min-width: 200px; background: var(--card-bg);
+  border: 1px solid var(--card-border); border-radius: 12px;
+  padding: 6px; box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+  display: none; z-index: 100;
+}
+.user-menu.open { display: block; }
+.user-menu-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: 8px;
+  font-size: 12px; color: var(--text-secondary);
+  text-decoration: none; cursor: pointer;
+  transition: all 0.15s ease;
+}
+.user-menu-item i { font-size: 11px; width: 14px; color: var(--text-muted); }
+.user-menu-item:hover { background: rgba(255,255,255,0.04); color: var(--text-primary); }
+.user-menu-item:hover i { color: var(--primary-light); }
+.user-menu-item.danger { color: #fca5a5; }
+.user-menu-item.danger:hover { background: rgba(239, 68, 68, 0.08); color: #ef4444; }
+.user-menu-divider { height: 1px; background: var(--card-border); margin: 4px 0; }
+.nav-toggle { display: none; background: none; border: none; color: var(--text-primary); font-size: 18px; cursor: pointer; padding: 6px; }
+
+/* PAGE HEADER */
+.page-header { padding: 24px 0 20px; }
+.page-header-inner {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; gap: 16px; flex-wrap: wrap;
+}
+.page-title {
+  font-size: clamp(20px, 3vw, 26px); font-weight: 800;
+  letter-spacing: -0.02em; margin-bottom: 4px;
+}
+.page-sub { font-size: 12px; color: var(--text-secondary); }
+.header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 16px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff; border: none; border-radius: 9px;
+  font-family: inherit; font-size: 12px; font-weight: 700;
+  cursor: pointer; text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(0, 180, 216, 0.3);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0, 180, 216, 0.45); }
+.btn-primary i { font-size: 11px; }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 16px; background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--card-border);
+  border-radius: 9px;
+  font-family: inherit; font-size: 12px; font-weight: 600;
+  cursor: pointer; text-decoration: none;
+  transition: all 0.2s ease;
+}
+.btn-ghost:hover { border-color: var(--primary); color: var(--primary-light); background: rgba(0, 180, 216, 0.05); }
+.btn-ghost i { font-size: 11px; }
+
+/* STATS STRIP */
+.stats-strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.mini-stat {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 11px;
+  padding: 12px 14px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  position: relative;
+}
+.mini-stat:hover { border-color: var(--card-border-hover); transform: translateY(-2px); }
+.mini-stat.active {
+  border-color: rgba(0, 180, 216, 0.4);
+  background: rgba(0, 180, 216, 0.05);
+}
+.mini-stat.active::after {
+  content: ''; position: absolute;
+  bottom: -1px; left: 12px; right: 12px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 2px;
+}
+
+.mini-stat-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 6px;
+}
+.mini-stat-label {
+  font-size: 9px; font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+.mini-stat-icon { font-size: 12px; color: var(--text-muted); }
+.mini-stat.active .mini-stat-icon { color: var(--primary-light); }
+.mini-stat-value {
+  font-size: 20px; font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.mini-stat-value.cyan { color: var(--primary-light); }
+.mini-stat-value.green { color: var(--secondary-light); }
+.mini-stat-value.orange { color: #fcd34d; }
+.mini-stat-value.red { color: #fca5a5; }
+
+/* TOOLBAR */
+.toolbar {
+  display: flex; gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 14px 18px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px 12px 0 0;
+  border-bottom: none;
+}
+
+.search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 220px;
+}
+.search-wrap i {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px; color: var(--text-muted);
+  pointer-events: none;
+}
+.search-input {
+  width: 100%;
+  padding: 9px 12px 9px 34px;
+  background: var(--dark-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 9px;
+  color: var(--text-primary);
+  font-family: inherit; font-size: 12px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.12);
+}
+.search-input::placeholder { color: var(--text-muted); }
+
+.select-wrap {
+  position: relative;
+}
+.select-wrap i {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px; color: var(--text-muted);
+  pointer-events: none;
+}
+.sort-select {
+  padding: 9px 32px 9px 34px;
+  background: var(--dark-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 9px;
+  color: var(--text-primary);
+  font-family: inherit; font-size: 12px;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b8da3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  transition: border-color 0.15s ease;
+}
+.sort-select:focus { outline: none; border-color: var(--primary); }
+
+.btn-export {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 14px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  color: var(--secondary-light);
+  border-radius: 9px;
+  font-family: inherit; font-size: 11px; font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.btn-export:hover { background: rgba(16, 185, 129, 0.15); border-color: var(--secondary); color: #fff; }
+.btn-export i { font-size: 10px; }
+
+/* TABLE */
+.table-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 0 0 12px 12px;
+  overflow: hidden;
+}
+
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 11px; }
+thead { background: rgba(255,255,255,0.02); }
+th {
+  text-align: left;
+  padding: 12px 18px;
+  font-size: 9px; font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.15s ease;
+}
+th.sortable:hover { color: var(--primary-light); }
+th i { font-size: 8px; margin-left: 4px; opacity: 0.5; }
+th.sorted i { opacity: 1; color: var(--primary-light); }
+
+td {
+  padding: 14px 18px;
+  border-top: 1px solid var(--card-border);
+  vertical-align: middle;
+}
+tbody tr { transition: background 0.15s ease; }
+tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+.ref-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 4px 8px;
+  background: rgba(0, 180, 216, 0.06);
+  border: 1px solid rgba(0, 180, 216, 0.15);
+  border-radius: 5px;
+  color: var(--primary-light);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-block;
+}
+.ref-code:hover { background: rgba(0, 180, 216, 0.12); border-color: var(--primary); }
+
+.product-cell { min-width: 220px; }
+.product-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+  margin-bottom: 2px;
+}
+.product-cat {
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.amount-cell { white-space: nowrap; }
+.amount {
+  font-weight: 700;
+  color: var(--secondary-light);
+  font-size: 12px;
+}
+.amount-currency {
+  font-size: 9px;
+  color: var(--text-muted);
+  margin-left: 3px;
+}
+
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 9px; border-radius: 100px;
+  font-size: 9px; font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.badge i { font-size: 7px; }
+.badge-success { background: rgba(16, 185, 129, 0.12); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.2); }
+.badge-pending { background: rgba(245, 158, 11, 0.12); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.2); }
+.badge-processing { background: rgba(0, 180, 216, 0.12); color: #48cae4; border: 1px solid rgba(0, 180, 216, 0.2); }
+.badge-failed { background: rgba(239, 68, 68, 0.12); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.2); }
+
+.date-cell {
+  color: var(--text-muted);
+  font-size: 10px;
+  white-space: nowrap;
+  line-height: 1.5;
+}
+.date-cell .date-main {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+.date-cell .date-rel {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+.actions-cell { text-align: right; white-space: nowrap; }
+
+.btn-row-action {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 5px 10px;
+  background: rgba(0, 180, 216, 0.08);
+  border: 1px solid rgba(0, 180, 216, 0.2);
+  color: var(--primary-light);
+  border-radius: 6px;
+  font-size: 10px; font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.btn-row-action:hover { background: rgba(0, 180, 216, 0.15); border-color: var(--primary); color: #fff; }
+.btn-row-action i { font-size: 9px; }
+
+/* EMPTY STATE */
+.empty-row td {
+  padding: 60px 20px;
+  text-align: center;
+}
+.empty-icon-lg {
+  font-size: 40px;
+  opacity: 0.35;
+  margin-bottom: 12px;
+}
+.empty-title-lg {
+  font-size: 13px; font-weight: 700;
+  margin-bottom: 5px;
+}
+.empty-desc-lg {
+  font-size: 11px; color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+/* SKELETON */
+.skel {
+  background: linear-gradient(90deg, var(--card-bg) 0%, var(--card-hover) 50%, var(--card-bg) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+  height: 14px;
+}
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* PAGINATION */
+.pagination {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px;
+  border-top: 1px solid var(--card-border);
+  flex-wrap: wrap; gap: 12px;
+  background: rgba(255,255,255,0.01);
+}
+.pagination-info {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.pagination-info strong { color: var(--text-primary); font-weight: 600; }
+
+.pagination-controls { display: flex; gap: 4px; align-items: center; }
+.page-btn {
+  min-width: 30px; height: 30px;
+  padding: 0 9px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 7px;
+  color: var(--text-secondary);
+  font-family: inherit; font-size: 11px; font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.page-btn:hover:not(:disabled) { border-color: var(--primary); color: var(--primary-light); background: rgba(0, 180, 216, 0.06); }
+.page-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border-color: var(--primary);
+  color: #fff;
+}
+.page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.page-btn i { font-size: 9px; }
+
+/* FOOTER */
+.main-footer {
+  background: #08080f;
+  border-top: 1px solid var(--card-border);
+  padding: 40px 0 20px;
+  margin-top: 40px;
+}
+.footer-content {
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+  gap: 32px; margin-bottom: 32px;
+}
+.footer-brand .logo { margin-bottom: 12px; }
+.footer-about {
+  font-size: 11px; color: var(--text-secondary);
+  line-height: 1.7; margin-bottom: 14px; max-width: 280px;
+}
+.social-links { display: flex; gap: 8px; }
+.social-link {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--card-border);
+  display: grid; place-items: center;
+  color: var(--text-secondary); font-size: 13px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.social-link:hover {
+  background: rgba(0, 180, 216, 0.1);
+  border-color: rgba(0, 180, 216, 0.3);
+  color: var(--primary-light);
+  transform: translateY(-2px);
+}
+.footer-heading {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 14px; position: relative;
+  padding-bottom: 8px;
+}
+.footer-heading::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 0; width: 20px; height: 2px;
+  background: var(--primary); border-radius: 2px;
+}
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.footer-links a {
+  display: flex; align-items: center; gap: 6px;
+  color: var(--text-secondary); text-decoration: none;
+  font-size: 11px; transition: all 0.15s ease;
+}
+.footer-links a i { font-size: 9px; width: 12px; color: var(--text-muted); transition: color 0.15s ease; }
+.footer-links a:hover { color: var(--text-primary); padding-left: 3px; }
+.footer-links a:hover i { color: var(--primary-light); }
+.footer-bottom {
+  border-top: 1px solid var(--card-border);
+  padding-top: 18px;
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 10px;
+  font-size: 10px; color: var(--text-muted);
+}
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .stats-strip { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 968px) {
+  .nav-links { display: none; }
+  .nav-toggle { display: block; }
+  .stats-strip { grid-template-columns: repeat(2, 1fr); }
+  .footer-content { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 700px) {
+  .user-name { display: none; }
+  th:nth-child(3), td:nth-child(3),
+  th:nth-child(5), td:nth-child(5) { display: none; }
+  .pagination { flex-direction: column; align-items: stretch; }
+  .pagination-controls { justify-content: center; }
+}
+@media (max-width: 600px) {
+  .container { padding: 0 12px; }
+  .page-header-inner { flex-direction: column; align-items: stretch; }
+  .header-actions { width: 100%; }
+  .header-actions .btn-primary, .header-actions .btn-ghost { flex: 1; justify-content: center; }
+  .footer-content { grid-template-columns: 1fr; gap: 24px; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  .toolbar { padding: 12px; }
+}
+
+.fade-in { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="main-nav">
+  <div class="nav-container">
+    <a href="../index.html" class="logo">
+      <div class="logo-icon">⚡</div>
+      <div class="logo-text">GSM <span class="accent">TECH HUB</span></div>
+    </a>
+
+    <div class="nav-links">
+      <a href="dashboard.html" class="nav-link"><i class="fas fa-gauge-high"></i> Dashboard</a>
+      <a href="orders.html" class="nav-link active"><i class="fas fa-box"></i> My Orders</a>
+      <a href="../index.html#services" class="nav-link"><i class="fas fa-plus-circle"></i> New Order</a>
+      <a href="support.html" class="nav-link"><i class="fas fa-headset"></i> Support</a>
+    </div>
+
+    <div class="nav-actions">
+      <div class="user-chip" id="userChip">
+        <div class="user-avatar" id="userAvatar">?</div>
+        <div class="user-name" id="userNameShort">…</div>
+        <i class="fas fa-chevron-down" style="font-size:9px;color:var(--text-muted);"></i>
+      </div>
+
+      <div class="user-menu" id="userMenu">
+        <a class="user-menu-item" href="dashboard.html"><i class="fas fa-gauge-high"></i> Dashboard</a>
+        <a class="user-menu-item" href="orders.html"><i class="fas fa-box"></i> My Orders</a>
+        <a class="user-menu-item" href="profile.html"><i class="fas fa-user"></i> Profile</a>
+        <div class="user-menu-divider"></div>
+        <a class="user-menu-item danger" onclick="logout()"><i class="fas fa-right-from-bracket"></i> Sign Out</a>
+      </div>
+
+      <button class="nav-toggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ PAGE HEADER ============ -->
+<div class="container">
+  <div class="page-header">
+    <div class="page-header-inner fade-in">
+      <div>
+        <h1 class="page-title">My Orders</h1>
+        <p class="page-sub">Track, filter, and manage every order you've placed.</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn-ghost" onclick="refreshOrders()">
+          <i class="fas fa-rotate" id="refreshIcon"></i> Refresh
+        </button>
+        <a href="../index.html#services" class="btn-primary">
+          <i class="fas fa-plus"></i> New Order
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ STATS STRIP ============ -->
+<div class="container">
+  <div class="stats-strip" id="statsStrip">
+    <div class="mini-stat active" data-filter="all">
+      <div class="mini-stat-head">
+        <span class="mini-stat-label">All Orders</span>
+        <i class="fas fa-layer-group mini-stat-icon"></i>
+      </div>
+      <div class="mini-stat-value cyan" id="countAll">—</div>
+    </div>
+    <div class="mini-stat" data-filter="success">
+      <div class="mini-stat-head">
+        <span class="mini-stat-label">Completed</span>
+        <i class="fas fa-circle-check mini-stat-icon"></i>
+      </div>
+      <div class="mini-stat-value green" id="countSuccess">—</div>
+    </div>
+    <div class="mini-stat" data-filter="processing">
+      <div class="mini-stat-head">
+        <span class="mini-stat-label">Processing</span>
+        <i class="fas fa-spinner mini-stat-icon"></i>
+      </div>
+      <div class="mini-stat-value orange" id="countProcessing">—</div>
+    </div>
+    <div class="mini-stat" data-filter="pending">
+      <div class="mini-stat-head">
+        <span class="mini-stat-label">Pending</span>
+        <i class="fas fa-clock mini-stat-icon"></i>
+      </div>
+      <div class="mini-stat-value orange" id="countPending">—</div>
+    </div>
+    <div class="mini-stat" data-filter="failed">
+      <div class="mini-stat-head">
+        <span class="mini-stat-label">Failed</span>
+        <i class="fas fa-circle-xmark mini-stat-icon"></i>
+      </div>
+      <div class="mini-stat-value red" id="countFailed">—</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TOOLBAR + TABLE ============ -->
+<div class="container">
+  <div class="toolbar">
+    <div class="search-wrap">
+      <i class="fas fa-search"></i>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search by reference, product, or category…">
+    </div>
+
+    <div class="select-wrap">
+      <i class="fas fa-sort"></i>
+      <select class="sort-select" id="sortSelect">
+        <option value="date_desc">Newest First</option>
+        <option value="date_asc">Oldest First</option>
+        <option value="amount_desc">Highest Amount</option>
+        <option value="amount_asc">Lowest Amount</option>
+        <option value="status">Status</option>
+      </select>
+    </div>
+
+    <button class="btn-export" onclick="exportCSV()">
+      <i class="fas fa-download"></i> Export CSV
+    </button>
+  </div>
+
+  <div class="table-card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="sortable" data-sort="reference">Reference <i class="fas fa-sort"></i></th>
+            <th class="sortable" data-sort="product">Service <i class="fas fa-sort"></i></th>
+            <th class="sortable" data-sort="amount">Amount <i class="fas fa-sort"></i></th>
+            <th class="sortable" data-sort="status">Status <i class="fas fa-sort"></i></th>
+            <th class="sortable" data-sort="date">Date <i class="fas fa-sort"></i></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="ordersBody">
+          <tr><td colspan="6" style="padding:40px;">
+            <div class="skel" style="width:80%;margin:0 auto 10px;"></div>
+            <div class="skel" style="width:60%;margin:0 auto 10px;"></div>
+            <div class="skel" style="width:70%;margin:0 auto;"></div>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination" id="pagination">
+      <div class="pagination-info" id="paginationInfo">Loading…</div>
+      <div class="pagination-controls" id="paginationControls"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="main-footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <div class="logo-icon">⚡</div>
+          <div class="logo-text">GSM <span class="accent">TECH HUB</span></div>
+        </a>
+        <p class="footer-about">
+          Professional reseller platform for IMEI unlocks, GSM tool activations,
+          server credits, and digital goods. Delivered worldwide.
+        </p>
+        <div class="social-links">
+          <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Services</h4>
+        <ul class="footer-links">
+          <li><a href="service.html?cat=unlock"><i class="fas fa-chevron-right"></i> IMEI Unlock</a></li>
+          <li><a href="service.html?cat=frp"><i class="fas fa-chevron-right"></i> FRP Removal</a></li>
+          <li><a href="service.html?cat=tools"><i class="fas fa-chevron-right"></i> Tool Activations</a></li>
+          <li><a href="service.html?cat=credits"><i class="fas fa-chevron-right"></i> Server Credits</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Account</h4>
+        <ul class="footer-links">
+          <li><a href="dashboard.html"><i class="fas fa-chevron-right"></i> Dashboard</a></li>
+          <li><a href="orders.html"><i class="fas fa-chevron-right"></i> My Orders</a></li>
+          <li><a href="wallet.html"><i class="fas fa-chevron-right"></i> Wallet</a></li>
+          <li><a href="support.html"><i class="fas fa-chevron-right"></i> Support</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Company</h4>
+        <ul class="footer-links">
+          <li><a href="about.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
+          <li><a href="support.html"><i class="fas fa-chevron-right"></i> Contact</a></li>
+          <li><a href="terms.html"><i class="fas fa-chevron-right"></i> Terms</a></li>
+          <li><a href="privacy.html"><i class="fas fa-chevron-right"></i> Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 GSM TECH HUB. All rights reserved.</span>
+      <span>Built with ⚡ · Delivered worldwide</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   STATE
+   ============================================================ */
+let ALL_ORDERS = [];
+let FILTERED = [];
+let currentFilter = 'all';
+let currentSearch = '';
+let currentSort = 'date_desc';
+let currentPage = 1;
+const PER_PAGE = 10;
+
+/* ============================================================
+   AUTH GUARD
+   ============================================================ */
+async function loadUser() {
+  try {
+    const res = await fetch('../api/auth.php?action=me');
+    const data = await res.json();
+    if (data.status !== 'success' || !data.user) {
+      window.location.href = 'login.html';
+      return null;
+    }
+    return data.user;
+  } catch {
+    window.location.href = 'login.html';
+    return null;
+  }
+}
+
+function renderUser(user) {
+  const firstName = (user.name || 'User').split(' ')[0];
+  const initials = (user.name || 'U').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+  document.getElementById('userNameShort').textContent = firstName;
+  document.getElementById('userAvatar').textContent = initials;
+  document.title = `My Orders — ${user.name} — GSM TECH HUB`;
+}
+
+/* ============================================================
+   LOAD ORDERS FROM API
+   ============================================================ */
+async function loadOrders() {
+  try {
+    const res = await fetch('../api/auth.php?action=my_orders');
+    const data = await res.json();
+
+    if (data.status !== 'success') throw new Error(data.message || 'Failed');
+
+    ALL_ORDERS = (data.orders || []).map(o => ({
+      reference_id: o.reference_id,
+      product_name: o.product_name || '—',
+      category_name: o.category_name || '',
+      amount: parseFloat(o.amount) || 0,
+      currency: o.currency || 'USD',
+      status: normalizeStatus(o.status),
+      created_at: o.created_at || '',
+    }));
+
+    updateStats();
+    applyFiltersAndRender();
+  } catch (err) {
+    ALL_ORDERS = [];
+    updateStats();
+    applyFiltersAndRender();
+  }
+}
+
+function normalizeStatus(s) {
+  const v = (s || '').toLowerCase();
+  if (v === 'success' || v === 'completed' || v === 'delivered') return 'success';
+  if (v === 'failed' || v === 'rejected' || v === 'cancelled') return 'failed';
+  if (v === 'processing' || v === 'sent' || v === 'in_progress') return 'processing';
+  return 'pending';
+}
+
+/* ============================================================
+   STATS
+   ============================================================ */
+function updateStats() {
+  const total = ALL_ORDERS.length;
+  const success = ALL_ORDERS.filter(o => o.status === 'success').length;
+  const processing = ALL_ORDERS.filter(o => o.status === 'processing').length;
+  const pending = ALL_ORDERS.filter(o => o.status === 'pending').length;
+  const failed = ALL_ORDERS.filter(o => o.status === 'failed').length;
+
+  document.getElementById('countAll').textContent = total;
+  document.getElementById('countSuccess').textContent = success;
+  document.getElementById('countProcessing').textContent = processing;
+  document.getElementById('countPending').textContent = pending;
+  document.getElementById('countFailed').textContent = failed;
+}
+
+/* ============================================================
+   FILTERS + SORT
+   ============================================================ */
+function applyFiltersAndRender() {
+  let rows = [...ALL_ORDERS];
+
+  // Filter by status
+  if (currentFilter !== 'all') {
+    rows = rows.filter(o => o.status === currentFilter);
+  }
+
+  // Filter by search
+  if (currentSearch) {
+    const q = currentSearch.toLowerCase();
+    rows = rows.filter(o =>
+      o.reference_id.toLowerCase().includes(q) ||
+      o.product_name.toLowerCase().includes(q) ||
+      o.category_name.toLowerCase().includes(q)
+    );
+  }
+
+  // Sort
+  rows = sortRows(rows, currentSort);
+
+  FILTERED = rows;
+  currentPage = 1;
+  renderTable();
+  renderPagination();
+}
+
+function sortRows(rows, mode) {
+  const sorted = [...rows];
+  switch (mode) {
+    case 'date_desc':   return sorted.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+    case 'date_asc':    return sorted.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
+    case 'amount_desc': return sorted.sort((a,b) => b.amount - a.amount);
+    case 'amount_asc':  return sorted.sort((a,b) => a.amount - b.amount);
+    case 'status':      return sorted.sort((a,b) => a.status.localeCompare(b.status));
+    default:            return sorted;
+  }
+}
+
+/* ============================================================
+   RENDER TABLE
+   ============================================================ */
+function renderTable() {
+  const tbody = document.getElementById('ordersBody');
+
+  if (!FILTERED.length) {
+    tbody.innerHTML = `
+      <tr class="empty-row"><td colspan="6">
+        <div class="empty-icon-lg">📦</div>
+        <div class="empty-title-lg">${currentSearch ? 'No matching orders' : 'No orders yet'}</div>
+        <div class="empty-desc-lg">${currentSearch ? 'Try a different search or filter.' : 'Place your first order to see it here.'}</div>
+        <a href="../index.html#services" class="btn-primary"><i class="fas fa-plus"></i> Browse Services</a>
+      </td></tr>
+    `;
+    return;
+  }
+
+  const start = (currentPage - 1) * PER_PAGE;
+  const pageRows = FILTERED.slice(start, start + PER_PAGE);
+
+  tbody.innerHTML = pageRows.map(o => `
+    <tr>
+      <td>
+        <span class="ref-code" onclick="copyRef('${escapeAttr(o.reference_id)}')" title="Click to copy">${escapeHtml(o.reference_id)}</span>
+      </td>
+      <td class="product-cell">
+        <div class="product-name">${escapeHtml(o.product_name)}</div>
+        ${o.category_name ? `<div class="product-cat">${escapeHtml(o.category_name)}</div>` : ''}
+      </td>
+      <td class="amount-cell">
+        <span class="amount">$${o.amount.toFixed(2)}</span>
+        <span class="amount-currency">${escapeHtml(o.currency)}</span>
+      </td>
+      <td>
+        <span class="badge badge-${o.status}">
+          <i class="fas fa-${statusIcon(o.status)}"></i> ${statusLabel(o.status)}
+        </span>
+      </td>
+      <td>
+        <div class="date-cell">
+          <div class="date-main">${formatDate(o.created_at)}</div>
+          <div class="date-rel">${formatRelative(o.created_at)}</div>
+        </div>
+      </td>
+      <td class="actions-cell">
+        <a href="order-detail.html?ref=${encodeURIComponent(o.reference_id)}" class="btn-row-action">
+          <i class="fas fa-eye"></i> View
+        </a>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function statusIcon(s) {
+  return { success: 'circle-check', pending: 'clock', processing: 'spinner', failed: 'circle-xmark' }[s] || 'circle';
+}
+function statusLabel(s) {
+  return { success: 'Success', pending: 'Pending', processing: 'Processing', failed: 'Failed' }[s] || 'Unknown';
+}
+function formatDate(str) {
+  if (!str) return '—';
+  const d = new Date(str.replace(' ', 'T'));
+  if (isNaN(d)) return str;
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+function formatRelative(str) {
+  if (!str) return '';
+  const d = new Date(str.replace(' ', 'T'));
+  if (isNaN(d)) return '';
+  const diff = (Date.now() - d) / 1000;
+  if (diff < 60) return 'Just now';
+  if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+  if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+  if (diff < 604800) return Math.floor(diff / 86400) + 'd ago';
+  return '';
+}
+
+/* ============================================================
+   PAGINATION
+   ============================================================ */
+function renderPagination() {
+  const total = FILTERED.length;
+  const pages = Math.ceil(total / PER_PAGE);
+  const start = total === 0 ? 0 : (currentPage - 1) * PER_PAGE + 1;
+  const end = Math.min(currentPage * PER_PAGE, total);
+
+  document.getElementById('paginationInfo').innerHTML =
+    `Showing <strong>${start}–${end}</strong> of <strong>${total}</strong> orders`;
+
+  const controls = document.getElementById('paginationControls');
+  if (pages <= 1) { controls.innerHTML = ''; return; }
+
+  let html = `
+    <button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="goToPage(${currentPage - 1})">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+  `;
+
+  const pageNums = getPageNumbers(currentPage, pages);
+  pageNums.forEach(p => {
+    if (p === '...') {
+      html += `<span style="padding:0 4px;color:var(--text-muted);">…</span>`;
+    } else {
+      html += `<button class="page-btn ${p === currentPage ? 'active' : ''}" onclick="goToPage(${p})">${p}</button>`;
+    }
+  });
+
+  html += `
+    <button class="page-btn" ${currentPage === pages ? 'disabled' : ''} onclick="goToPage(${currentPage + 1})">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  `;
+
+  controls.innerHTML = html;
+}
+
+function getPageNumbers(current, total) {
+  const delta = 1;
+  const range = [];
+  for (let i = Math.max(2, current - delta); i <= Math.min(total - 1, current + delta); i++) {
+    range.push(i);
+  }
+  if (current - delta > 2) range.unshift('...');
+  if (current + delta < total - 1) range.push('...');
+  range.unshift(1);
+  if (total > 1) range.push(total);
+  return range;
+}
+
+function goToPage(p) {
+  const pages = Math.ceil(FILTERED.length / PER_PAGE);
+  if (p < 1 || p > pages) return;
+  currentPage = p;
+  renderTable();
+  renderPagination();
+  window.scrollTo({ top: 200, behavior: 'smooth' });
+}
+
+/* ============================================================
+   EVENTS
+   ============================================================ */
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  currentSearch = e.target.value.trim();
+  applyFiltersAndRender();
+});
+
+document.getElementById('sortSelect').addEventListener('change', (e) => {
+  currentSort = e.target.value;
+  applyFiltersAndRender();
+});
+
+document.querySelectorAll('.mini-stat').forEach(stat => {
+  stat.addEventListener('click', () => {
+    document.querySelectorAll('.mini-stat').forEach(s => s.classList.remove('active'));
+    stat.classList.add('active');
+    currentFilter = stat.dataset.filter;
+    applyFiltersAndRender();
+  });
+});
+
+document.querySelectorAll('th.sortable').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.sort;
+    const map = { reference: 'reference', product: 'product_name', amount: 'amount', status: 'status', date: 'date' };
+    let mode;
+
+    if (key === 'date') {
+      mode = currentSort === 'date_desc' ? 'date_asc' : 'date_desc';
+    } else if (key === 'amount') {
+      mode = currentSort === 'amount_desc' ? 'amount_asc' : 'amount_desc';
+    } else {
+      mode = 'date_desc';
+    }
+
+    currentSort = mode;
+    document.getElementById('sortSelect').value = mode;
+    applyFiltersAndRender();
+
+    document.querySelectorAll('th.sortable').forEach(h => h.classList.remove('sorted'));
+    th.classList.add('sorted');
+  });
+});
+
+/* ============================================================
+   ACTIONS
+   ============================================================ */
+function copyRef(ref) {
+  navigator.clipboard.writeText(ref).then(() => {
+    toast('Reference copied: ' + ref);
+  });
+}
+
+async function refreshOrders() {
+  const icon = document.getElementById('refreshIcon');
+  icon.classList.add('fa-spin');
+  await loadOrders();
+  setTimeout(() => icon.classList.remove('fa-spin'), 400);
+}
+
+function exportCSV() {
+  if (!FILTERED.length) return toast('No orders to export', 'error');
+
+  const headers = ['Reference', 'Service', 'Category', 'Amount', 'Currency', 'Status', 'Date'];
+  const rows = FILTERED.map(o => [
+    o.reference_id,
+    `"${o.product_name.replace(/"/g, '""')}"`,
+    `"${(o.category_name || '').replace(/"/g, '""')}"`,
+    o.amount.toFixed(2),
+    o.currency,
+    o.status,
+    o.created_at,
+  ]);
+
+  const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `gsm-tech-hub-orders-${new Date().toISOString().split('T')[0]}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Exported ' + FILTERED.length + ' orders');
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+function toast(message, type = 'success') {
+  const existing = document.querySelector('.toast-popup');
+  if (existing) existing.remove();
+
+  const t = document.createElement('div');
+  t.className = 'toast-popup';
+  t.innerHTML = `<i class="fas fa-${type === 'error' ? 'circle-exclamation' : 'circle-check'}"></i> ${escapeHtml(message)}`;
+  Object.assign(t.style, {
+    position: 'fixed',
+    top: '84px',
+    right: '20px',
+    zIndex: '9999',
+    padding: '12px 16px',
+    background: type === 'error' ? 'rgba(239, 68, 68, 0.12)' : 'rgba(16, 185, 129, 0.12)',
+    border: `1px solid ${type === 'error' ? 'rgba(239, 68, 68, 0.3)' : 'rgba(16, 185, 129, 0.3)'}`,
+    borderRadius: '10px',
+    color: type === 'error' ? '#fca5a5' : '#6ee7b7',
+    fontSize: '12px',
+    fontWeight: '600',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    boxShadow: '0 12px 32px rgba(0,0,0,0.4)',
+    animation: 'slideIn 0.3s ease',
+  });
+  document.body.appendChild(t);
+
+  setTimeout(() => {
+    t.style.opacity = '0';
+    t.style.transition = 'opacity 0.3s';
+    setTimeout(() => t.remove(), 300);
+  }, 2200);
+}
+
+// Add animation styles
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideIn {
+    from { transform: translateX(20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+`;
+document.head.appendChild(style);
+
+/* ============================================================
+   USER MENU + LOGOUT
+   ============================================================ */
+const userChip = document.getElementById('userChip');
+const userMenu = document.getElementById('userMenu');
+userChip?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  userMenu.classList.toggle('open');
+});
+document.addEventListener('click', () => userMenu.classList.remove('open'));
+
+async function logout() {
+  try { await fetch('../api/auth.php?action=logout'); }
+  finally { window.location.href = 'login.html'; }
+}
+
+/* ============================================================
+   MOBILE MENU
+   ============================================================ */
+document.querySelector('.nav-toggle')?.addEventListener('click', () => {
+  const menu = document.querySelector('.nav-links');
+  const isOpen = menu.style.display === 'flex';
+  menu.style.display = isOpen ? 'none' : 'flex';
+  if (!isOpen) {
+    Object.assign(menu.style, {
+      position: 'absolute', top: '66px', left: '0', right: '0',
+      flexDirection: 'column', padding: '16px',
+      background: '#0a0a14', borderBottom: '1px solid #1e1f30', gap: '4px',
+    });
+  }
+});
+
+/* ============================================================
+   UTILS
+   ============================================================ */
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = String(str || '');
+  return d.innerHTML;
+}
+function escapeAttr(str) {
+  return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+
+/* ============================================================
+   FADE IN
+   ============================================================ */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.05 });
+
+/* ============================================================
+   INIT
+   ============================================================ */
+(async function init() {
+  const user = await loadUser();
+  if (!user) return;
+  renderUser(user);
+  await loadOrders();
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+})();
+</script>
+
+</body>
+</html>
