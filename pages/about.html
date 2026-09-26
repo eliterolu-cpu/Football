@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>About Us — GSM TECH HUB</title>
+<meta name="description" content="Learn about GSM TECH HUB — trusted by 12,400+ customers for IMEI unlocks, tool activations, and digital goods worldwide.">
+<meta name="theme-color" content="#0a0a14">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root {
+  --primary: #00b4d8; --primary-light: #48cae4; --primary-dark: #0096c7;
+  --secondary: #10b981; --secondary-light: #34d399;
+  --accent: #8b5cf6; --accent-light: #a78bfa;
+  --danger: #ef4444; --warning: #f59e0b;
+  --dark-bg: #0a0a14; --card-bg: #11121c; --card-hover: #151624;
+  --card-border: #1e1f30; --card-border-hover: #2d2f45;
+  --nav-bg-glass: rgba(10, 10, 20, 0.85); --nav-border: #1e1f30;
+  --nav-text: #8b8da3; --nav-text-hover: #f1f5f9;
+  --text-primary: #f1f5f9; --text-secondary: #8b8da3; --text-muted: #5a5c70;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; scroll-padding-top: 90px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--dark-bg); color: var(--text-primary);
+  font-size: 13px; line-height: 1.5; overflow-x: hidden;
+  letter-spacing: -0.01em; padding-top: 66px;
+}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--dark-bg); }
+::-webkit-scrollbar-thumb { background: #2d2f45; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+.container { max-width: 1320px; margin: 0 auto; padding: 0 16px; }
+
+/* NAV */
+.main-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: var(--nav-bg-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--nav-border);
+  height: 66px; display: flex; align-items: center;
+}
+.nav-container {
+  max-width: 1320px; width: 100%; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; gap: 16px;
+}
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; transition: transform 0.2s ease; }
+.logo:hover { transform: translateY(-1px); }
+.logo-icon {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius: 9px; display: grid; place-items: center; font-size: 16px;
+  box-shadow: 0 2px 12px rgba(0, 180, 216, 0.35);
+}
+.logo-text { font-size: 14px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; }
+.logo-text .accent { background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.nav-links { display: flex; gap: 2px; align-items: center; }
+.nav-link {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 12px; color: var(--nav-text);
+  font-weight: 500; font-size: 12px;
+  border-radius: 6px; text-decoration: none;
+  transition: all 0.15s ease;
+}
+.nav-link i { font-size: 11px; color: var(--text-muted); transition: color 0.15s ease; }
+.nav-link:hover { color: var(--nav-text-hover); background: rgba(255,255,255,0.04); }
+.nav-link:hover i { color: var(--primary-light); }
+.nav-link.active { color: var(--primary-light); background: rgba(0, 180, 216, 0.08); }
+.nav-link.active i { color: var(--primary); }
+.nav-actions { display: flex; align-items: center; gap: 8px; position: relative; }
+.user-chip {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 10px 5px 5px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--card-border);
+  border-radius: 100px;
+  cursor: pointer; transition: all 0.15s ease; user-select: none;
+}
+.user-chip:hover { border-color: var(--card-border-hover); background: rgba(255,255,255,0.06); }
+.user-avatar {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: grid; place-items: center;
+  font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.user-name { font-size: 11px; font-weight: 600; }
+.user-menu {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  min-width: 200px; background: var(--card-bg);
+  border: 1px solid var(--card-border); border-radius: 12px;
+  padding: 6px; box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+  display: none; z-index: 100;
+}
+.user-menu.open { display: block; }
+.user-menu-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: 8px;
+  font-size: 12px; color: var(--text-secondary);
+  text-decoration: none; cursor: pointer;
+  transition: all 0.15s ease;
+}
+.user-menu-item i { font-size: 11px; width: 14px; color: var(--text-muted); }
+.user-menu-item:hover { background: rgba(255,255,255,0.04); color: var(--text-primary); }
+.user-menu-item:hover i { color: var(--primary-light); }
+.user-menu-item.danger { color: #fca5a5; }
+.user-menu-item.danger:hover { background: rgba(239, 68, 68, 0.08); color: #ef4444; }
+.user-menu-divider { height: 1px; background: var(--card-border); margin: 4px 0; }
+.nav-toggle { display: none; background: none; border: none; color: var(--text-primary); font-size: 18px; cursor: pointer; padding: 6px; }
+
+/* HERO */
+.about-hero {
+  padding: 60px 0 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.about-hero::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 400px;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(0, 180, 216, 0.12), transparent 65%),
+    radial-gradient(ellipse 40% 40% at 80% 20%, rgba(139, 92, 246, 0.08), transparent 60%);
+  pointer-events: none;
+}
+.hero-content { position: relative; max-width: 720px; margin: 0 auto; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 5px 14px;
+  background: rgba(0, 180, 216, 0.08);
+  border: 1px solid rgba(0, 180, 216, 0.25);
+  border-radius: 100px;
+  font-size: 10px; font-weight: 700;
+  color: var(--primary-light);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 16px;
+}
+.hero-title {
+  font-size: clamp(26px, 4.5vw, 42px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+.hero-title .gradient {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-desc {
+  font-size: 14px; color: var(--text-secondary);
+  line-height: 1.75;
+  max-width: 620px; margin: 0 auto;
+}
+
+/* STATS */
+.stats-band {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 40px 0;
+}
+.stat-big {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 22px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.stat-big::after {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+.stat-big-value {
+  font-size: 32px; font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-big-label {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+/* SECTION */
+.section { padding: 40px 0; }
+.section-header { text-align: center; margin-bottom: 32px; }
+.section-eyebrow {
+  display: inline-block;
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--primary-light);
+  margin-bottom: 10px;
+}
+.section-title {
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+.section-desc {
+  font-size: 13px; color: var(--text-secondary);
+  max-width: 560px; margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* STORY */
+.story-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+.story-text p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+.story-text p strong { color: var(--text-primary); font-weight: 600; }
+.story-highlight {
+  padding: 24px;
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.08), rgba(139, 92, 246, 0.04)), var(--card-bg);
+  border: 1px solid rgba(0, 180, 216, 0.2);
+  border-radius: 14px;
+  position: relative;
+}
+.story-highlight::before {
+  content: '"';
+  position: absolute;
+  top: -20px; left: 20px;
+  font-size: 80px;
+  font-family: Georgia, serif;
+  color: var(--primary);
+  opacity: 0.25;
+  line-height: 1;
+}
+.story-quote {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text-primary);
+  line-height: 1.7;
+  margin-bottom: 14px;
+  position: relative;
+}
+.story-author {
+  display: flex; align-items: center; gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--card-border);
+}
+.story-author-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: grid; place-items: center;
+  font-size: 14px; font-weight: 700; color: #fff;
+}
+.story-author-name {
+  font-size: 12px; font-weight: 700;
+}
+.story-author-role {
+  font-size: 10px; color: var(--text-muted);
+}
+
+/* VALUES */
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.value-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 22px;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+.value-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.value-card:hover {
+  border-color: rgba(0, 180, 216, 0.3);
+  transform: translateY(-3px);
+}
+.value-card:hover::before { transform: scaleX(1); }
+.value-icon {
+  width: 44px; height: 44px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.15), rgba(139, 92, 246, 0.08));
+  border: 1px solid rgba(0, 180, 216, 0.2);
+  display: grid; place-items: center;
+  font-size: 18px;
+  margin-bottom: 14px;
+}
+.value-card h3 {
+  font-size: 14px; font-weight: 700;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+.value-card p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+/* TIMELINE */
+.timeline {
+  position: relative;
+  max-width: 720px;
+  margin: 0 auto;
+  padding-left: 30px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 8px; top: 8px; bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--primary), var(--accent), transparent);
+}
+.timeline-item {
+  position: relative;
+  padding-bottom: 28px;
+}
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-dot {
+  position: absolute;
+  left: -30px; top: 4px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 2px solid var(--primary);
+  display: grid; place-items: center;
+}
+.timeline-dot::after {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 8px var(--primary);
+}
+.timeline-year {
+  font-size: 11px; font-weight: 700;
+  color: var(--primary-light);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+.timeline-title {
+  font-size: 13px; font-weight: 700;
+  margin-bottom: 4px;
+}
+.timeline-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* TEAM */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+.team-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+.team-card:hover { border-color: rgba(0, 180, 216, 0.3); transform: translateY(-3px); }
+.team-avatar {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: grid; place-items: center;
+  font-size: 22px; font-weight: 800; color: #fff;
+  margin: 0 auto 12px;
+  box-shadow: 0 6px 20px rgba(0, 180, 216, 0.3);
+}
+.team-name {
+  font-size: 13px; font-weight: 700;
+  margin-bottom: 3px;
+}
+.team-role {
+  font-size: 10px;
+  color: var(--primary-light);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.team-bio {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+/* CTA */
+.cta-section { padding: 40px 0; text-align: center; }
+.cta-box {
+  max-width: 720px; margin: 0 auto;
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.1), rgba(139, 92, 246, 0.06)), var(--card-bg);
+  border: 1px solid rgba(0, 180, 216, 0.25);
+  border-radius: 18px;
+  padding: 40px 28px;
+  position: relative; overflow: hidden;
+}
+.cta-box::before {
+  content: ''; position: absolute;
+  top: -50%; left: 50%; transform: translateX(-50%);
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(0, 180, 216, 0.12), transparent 70%);
+  pointer-events: none;
+}
+.cta-title {
+  font-size: 22px; font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  position: relative;
+}
+.cta-desc {
+  font-size: 13px; color: var(--text-secondary);
+  margin-bottom: 20px;
+  position: relative;
+}
+.cta-actions {
+  display: flex; gap: 10px;
+  justify-content: center; flex-wrap: wrap;
+  position: relative;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 11px 22px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff; border: none; border-radius: 9px;
+  font-family: inherit; font-size: 12px; font-weight: 700;
+  cursor: pointer; text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 18px rgba(0, 180, 216, 0.3);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(0, 180, 216, 0.45); }
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 11px 22px;
+  background: transparent; color: var(--text-primary);
+  border: 1px solid var(--card-border);
+  border-radius: 9px;
+  font-family: inherit; font-size: 12px; font-weight: 600;
+  cursor: pointer; text-decoration: none;
+  transition: all 0.2s ease;
+}
+.btn-ghost:hover { border-color: var(--primary); color: var(--primary-light); background: rgba(0, 180, 216, 0.05); }
+
+/* FOOTER */
+.main-footer {
+  background: #08080f;
+  border-top: 1px solid var(--card-border);
+  padding: 40px 0 20px;
+  margin-top: 20px;
+}
+.footer-content {
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+  gap: 32px; margin-bottom: 32px;
+}
+.footer-brand .logo { margin-bottom: 12px; }
+.footer-about {
+  font-size: 11px; color: var(--text-secondary);
+  line-height: 1.7; margin-bottom: 14px; max-width: 280px;
+}
+.social-links { display: flex; gap: 8px; }
+.social-link {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--card-border);
+  display: grid; place-items: center;
+  color: var(--text-secondary); font-size: 13px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.social-link:hover {
+  background: rgba(0, 180, 216, 0.1);
+  border-color: rgba(0, 180, 216, 0.3);
+  color: var(--primary-light);
+  transform: translateY(-2px);
+}
+.footer-heading {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 14px; position: relative;
+  padding-bottom: 8px;
+}
+.footer-heading::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 0; width: 20px; height: 2px;
+  background: var(--primary); border-radius: 2px;
+}
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.footer-links a {
+  display: flex; align-items: center; gap: 6px;
+  color: var(--text-secondary); text-decoration: none;
+  font-size: 11px; transition: all 0.15s ease;
+}
+.footer-links a i { font-size: 9px; width: 12px; color: var(--text-muted); transition: color 0.15s ease; }
+.footer-links a:hover { color: var(--text-primary); padding-left: 3px; }
+.footer-links a:hover i { color: var(--primary-light); }
+.footer-bottom {
+  border-top: 1px solid var(--card-border);
+  padding-top: 18px;
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 10px;
+  font-size: 10px; color: var(--text-muted);
+}
+
+/* RESPONSIVE */
+@media (max-width: 968px) {
+  .nav-links { display: none; }
+  .nav-toggle { display: block; }
+  .stats-band { grid-template-columns: repeat(2, 1fr); }
+  .story-grid { grid-template-columns: 1fr; gap: 24px; }
+  .values-grid { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-content { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .container { padding: 0 12px; }
+  .stats-band { grid-template-columns: 1fr 1fr; }
+  .team-grid { grid-template-columns: 1fr; }
+  .footer-content { grid-template-columns: 1fr; gap: 24px; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  .user-name { display: none; }
+}
+
+.fade-in { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<nav class="main-nav">
+  <div class="nav-container">
+    <a href="../index.html" class="logo">
+      <div class="logo-icon">⚡</div>
+      <div class="logo-text">GSM <span class="accent">TECH HUB</span></div>
+    </a>
+
+    <div class="nav-links">
+      <a href="../index.html#services" class="nav-link"><i class="fas fa-th-large"></i> Services</a>
+      <a href="../index.html#how" class="nav-link"><i class="fas fa-route"></i> How It Works</a>
+      <a href="about.html" class="nav-link active"><i class="fas fa-circle-info"></i> About</a>
+      <a href="support.html" class="nav-link"><i class="fas fa-headset"></i> Support</a>
+    </div>
+
+    <div class="nav-actions">
+      <div class="user-chip" id="userChip">
+        <div class="user-avatar" id="userAvatar">?</div>
+        <div class="user-name" id="userNameShort">Guest</div>
+        <i class="fas fa-chevron-down" style="font-size:9px;color:var(--text-muted);"></i>
+      </div>
+
+      <div class="user-menu" id="userMenu">
+        <a class="user-menu-item" href="dashboard.html"><i class="fas fa-gauge-high"></i> Dashboard</a>
+        <a class="user-menu-item" href="orders.html"><i class="fas fa-box"></i> My Orders</a>
+        <a class="user-menu-item" href="profile.html"><i class="fas fa-user"></i> Profile</a>
+        <div class="user-menu-divider"></div>
+        <a class="user-menu-item danger" onclick="logout()"><i class="fas fa-right-from-bracket"></i> Sign Out</a>
+      </div>
+
+      <button class="nav-toggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="about-hero">
+  <div class="container">
+    <div class="hero-content fade-in">
+      <div class="hero-eyebrow"><i class="fas fa-bolt"></i> About GSM TECH HUB</div>
+      <h1 class="hero-title">
+        Built by technicians,<br>
+        <span class="gradient">for technicians.</span>
+      </h1>
+      <p class="hero-desc">
+        Since 2019, we've helped thousands of repair shops, resellers, and
+        independent technicians deliver fast, reliable GSM services worldwide.
+        Powered by direct supplier access and automated fulfillment.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAND -->
+<div class="container">
+  <div class="stats-band">
+    <div class="stat-big fade-in">
+      <div class="stat-big-value">12,400+</div>
+      <div class="stat-big-label">Active Customers</div>
+    </div>
+    <div class="stat-big fade-in">
+      <div class="stat-big-value">2.4M+</div>
+      <div class="stat-big-label">Orders Fulfilled</div>
+    </div>
+    <div class="stat-big fade-in">
+      <div class="stat-big-value">195</div>
+      <div class="stat-big-label">Countries Served</div>
+    </div>
+    <div class="stat-big fade-in">
+      <div class="stat-big-value">99.6%</div>
+      <div class="stat-big-label">Success Rate</div>
+    </div>
+  </div>
+</div>
+
+<!-- STORY -->
+<section class="section">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-eyebrow">Our Story</div>
+      <h2 class="section-title">From a small repair shop to a global platform</h2>
+    </div>
+
+    <div class="story-grid">
+      <div class="story-text fade-in">
+        <p>
+          GSM TECH HUB started in <strong>2019</strong> as a small mobile repair shop
+          in Dar es Salaam, Tanzania. Like most technicians, we struggled with
+          inconsistent unlock suppliers, slow delivery, and unclear pricing.
+        </p>
+        <p>
+          We decided to build something better — a platform that combines
+          <strong>direct supplier access</strong>, <strong>wholesale pricing</strong>,
+          and <strong>automated fulfillment</strong> so technicians can focus on
+          their customers instead of chasing codes.
+        </p>
+        <p>
+          Today, we serve over <strong>12,400 resellers and repair shops</strong> across
+          <strong>195 countries</strong>. Every order runs through our automated API
+          connection to GSM Africa and other tier-1 suppliers, ensuring the fastest
+          possible delivery at the best possible price.
+        </p>
+        <p>
+          We're not just a reseller — we're technicians who understand the tools,
+          the devices, and the urgency of your customers walking out the door.
+        </p>
+      </div>
+
+      <div class="story-highlight fade-in">
+        <p class="story-quote">
+          "We built GSM TECH HUB because we were tired of waiting days for an
+          unlock code. Our customers deserved better — and so do yours."
+        </p>
+        <div class="story-author">
+          <div class="story-author-avatar">JM</div>
+          <div>
+            <div class="story-author-name">Joseph M.</div>
+            <div class="story-author-role">Founder & Lead Technician</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="section">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-eyebrow">Our Values</div>
+      <h2 class="section-title">What we stand for</h2>
+      <p class="section-desc">Three principles guide every decision we make.</p>
+    </div>
+
+    <div class="values-grid">
+      <div class="value-card fade-in">
+        <div class="value-icon">⚡</div>
+        <h3>Speed Above All</h3>
+        <p>Most orders complete in under 2 minutes. When your customer is waiting, every second counts — we build for that reality.</p>
+      </div>
+
+      <div class="value-card fade-in">
+        <div class="value-icon">🔒</div>
+        <h3>Trust & Transparency</h3>
+        <p>Clear pricing, no hidden fees, honest refund policy. If we can't deliver, you don't pay — simple as that.</p>
+      </div>
+
+      <div class="value-card fade-in">
+        <div class="value-icon">🤝</div>
+        <h3>Technician First</h3>
+        <p>We are technicians. Every feature we build, every tool we add, is designed to make your workflow faster and more profitable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="section">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-eyebrow">Milestones</div>
+      <h2 class="section-title">Our journey so far</h2>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2019</div>
+        <div class="timeline-title">Founded in Dar es Salaam</div>
+        <div class="timeline-desc">Started as a small repair shop serving walk-in customers. First 100 unlock orders fulfilled manually.</div>
+      </div>
+
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2021</div>
+        <div class="timeline-title">Launched the online platform</div>
+        <div class="timeline-desc">Rebuilt the business as a full web platform with automated order processing. Reached 1,000 active customers.</div>
+      </div>
+
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2023</div>
+        <div class="timeline-title">Expanded to 100+ countries</div>
+        <div class="timeline-desc">Partnered with multiple tier-1 suppliers to offer tools, credits, and digital goods in addition to IMEI unlocks.</div>
+      </div>
+
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2024</div>
+        <div class="timeline-title">Surpassed 2 million orders</div>
+        <div class="timeline-desc">Crossed the 2.4M fulfilled orders milestone with 99.6% success rate. Launched 24/7 automated delivery.</div>
+      </div>
+
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2026</div>
+        <div class="timeline-title">Today</div>
+        <div class="timeline-desc">12,400+ active customers, 300+ services, and growing. Still built by technicians, for technicians.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="section">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-eyebrow">The Team</div>
+      <h2 class="section-title">The people behind the platform</h2>
+      <p class="section-desc">A small, focused team that ships fast and cares about results.</p>
+    </div>
+
+    <div class="team-grid">
+      <div class="team-card fade-in">
+        <div class="team-avatar">JM</div>
+        <div class="team-name">Joseph M.</div>
+        <div class="team-role">Founder & CEO</div>
+        <div class="team-bio">15 years in mobile repair. Leads product and supplier relationships.</div>
+      </div>
+
+      <div class="team-card fade-in">
+        <div class="team-avatar">AK</div>
+        <div class="team-name">Amina K.</div>
+        <div class="team-role">Head of Operations</div>
+        <div class="team-bio">Manages order fulfillment and support. Response time champion.</div>
+      </div>
+
+      <div class="team-card fade-in">
+        <div class="team-avatar">DN</div>
+        <div class="team-name">David N.</div>
+        <div class="team-role">Lead Developer</div>
+        <div class="team-bio">Builds the platform, API integrations, and automated workflows.</div>
+      </div>
+
+      <div class="team-card fade-in">
+        <div class="team-avatar">SR</div>
+        <div class="team-name">Sarah R.</div>
+        <div class="team-role">Customer Success</div>
+        <div class="team-bio">Front-line support. Handles escalations and refund requests.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-box fade-in">
+      <h2 class="cta-title">Ready to work with us?</h2>
+      <p class="cta-desc">Join 12,400+ technicians and resellers already using GSM TECH HUB.</p>
+      <div class="cta-actions">
+        <a href="register.html" class="btn-primary">
+          <i class="fas fa-user-plus"></i> Create Free Account
+        </a>
+        <a href="support.html" class="btn-ghost">
+          <i class="fas fa-comments"></i> Talk to Us
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="main-footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <div class="logo-icon">⚡</div>
+          <div class="logo-text">GSM <span class="accent">TECH HUB</span></div>
+        </a>
+        <p class="footer-about">
+          Professional reseller platform for IMEI unlocks, GSM tool activations,
+          server credits, and digital goods. Delivered worldwide.
+        </p>
+        <div class="social-links">
+          <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Services</h4>
+        <ul class="footer-links">
+          <li><a href="service.html?cat=unlock"><i class="fas fa-chevron-right"></i> IMEI Unlock</a></li>
+          <li><a href="service.html?cat=frp"><i class="fas fa-chevron-right"></i> FRP Removal</a></li>
+          <li><a href="service.html?cat=tools"><i class="fas fa-chevron-right"></i> Tool Activations</a></li>
+          <li><a href="service.html?cat=credits"><i class="fas fa-chevron-right"></i> Server Credits</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Account</h4>
+        <ul class="footer-links">
+          <li><a href="dashboard.html"><i class="fas fa-chevron-right"></i> Dashboard</a></li>
+          <li><a href="orders.html"><i class="fas fa-chevron-right"></i> My Orders</a></li>
+          <li><a href="wallet.html"><i class="fas fa-chevron-right"></i> Wallet</a></li>
+          <li><a href="support.html"><i class="fas fa-chevron-right"></i> Support</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Company</h4>
+        <ul class="footer-links">
+          <li><a href="about.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
+          <li><a href="support.html"><i class="fas fa-chevron-right"></i> Contact</a></li>
+          <li><a href="terms.html"><i class="fas fa-chevron-right"></i> Terms</a></li>
+          <li><a href="privacy.html"><i class="fas fa-chevron-right"></i> Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 GSM TECH HUB. All rights reserved.</span>
+      <span>Built with ⚡ · Delivered worldwide</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* User chip — works for guests too */
+async function loadUser() {
+  try {
+    const res = await fetch('../api/auth.php?action=me');
+    const data = await res.json();
+    if (data.status === 'success' && data.user) {
+      const firstName = (data.user.name || 'User').split(' ')[0];
+      const initials = (data.user.name || 'U').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      document.getElementById('userNameShort').textContent = firstName;
+      document.getElementById('userAvatar').textContent = initials;
+    }
+  } catch {}
+}
+
+const userChip = document.getElementById('userChip');
+const userMenu = document.getElementById('userMenu');
+userChip?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  userMenu.classList.toggle('open');
+});
+document.addEventListener('click', () => userMenu.classList.remove('open'));
+
+async function logout() {
+  try { await fetch('../api/auth.php?action=logout'); }
+  finally { window.location.href = 'login.html'; }
+}
+
+document.querySelector('.nav-toggle')?.addEventListener('click', () => {
+  const menu = document.querySelector('.nav-links');
+  const isOpen = menu.style.display === 'flex';
+  menu.style.display = isOpen ? 'none' : 'flex';
+  if (!isOpen) {
+    Object.assign(menu.style, {
+      position: 'absolute', top: '66px', left: '0', right: '0',
+      flexDirection: 'column', padding: '16px',
+      background: '#0a0a14', borderBottom: '1px solid #1e1f30', gap: '4px',
+    });
+  }
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.05 });
+
+loadUser();
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
