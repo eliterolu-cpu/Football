@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Place Order — GSM TECH HUB</title>
+<meta name="description" content="Complete your order securely. Instant delivery on IMEI unlocks, tool activations, server credits, and digital goods.">
+<meta name="theme-color" content="#0a0a14">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root {
+  --primary: #00b4d8;
+  --primary-light: #48cae4;
+  --primary-dark: #0096c7;
+  --secondary: #10b981;
+  --secondary-light: #34d399;
+  --accent: #8b5cf6;
+  --accent-light: #a78bfa;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --success: #10b981;
+
+  --dark-bg: #0a0a14;
+  --card-bg: #11121c;
+  --card-hover: #151624;
+  --card-border: #1e1f30;
+  --card-border-hover: #2d2f45;
+
+  --nav-bg-glass: rgba(10, 10, 20, 0.85);
+  --nav-border: #1e1f30;
+  --nav-text: #8b8da3;
+  --nav-text-hover: #f1f5f9;
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #8b8da3;
+  --text-muted: #5a5c70;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--dark-bg);
+  color: var(--text-primary);
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-x: hidden;
+  letter-spacing: -0.01em;
+  padding-top: 66px;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--dark-bg); }
+::-webkit-scrollbar-thumb { background: #2d2f45; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+.container {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ============ NAVIGATION ============ */
+.main-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: var(--nav-bg-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--nav-border);
+  height: 66px;
+  display: flex;
+  align-items: center;
+}
+
+.nav-container {
+  max-width: 1320px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  gap: 16px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+.logo:hover { transform: translateY(-1px); }
+
+.logo-icon {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  box-shadow: 0 2px 12px rgba(0, 180, 216, 0.35);
+}
+
+.logo-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+.logo-text .accent {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-links { display: flex; gap: 2px; align-items: center; }
+.nav-link {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 12px;
+  color: var(--nav-text);
+  font-weight: 500; font-size: 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.nav-link i { font-size: 11px; color: var(--text-muted); transition: color 0.15s ease; }
+.nav-link:hover { color: var(--nav-text-hover); background: rgba(255,255,255,0.04); }
+.nav-link:hover i { color: var(--primary-light); }
+
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+
+.btn-nav-login {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px;
+  background: rgba(0, 180, 216, 0.1);
+  border: 1px solid rgba(0, 180, 216, 0.25);
+  color: var(--primary-light);
+  border-radius: 7px;
+  font-size: 11px; font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.btn-nav-login:hover {
+  background: rgba(0, 180, 216, 0.2);
+  border-color: var(--primary);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.nav-toggle {
+  display: none;
+  background: none; border: none;
+  color: var(--text-primary);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 6px;
+}
+
+/* ============ BREADCRUMB ============ */
+.breadcrumb-bar { padding: 16px 0 0; font-size: 11px; color: var(--text-muted); }
+.breadcrumb {
+  display: flex; align-items: center;
+  gap: 8px; flex-wrap: wrap;
+}
+.breadcrumb a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.breadcrumb a:hover { color: var(--primary-light); }
+.breadcrumb i { font-size: 8px; color: var(--text-muted); }
+.breadcrumb .current { color: var(--primary-light); font-weight: 600; }
+
+/* ============ PAGE LAYOUT ============ */
+.page-wrap {
+  padding: 20px 0 40px;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 20px;
+  align-items: start;
+}
+
+.order-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.order-head {
+  padding: 20px 22px;
+  border-bottom: 1px solid var(--card-border);
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.04), transparent);
+  position: relative;
+}
+.order-head::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+.order-head-inner {
+  display: flex; align-items: flex-start;
+  gap: 14px;
+}
+.order-head-icon {
+  width: 52px; height: 52px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.15), rgba(139, 92, 246, 0.1));
+  border: 1px solid rgba(0, 180, 216, 0.25);
+  display: grid; place-items: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.order-head-info { flex: 1; min-width: 0; }
+.order-eyebrow {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--primary-light);
+  margin-bottom: 5px;
+}
+.order-title {
+  font-size: 17px; font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  margin-bottom: 6px;
+  word-break: break-word;
+}
+.order-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.order-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 8px;
+  border-radius: 100px;
+  font-size: 9px; font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.badge-instant { background: rgba(0, 180, 216, 0.12); color: #48cae4; }
+.badge-secure { background: rgba(16, 185, 129, 0.12); color: #34d399; }
+
+/* ============ FORM BODY ============ */
+.form-body { padding: 22px; }
+
+.form-section {
+  margin-bottom: 22px;
+}
+.form-section:last-child { margin-bottom: 0; }
+
+.form-section-title {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--card-border);
+  position: relative;
+}
+.form-section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0;
+  width: 30px; height: 1px;
+  background: var(--primary);
+}
+.form-section-title i { color: var(--primary); font-size: 11px; }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.form-group { display: flex; flex-direction: column; }
+.form-group.full { grid-column: 1 / -1; }
+.form-label {
+  font-size: 11px; font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  display: flex; align-items: center; gap: 6px;
+}
+.form-label .req {
+  color: var(--danger);
+  font-size: 13px;
+  line-height: 1;
+}
+.form-label .optional {
+  font-size: 9px;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1px 6px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 100px;
+}
+.form-input, .form-textarea, .form-select {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--dark-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 9px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 12px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.12);
+  background: #0d0d1a;
+}
+.form-input::placeholder, .form-textarea::placeholder { color: var(--text-muted); }
+.form-input:invalid:not(:placeholder-shown) { border-color: rgba(239, 68, 68, 0.5); }
+.form-textarea { resize: vertical; min-height: 84px; line-height: 1.6; }
+.form-hint {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 5px;
+  line-height: 1.5;
+  display: flex; align-items: flex-start; gap: 5px;
+}
+.form-hint i { font-size: 9px; margin-top: 2px; color: var(--primary); }
+
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b8da3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 34px;
+  cursor: pointer;
+}
+
+/* ============ CHECKBOX ============ */
+.checkbox-row {
+  display: flex; align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  background: rgba(0, 180, 216, 0.04);
+  border: 1px solid rgba(0, 180, 216, 0.15);
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.checkbox-row:hover { background: rgba(0, 180, 216, 0.06); }
+.checkbox-row input {
+  margin-top: 2px;
+  width: 14px; height: 14px;
+  accent-color: var(--primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.checkbox-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.checkbox-label a { color: var(--primary-light); text-decoration: none; }
+.checkbox-label a:hover { text-decoration: underline; }
+
+/* ============ SUBMIT BUTTON ============ */
+.btn-submit {
+  width: 100%;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  border: none;
+  border-radius: 11px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex; align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 20px rgba(0, 180, 216, 0.3);
+  margin-top: 8px;
+}
+.btn-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 180, 216, 0.45);
+}
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.btn-submit i { font-size: 12px; }
+
+/* ============ SIDEBAR ============ */
+.sidebar {
+  position: sticky;
+  top: 86px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.summary-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.summary-head {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--card-border);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  display: flex; align-items: center; gap: 8px;
+}
+.summary-head i { color: var(--primary); font-size: 11px; }
+
+.summary-body { padding: 16px 18px; }
+
+.summary-row {
+  display: flex; justify-content: space-between;
+  align-items: flex-start;
+  padding: 9px 0;
+  font-size: 11px;
+  gap: 12px;
+}
+.summary-row + .summary-row { border-top: 1px dashed var(--card-border); }
+.summary-row .lbl { color: var(--text-muted); flex-shrink: 0; }
+.summary-row .val {
+  color: var(--text-primary);
+  font-weight: 600;
+  text-align: right;
+  word-break: break-word;
+}
+
+.summary-total {
+  padding: 14px 18px;
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.08), rgba(139, 92, 246, 0.05));
+  border-top: 1px solid rgba(0, 180, 216, 0.2);
+  display: flex; justify-content: space-between;
+  align-items: center;
+}
+.summary-total .lbl {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.summary-total .val {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--secondary-light);
+  letter-spacing: -0.02em;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Trust badges */
+.trust-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex; flex-direction: column;
+  gap: 12px;
+}
+.trust-item {
+  display: flex; align-items: flex-start;
+  gap: 10px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.trust-icon {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  display: grid; place-items: center;
+  color: var(--secondary-light);
+  font-size: 11px;
+  flex-shrink: 0;
+}
+.trust-item strong { color: var(--text-primary); font-weight: 600; display: block; margin-bottom: 1px; }
+
+/* Support card */
+.support-card {
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.06), rgba(139, 92, 246, 0.04)), var(--card-bg);
+  border: 1px solid rgba(0, 180, 216, 0.2);
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+.support-card h4 {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--primary-light);
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.support-card p {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+.support-links {
+  display: flex; gap: 6px;
+  flex-wrap: wrap;
+}
+.support-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 6px 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--card-border);
+  border-radius: 7px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.support-link:hover {
+  border-color: var(--primary);
+  color: var(--primary-light);
+  background: rgba(0, 180, 216, 0.08);
+}
+.support-link i { font-size: 10px; }
+
+/* ============ ALERTS ============ */
+.alert {
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 11px;
+  line-height: 1.5;
+  display: flex; align-items: flex-start; gap: 10px;
+  margin-bottom: 12px;
+}
+.alert i { font-size: 12px; margin-top: 1px; flex-shrink: 0; }
+.alert-error {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: #fca5a5;
+}
+.alert-success {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  color: #6ee7b7;
+}
+.alert-info {
+  background: rgba(0, 180, 216, 0.08);
+  border: 1px solid rgba(0, 180, 216, 0.25);
+  color: #93c5fd;
+}
+
+/* ============ FOOTER ============ */
+.main-footer {
+  background: #08080f;
+  border-top: 1px solid var(--card-border);
+  padding: 40px 0 20px;
+  margin-top: 20px;
+}
+.footer-content {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+.footer-brand .logo { margin-bottom: 12px; }
+.footer-about {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 14px;
+  max-width: 280px;
+}
+.social-links { display: flex; gap: 8px; }
+.social-link {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--card-border);
+  display: grid; place-items: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.social-link:hover {
+  background: rgba(0, 180, 216, 0.1);
+  border-color: rgba(0, 180, 216, 0.3);
+  color: var(--primary-light);
+  transform: translateY(-2px);
+}
+.footer-heading {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  position: relative;
+  padding-bottom: 8px;
+}
+.footer-heading::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 20px; height: 2px;
+  background: var(--primary);
+  border-radius: 2px;
+}
+.footer-links {
+  list-style: none;
+  display: flex; flex-direction: column;
+  gap: 8px;
+}
+.footer-links a {
+  display: flex; align-items: center; gap: 6px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 11px;
+  transition: all 0.15s ease;
+}
+.footer-links a i {
+  font-size: 9px; width: 12px;
+  color: var(--text-muted);
+  transition: color 0.15s ease;
+}
+.footer-links a:hover { color: var(--text-primary); padding-left: 3px; }
+.footer-links a:hover i { color: var(--primary-light); }
+
+.footer-bottom {
+  border-top: 1px solid var(--card-border);
+  padding-top: 18px;
+  display: flex; justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; gap: 10px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 968px) {
+  .nav-links { display: none; }
+  .nav-toggle { display: block; }
+  .page-wrap { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+  .footer-content { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .container { padding: 0 12px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .order-head { padding: 16px; }
+  .form-body { padding: 16px; }
+  .order-title { font-size: 15px; }
+  .footer-content { grid-template-columns: 1fr; gap: 24px; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  .nav-actions .btn-nav-login { display: none; }
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- ============ NAVIGATION ============ -->
+<nav class="main-nav">
+  <div class="nav-container">
+    <a href="../index.html" class="logo">
+      <div class="logo-icon">⚡</div>
+      <div class="logo-text">GSM <span class="accent">TECH HUB</span></div>
+    </a>
+
+    <div class="nav-links">
+      <a href="../index.html#services" class="nav-link"><i class="fas fa-th-large"></i> Services</a>
+      <a href="../index.html#flagship" class="nav-link"><i class="fas fa-bolt"></i> Flagship</a>
+      <a href="../index.html#how" class="nav-link"><i class="fas fa-route"></i> How It Works</a>
+      <a href="support.html" class="nav-link"><i class="fas fa-headset"></i> Support</a>
+    </div>
+
+    <div class="nav-actions">
+      <a href="login.html" class="btn-nav-login"><i class="fas fa-right-to-bracket"></i> Sign In</a>
+      <button class="nav-toggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ BREADCRUMB ============ -->
+<div class="container">
+  <div class="breadcrumb-bar">
+    <div class="breadcrumb">
+      <a href="../index.html"><i class="fas fa-home"></i> Home</a>
+      <i class="fas fa-chevron-right"></i>
+      <a href="../index.html#services">Services</a>
+      <i class="fas fa-chevron-right"></i>
+      <a href="#" id="breadcrumbCat">Category</a>
+      <i class="fas fa-chevron-right"></i>
+      <span class="current">Order</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MAIN ============ -->
+<div class="container">
+  <div class="page-wrap">
+
+    <!-- ============ ORDER FORM ============ -->
+    <div>
+      <div class="order-card fade-in">
+        <div class="order-head">
+          <div class="order-head-inner">
+            <div class="order-head-icon" id="productIcon">📋</div>
+            <div class="order-head-info">
+              <div class="order-eyebrow">Placing Order</div>
+              <h1 class="order-title" id="productName">Loading…</h1>
+              <div class="order-badges">
+                <span class="order-badge badge-instant"><i class="fas fa-bolt"></i> Instant Delivery</span>
+                <span class="order-badge badge-secure"><i class="fas fa-shield-halved"></i> Secure Checkout</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-body">
+          <form id="orderForm" novalidate>
+
+            <!-- ===== SERVICE DETAILS ===== -->
+            <div class="form-section">
+              <div class="form-section-title">
+                <i class="fas fa-list-check"></i> Service Details
+              </div>
+              <div class="form-grid" id="dynamicFields">
+                <!-- Filled dynamically -->
+              </div>
+            </div>
+
+            <!-- ===== CUSTOMER INFO ===== -->
+            <div class="form-section">
+              <div class="form-section-title">
+                <i class="fas fa-user"></i> Your Information
+              </div>
+              <div class="form-grid">
+                <div class="form-group full">
+                  <label class="form-label" for="customerName">
+                    Full Name <span class="req">*</span>
+                  </label>
+                  <input type="text" id="customerName" name="customer_name"
+                         class="form-input" placeholder="John Doe"
+                         autocomplete="name" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="customerEmail">
+                    Email Address <span class="req">*</span>
+                  </label>
+                  <input type="email" id="customerEmail" name="customer_email"
+                         class="form-input" placeholder="you@example.com"
+                         autocomplete="email" required>
+                  <div class="form-hint">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Your result will be sent here</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="customerPhone">
+                    Phone <span class="optional">Optional</span>
+                  </label>
+                  <input type="tel" id="customerPhone" name="customer_phone"
+                         class="form-input" placeholder="+255 7XX XXX XXX"
+                         autocomplete="tel">
+                </div>
+              </div>
+            </div>
+
+            <!-- ===== QUANTITY & NOTES ===== -->
+            <div class="form-section">
+              <div class="form-section-title">
+                <i class="fas fa-sliders"></i> Order Options
+              </div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label" for="quantity">
+                    Quantity <span class="req">*</span>
+                  </label>
+                  <input type="number" id="quantity" name="quantity"
+                         class="form-input" value="1" min="1" max="999" required>
+                  <div class="form-hint">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Bulk orders supported</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="priority">
+                    Priority <span class="optional">Optional</span>
+                  </label>
+                  <select id="priority" name="priority" class="form-select">
+                    <option value="standard">Standard (Free)</option>
+                    <option value="express">Express (+$2.00)</option>
+                  </select>
+                </div>
+
+                <div class="form-group full">
+                  <label class="form-label" for="notes">
+                    Order Notes <span class="optional">Optional</span>
+                  </label>
+                  <textarea id="notes" name="notes" class="form-textarea"
+                            placeholder="Any additional information that may help process your order faster…"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- ===== AGREEMENT ===== -->
+            <div class="form-section">
+              <label class="checkbox-row">
+                <input type="checkbox" id="agreeTerms" required>
+                <span class="checkbox-label">
+                  I confirm that all details provided are accurate and I agree to the
+                  <a href="terms.html" target="_blank">Terms of Service</a> and
+                  <a href="privacy.html" target="_blank">Privacy Policy</a>. I understand
+                  that once an order is processed, it cannot be reversed.
+                </span>
+              </label>
+            </div>
+
+            <!-- ===== ERRORS ===== -->
+            <div id="formError"></div>
+
+            <!-- ===== SUBMIT ===== -->
+            <button type="submit" class="btn-submit" id="submitBtn">
+              <i class="fas fa-lock"></i>
+              <span id="submitText">Continue to Payment</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar fade-in">
+
+      <!-- Summary -->
+      <div class="summary-card">
+        <div class="summary-head">
+          <i class="fas fa-receipt"></i> Order Summary
+        </div>
+        <div class="summary-body">
+          <div class="summary-row">
+            <span class="lbl">Service</span>
+            <span class="val" id="summaryService">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="lbl">Category</span>
+            <span class="val" id="summaryCategory">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="lbl">Unit Price</span>
+            <span class="val" id="summaryUnit">$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span class="lbl">Quantity</span>
+            <span class="val" id="summaryQty">1</span>
+          </div>
+          <div class="summary-row">
+            <span class="lbl">Priority</span>
+            <span class="val" id="summaryPriority">Standard</span>
+          </div>
+        </div>
+        <div class="summary-total">
+          <span class="lbl">Total</span>
+          <span class="val" id="summaryTotal">$0.00</span>
+        </div>
+      </div>
+
+      <!-- Trust badges -->
+      <div class="trust-card">
+        <div class="trust-item">
+          <div class="trust-icon"><i class="fas fa-bolt"></i></div>
+          <div>
+            <strong>Instant Delivery</strong>
+            Most orders complete in under 2 minutes.
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon"><i class="fas fa-shield-halved"></i></div>
+          <div>
+            <strong>Secure Payment</strong>
+            SSL-encrypted checkout with trusted gateways.
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon"><i class="fas fa-rotate-left"></i></div>
+          <div>
+            <strong>Refund Policy</strong>
+            Automatic refund if the service is rejected.
+          </div>
+        </div>
+      </div>
+
+      <!-- Support -->
+      <div class="support-card">
+        <h4><i class="fas fa-headset"></i> Need Help?</h4>
+        <p>Questions before ordering? Our team responds in under 30 minutes.</p>
+        <div class="support-links">
+          <a href="support.html" class="support-link"><i class="fas fa-envelope"></i> Email</a>
+          <a href="#" class="support-link"><i class="fab fa-telegram"></i> Telegram</a>
+          <a href="#" class="support-link"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="main-footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <div class="logo-icon">⚡</div>
+          <div class="logo-text">GSM <span class="accent">TECH HUB</span></div>
+        </a>
+        <p class="footer-about">
+          Professional reseller platform for IMEI unlocks, GSM tool activations,
+          server credits, and digital goods. Delivered worldwide with instant
+          automated fulfillment.
+        </p>
+        <div class="social-links">
+          <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Services</h4>
+        <ul class="footer-links">
+          <li><a href="service.html?cat=unlock"><i class="fas fa-chevron-right"></i> IMEI Unlock</a></li>
+          <li><a href="service.html?cat=frp"><i class="fas fa-chevron-right"></i> FRP Removal</a></li>
+          <li><a href="service.html?cat=tools"><i class="fas fa-chevron-right"></i> Tool Activations</a></li>
+          <li><a href="service.html?cat=credits"><i class="fas fa-chevron-right"></i> Server Credits</a></li>
+          <li><a href="service.html?cat=digital"><i class="fas fa-chevron-right"></i> Digital Goods</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Account</h4>
+        <ul class="footer-links">
+          <li><a href="dashboard.html"><i class="fas fa-chevron-right"></i> Dashboard</a></li>
+          <li><a href="orders.html"><i class="fas fa-chevron-right"></i> My Orders</a></li>
+          <li><a href="login.html"><i class="fas fa-chevron-right"></i> Sign In</a></li>
+          <li><a href="register.html"><i class="fas fa-chevron-right"></i> Register</a></li>
+          <li><a href="support.html"><i class="fas fa-chevron-right"></i> Support</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Company</h4>
+        <ul class="footer-links">
+          <li><a href="about.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
+          <li><a href="support.html"><i class="fas fa-chevron-right"></i> Contact</a></li>
+          <li><a href="terms.html"><i class="fas fa-chevron-right"></i> Terms of Service</a></li>
+          <li><a href="privacy.html"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 GSM TECH HUB. All rights reserved.</span>
+      <span>Built with ⚡ · Delivered worldwide</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   CATEGORY META
+   ============================================================ */
+const CAT_META = {
+  unlock:  { icon: '🔓', name: 'IMEI & Network Unlock' },
+  frp:     { icon: '🛡️', name: 'FRP Removal Tools' },
+  mdm:     { icon: '🔐', name: 'MDM & iCloud Bypass' },
+  tools:   { icon: '⚙️', name: 'Tool Activations & Licenses' },
+  credits: { icon: '⚡', name: 'Server Credits & Refills' },
+  dongle:  { icon: '📦', name: 'Dongle & Box Software' },
+  digital: { icon: '🎁', name: 'Digital Goods & Gift Cards' },
+  social:  { icon: '📱', name: 'Social Media Growth' },
+  dhru:    { icon: '🔌', name: 'DHRU Fusion & Panel Services' },
+};
+
+/* ============================================================
+   DYNAMIC FIELDS PER CATEGORY
+   ============================================================ */
+const FIELD_MAP = {
+  unlock: [
+    { name: 'IMEI', placeholder: 'Enter 15-digit IMEI', required: true, maxlength: 15, hint: 'Dial *#06# on the device to find it' },
+    { name: 'Device Model', placeholder: 'e.g. Galaxy S23 Ultra', required: true },
+    { name: 'Carrier / Network', placeholder: 'e.g. T-Mobile USA', required: false },
+  ],
+  frp: [
+    { name: 'Device Brand', placeholder: 'e.g. Xiaomi, Samsung', required: true },
+    { name: 'Device Model', placeholder: 'e.g. Redmi Note 12', required: true },
+    { name: 'Android Version', placeholder: 'e.g. Android 13', required: false },
+    { name: 'Serial Number', placeholder: 'Optional — helps processing', required: false },
+  ],
+  mdm: [
+    { name: 'IMEI or Serial Number', placeholder: 'Device identifier', required: true, hint: 'Found in Settings → About' },
+    { name: 'Device Model', placeholder: 'e.g. iPad Air 5', required: true },
+    { name: 'Lock Type', placeholder: 'e.g. iCloud / MDM / Knox', required: true },
+  ],
+  tools: [
+    { name: 'Account Email', placeholder: 'Email for tool activation', required: true, hint: 'This is where your license is bound' },
+    { name: 'License Duration', placeholder: '1 / 3 / 6 / 12 months', required: true },
+    { name: 'Existing User?', placeholder: 'Yes / No', required: false },
+  ],
+  credits: [
+    { name: 'Account Username', placeholder: 'Your tool username', required: true, hint: 'Verify your username on the tool panel first' },
+    { name: 'Credit Amount', placeholder: 'e.g. 100, 500, 1000', required: true },
+  ],
+  dongle: [
+    { name: 'Dongle Serial Number', placeholder: 'Printed on your dongle', required: true, hint: 'Look for the S/N on the dongle body' },
+    { name: 'Activation Type', placeholder: 'Renewal / New / Upgrade', required: true },
+    { name: 'Registered Email', placeholder: 'Email on file with the tool', required: false },
+  ],
+  digital: [
+    { name: 'Recipient Email', placeholder: 'Where to deliver the code', required: true },
+    { name: 'Region', placeholder: 'e.g. US, UK, Global', required: true },
+    { name: 'Notes', placeholder: 'Any specific requirement', required: false },
+  ],
+  social: [
+    { name: 'Profile URL', placeholder: 'https://instagram.com/username', required: true, hint: 'Profile must be public' },
+    { name: 'Service Type', placeholder: 'Followers / Likes / Views', required: true },
+  ],
+  dhru: [
+    { name: 'Registered Email', placeholder: 'Email on your DHRU license', required: true },
+    { name: 'License Key', placeholder: 'Existing key (if renewal)', required: false },
+    { name: 'Domain / Panel URL', placeholder: 'Where to activate', required: false },
+  ],
+};
+
+/* ============================================================
+   READ URL PARAMS
+   ============================================================ */
+const params = new URLSearchParams(window.location.search);
+const cat = params.get('cat') || 'unlock';
+const productName = params.get('name') || 'Unknown Service';
+const basePrice = parseFloat(params.get('price') || '0');
+
+const meta = CAT_META[cat] || CAT_META.unlock;
+
+/* ============================================================
+   RENDER PAGE HEADER
+   ============================================================ */
+document.title = `Order: ${productName} — GSM TECH HUB`;
+document.getElementById('productIcon').textContent = meta.icon;
+document.getElementById('productName').textContent = productName;
+document.getElementById('breadcrumbCat').textContent = meta.name;
+document.getElementById('breadcrumbCat').href = `service.html?cat=${cat}`;
+
+/* ============================================================
+   RENDER DYNAMIC FIELDS
+   ============================================================ */
+const fields = FIELD_MAP[cat] || FIELD_MAP.unlock;
+const container = document.getElementById('dynamicFields');
+
+container.innerHTML = fields.map((f, i) => {
+  const id = `field_${i}`;
+  const fieldId = `input_${i}`;
+  return `
+    <div class="form-group${f.full ? ' full' : ''}">
+      <label class="form-label" for="${fieldId}">
+        ${escapeHtml(f.name)}
+        ${f.required ? '<span class="req">*</span>' : '<span class="optional">Optional</span>'}
+      </label>
+      <input
+        type="text"
+        id="${fieldId}"
+        name="${escapeAttr(f.name)}"
+        class="form-input"
+        placeholder="${escapeAttr(f.placeholder || '')}"
+        ${f.required ? 'required' : ''}
+        ${f.maxlength ? `maxlength="${f.maxlength}"` : ''}
+      >
+      ${f.hint ? `<div class="form-hint"><i class="fas fa-info-circle"></i><span>${escapeHtml(f.hint)}</span></div>` : ''}
+    </div>
+  `;
+}).join('');
+
+/* ============================================================
+   SUMMARY UPDATER
+   ============================================================ */
+const qtyInput = document.getElementById('quantity');
+const prioritySelect = document.getElementById('priority');
+
+function updateSummary() {
+  const qty = Math.max(1, parseInt(qtyInput.value) || 1);
+  const priority = prioritySelect.value;
+  const priorityFee = priority === 'express' ? 2.00 : 0;
+  const unitTotal = basePrice + priorityFee;
+  const total = unitTotal * qty;
+
+  document.getElementById('summaryService').textContent = productName;
+  document.getElementById('summaryCategory').textContent = meta.name;
+  document.getElementById('summaryUnit').textContent = '$' + (basePrice + priorityFee).toFixed(2);
+  document.getElementById('summaryQty').textContent = qty;
+  document.getElementById('summaryPriority').textContent = priority === 'express' ? 'Express' : 'Standard';
+  document.getElementById('summaryTotal').textContent = '$' + total.toFixed(2);
+}
+
+qtyInput.addEventListener('input', updateSummary);
+prioritySelect.addEventListener('change', updateSummary);
+updateSummary();
+
+/* ============================================================
+   FORM SUBMIT
+   ============================================================ */
+document.getElementById('orderForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const errorBox = document.getElementById('formError');
+  errorBox.innerHTML = '';
+
+  const name = document.getElementById('customerName').value.trim();
+  const email = document.getElementById('customerEmail').value.trim();
+  const phone = document.getElementById('customerPhone').value.trim();
+  const qty = parseInt(qtyInput.value) || 1;
+  const priority = prioritySelect.value;
+  const notes = document.getElementById('notes').value.trim();
+  const agree = document.getElementById('agreeTerms').checked;
+
+  // Validate dynamic fields
+  const extraFields = {};
+  let invalid = null;
+  for (let i = 0; i < fields.length; i++) {
+    const input = document.getElementById(`input_${i}`);
+    if (!input) continue;
+    const val = input.value.trim();
+    if (fields[i].required && !val) {
+      input.focus();
+      invalid = input;
+      break;
+    }
+    extraFields[fields[i].name] = val;
+  }
+
+  if (invalid) {
+    showError('Please fill in all required fields.');
+    invalid.style.borderColor = 'rgba(239, 68, 68, 0.6)';
+    invalid.addEventListener('input', () => invalid.style.borderColor = '', { once: true });
+    return;
+  }
+
+  if (!name) { showError('Please enter your full name.'); document.getElementById('customerName').focus(); return; }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('Please enter a valid email address.'); document.getElementById('customerEmail').focus(); return; }
+  if (!agree) { showError('Please agree to the Terms of Service to continue.'); return; }
+
+  const payload = {
+    product_name: productName,
+    category: cat,
+    category_name: meta.name,
+    price: basePrice,
+    priority,
+    quantity: qty,
+    notes,
+    customer_name: name,
+    customer_email: email,
+    customer_phone: phone,
+    fields: extraFields,
+  };
+
+  // Submit
+  const btn = document.getElementById('submitBtn');
+  const btnText = document.getElementById('submitText');
+  btn.disabled = true;
+  btnText.textContent = 'Creating order…';
+  btn.querySelector('i').className = 'fas fa-spinner fa-spin';
+
+  try {
+    const res = await fetch('../api/checkout.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await res.json();
+
+    if (data.status === 'success') {
+      btnText.textContent = 'Redirecting…';
+      btn.querySelector('i').className = 'fas fa-check';
+
+      // Redirect to gateway or success page
+      const url = data.checkout_url || data.redirect || `success.html?ref=${encodeURIComponent(data.reference_id || '')}`;
+      setTimeout(() => { window.location.href = url; }, 400);
+    } else {
+      throw new Error(data.message || 'Order creation failed');
+    }
+  } catch (err) {
+    showError(err.message || 'Something went wrong. Please try again.');
+    btn.disabled = false;
+    btnText.textContent = 'Continue to Payment';
+    btn.querySelector('i').className = 'fas fa-lock';
+  }
+});
+
+function showError(msg) {
+  document.getElementById('formError').innerHTML = `
+    <div class="alert alert-error">
+      <i class="fas fa-circle-exclamation"></i>
+      <span>${escapeHtml(msg)}</span>
+    </div>
+  `;
+  document.getElementById('formError').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+/* ============================================================
+   UTILS
+   ============================================================ */
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = String(str);
+  return d.innerHTML;
+}
+function escapeAttr(str) {
+  return String(str).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+/* ============================================================
+   FADE IN
+   ============================================================ */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.05 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+/* ============================================================
+   MOBILE MENU
+   ============================================================ */
+document.querySelector('.nav-toggle')?.addEventListener('click', () => {
+  const menu = document.querySelector('.nav-links');
+  const isOpen = menu.style.display === 'flex';
+  menu.style.display = isOpen ? 'none' : 'flex';
+  if (!isOpen) {
+    Object.assign(menu.style, {
+      position: 'absolute',
+      top: '66px', left: '0', right: '0',
+      flexDirection: 'column',
+      padding: '16px',
+      background: '#0a0a14',
+      borderBottom: '1px solid #1e1f30',
+      gap: '4px'
+    });
+  }
+});
+</script>
+
+</body>
+</html>
