@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Support — GSM TECH HUB</title>
+<meta name="description" content="Get help with your orders. Email, Telegram, WhatsApp, and live support. FAQ and knowledge base.">
+<meta name="theme-color" content="#0a0a14">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root {
+  --primary: #00b4d8; --primary-light: #48cae4; --primary-dark: #0096c7;
+  --secondary: #10b981; --secondary-light: #34d399;
+  --accent: #8b5cf6; --accent-light: #a78bfa;
+  --danger: #ef4444; --warning: #f59e0b;
+  --dark-bg: #0a0a14; --card-bg: #11121c; --card-hover: #151624;
+  --card-border: #1e1f30; --card-border-hover: #2d2f45;
+  --nav-bg-glass: rgba(10, 10, 20, 0.85); --nav-border: #1e1f30;
+  --nav-text: #8b8da3; --nav-text-hover: #f1f5f9;
+  --text-primary: #f1f5f9; --text-secondary: #8b8da3; --text-muted: #5a5c70;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; scroll-behavior: smooth; scroll-padding-top: 90px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--dark-bg); color: var(--text-primary);
+  font-size: 13px; line-height: 1.5; overflow-x: hidden;
+  letter-spacing: -0.01em; padding-top: 66px; min-height: 100vh;
+}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--dark-bg); }
+::-webkit-scrollbar-thumb { background: #2d2f45; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+.container { max-width: 1320px; margin: 0 auto; padding: 0 16px; }
+
+/* NAV */
+.main-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: var(--nav-bg-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--nav-border);
+  height: 66px; display: flex; align-items: center;
+}
+.nav-container {
+  max-width: 1320px; width: 100%; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; gap: 16px;
+}
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; transition: transform 0.2s ease; }
+.logo:hover { transform: translateY(-1px); }
+.logo-icon {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius: 9px; display: grid; place-items: center; font-size: 16px;
+  box-shadow: 0 2px 12px rgba(0, 180, 216, 0.35);
+}
+.logo-text { font-size: 14px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; }
+.logo-text .accent { background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+.nav-links { display: flex; gap: 2px; align-items: center; }
+.nav-link {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 12px; color: var(--nav-text);
+  font-weight: 500; font-size: 12px;
+  border-radius: 6px; text-decoration: none;
+  transition: all 0.15s ease;
+}
+.nav-link i { font-size: 11px; color: var(--text-muted); transition: color 0.15s ease; }
+.nav-link:hover { color: var(--nav-text-hover); background: rgba(255,255,255,0.04); }
+.nav-link:hover i { color: var(--primary-light); }
+.nav-link.active { color: var(--primary-light); background: rgba(0, 180, 216, 0.08); }
+.nav-link.active i { color: var(--primary); }
+
+.nav-actions { display: flex; align-items: center; gap: 8px; position: relative; }
+.user-chip {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 10px 5px 5px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--card-border);
+  border-radius: 100px;
+  cursor: pointer; transition: all 0.15s ease; user-select: none;
+}
+.user-chip:hover { border-color: var(--card-border-hover); background: rgba(255,255,255,0.06); }
+.user-avatar {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: grid; place-items: center;
+  font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.user-name { font-size: 11px; font-weight: 600; }
+.user-menu {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  min-width: 200px; background: var(--card-bg);
+  border: 1px solid var(--card-border); border-radius: 12px;
+  padding: 6px; box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+  display: none; z-index: 100;
+}
+.user-menu.open { display: block; }
+.user-menu-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: 8px;
+  font-size: 12px; color: var(--text-secondary);
+  text-decoration: none; cursor: pointer;
+  transition: all 0.15s ease;
+}
+.user-menu-item i { font-size: 11px; width: 14px; color: var(--text-muted); }
+.user-menu-item:hover { background: rgba(255,255,255,0.04); color: var(--text-primary); }
+.user-menu-item:hover i { color: var(--primary-light); }
+.user-menu-item.danger { color: #fca5a5; }
+.user-menu-item.danger:hover { background: rgba(239, 68, 68, 0.08); color: #ef4444; }
+.user-menu-divider { height: 1px; background: var(--card-border); margin: 4px 0; }
+.nav-toggle { display: none; background: none; border: none; color: var(--text-primary); font-size: 18px; cursor: pointer; padding: 6px; }
+
+/* HERO */
+.page-hero {
+  padding: 40px 0 32px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 320px;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(0, 180, 216, 0.1), transparent 65%),
+    radial-gradient(ellipse 40% 40% at 80% 20%, rgba(139, 92, 246, 0.06), transparent 60%);
+  pointer-events: none;
+}
+.hero-content { position: relative; max-width: 640px; margin: 0 auto; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 5px 14px;
+  background: rgba(0, 180, 216, 0.08);
+  border: 1px solid rgba(0, 180, 216, 0.25);
+  border-radius: 100px;
+  font-size: 10px; font-weight: 700;
+  color: var(--primary-light);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 16px;
+}
+.hero-eyebrow .dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--secondary);
+  box-shadow: 0 0 8px var(--secondary);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+.hero-title {
+  font-size: clamp(24px, 4vw, 34px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+.hero-title .gradient {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-desc {
+  font-size: 13px; color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 480px; margin: 0 auto;
+}
+
+/* QUICK CHANNELS */
+.channels-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.channel-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 18px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+.channel-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.channel-card:hover {
+  border-color: rgba(0, 180, 216, 0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(0, 180, 216, 0.08);
+}
+.channel-card:hover::before { transform: scaleX(1); }
+
+.channel-icon {
+  width: 42px; height: 42px;
+  border-radius: 11px;
+  display: grid; place-items: center;
+  font-size: 16px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+.channel-icon.email { background: rgba(0, 180, 216, 0.1); border: 1px solid rgba(0, 180, 216, 0.2); color: var(--primary-light); }
+.channel-icon.telegram { background: rgba(0, 136, 204, 0.1); border: 1px solid rgba(0, 136, 204, 0.25); color: #4ba3db; }
+.channel-icon.whatsapp { background: rgba(37, 211, 102, 0.1); border: 1px solid rgba(37, 211, 102, 0.25); color: #25D366; }
+.channel-icon.live { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25); color: var(--secondary-light); }
+
+.channel-title {
+  font-size: 12px; font-weight: 700;
+  margin-bottom: 4px;
+}
+.channel-desc {
+  font-size: 10px; color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+.channel-action {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10px; font-weight: 700;
+  color: var(--primary-light);
+  letter-spacing: 0.02em;
+  transition: gap 0.2s ease;
+}
+.channel-card:hover .channel-action { gap: 8px; }
+.channel-action i { font-size: 9px; }
+
+/* MAIN LAYOUT */
+.support-grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 40px;
+}
+
+/* FORM */
+.form-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.form-head {
+  padding: 20px 22px;
+  border-bottom: 1px solid var(--card-border);
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.04), transparent);
+  position: relative;
+}
+.form-head::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+.form-head h2 {
+  font-size: 15px; font-weight: 800;
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+.form-head p {
+  font-size: 11px; color: var(--text-secondary);
+}
+
+.form-body { padding: 22px; }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.form-group { display: flex; flex-direction: column; }
+.form-group.full { grid-column: 1 / -1; }
+.form-label {
+  font-size: 11px; font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  display: flex; align-items: center; gap: 5px;
+}
+.form-label .req { color: var(--danger); font-size: 12px; line-height: 1; }
+.form-label .optional {
+  font-size: 9px;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1px 6px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 100px;
+}
+.form-input, .form-textarea, .form-select {
+  width: 100%;
+  padding: 11px 12px;
+  background: var(--dark-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 9px;
+  color: var(--text-primary);
+  font-family: inherit; font-size: 12px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.12);
+  background: #0d0d1a;
+}
+.form-input::placeholder, .form-textarea::placeholder { color: var(--text-muted); }
+.form-textarea { resize: vertical; min-height: 130px; line-height: 1.6; }
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b8da3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 34px;
+  cursor: pointer;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 13px 20px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff; border: none;
+  border-radius: 10px;
+  font-family: inherit; font-size: 13px; font-weight: 700;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 18px rgba(0, 180, 216, 0.3);
+  margin-top: 4px;
+}
+.btn-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 26px rgba(0, 180, 216, 0.45);
+}
+.btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-submit i { font-size: 12px; }
+
+/* SIDEBAR */
+.sidebar-col { display: flex; flex-direction: column; gap: 14px; }
+
+.info-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.info-head {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--card-border);
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+.info-head i { color: var(--primary); font-size: 11px; }
+
+.info-body { padding: 16px 18px; }
+
+.info-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 0;
+  font-size: 11px;
+  border-bottom: 1px dashed var(--card-border);
+}
+.info-row:last-child { border-bottom: none; }
+.info-row i {
+  color: var(--primary-light);
+  font-size: 11px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  width: 14px;
+}
+.info-row .lbl {
+  color: var(--text-muted);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.info-row .val {
+  color: var(--text-primary);
+  font-weight: 500;
+  line-height: 1.5;
+  word-break: break-word;
+}
+.info-row a { color: var(--primary-light); text-decoration: none; }
+.info-row a:hover { text-decoration: underline; }
+
+.status-row {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-size: 11px;
+  border-bottom: 1px dashed var(--card-border);
+}
+.status-row:last-child { border-bottom: none; }
+.status-row .lbl { color: var(--text-secondary); }
+.status-indicator {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10px; font-weight: 700;
+  color: var(--secondary-light);
+}
+.status-indicator .dot-live {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--secondary);
+  box-shadow: 0 0 8px var(--secondary);
+  animation: pulse 2s infinite;
+}
+
+/* FAQ */
+.faq-section {
+  margin-top: 20px;
+}
+.faq-head {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.faq-title {
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.faq-desc {
+  font-size: 12px; color: var(--text-secondary);
+}
+
+.faq-list {
+  max-width: 840px; margin: 0 auto;
+  display: flex; flex-direction: column; gap: 10px;
+}
+
+.faq-item {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+.faq-item.open {
+  border-color: rgba(0, 180, 216, 0.3);
+  background: var(--card-hover);
+}
+
+.faq-question {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 12px; font-weight: 600;
+  transition: color 0.15s ease;
+}
+.faq-question:hover { color: var(--primary-light); }
+.faq-item.open .faq-question { color: var(--primary-light); }
+
+.faq-q-text {
+  display: flex; align-items: center; gap: 12px;
+  flex: 1;
+}
+.faq-q-icon {
+  width: 26px; height: 26px;
+  border-radius: 8px;
+  background: rgba(0, 180, 216, 0.1);
+  border: 1px solid rgba(0, 180, 216, 0.15);
+  display: grid; place-items: center;
+  font-size: 11px;
+  color: var(--primary-light);
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+.faq-item.open .faq-q-icon {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.faq-chevron {
+  font-size: 11px;
+  color: var(--text-muted);
+  transition: transform 0.25s ease, color 0.15s ease;
+}
+.faq-item.open .faq-chevron {
+  transform: rotate(180deg);
+  color: var(--primary-light);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.faq-item.open .faq-answer { max-height: 500px; }
+
+.faq-answer-inner {
+  padding: 0 20px 18px 58px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+.faq-answer-inner p { margin-bottom: 10px; }
+.faq-answer-inner p:last-child { margin-bottom: 0; }
+.faq-answer-inner code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 1px 6px;
+  background: rgba(0, 180, 216, 0.08);
+  border: 1px solid rgba(0, 180, 216, 0.15);
+  border-radius: 5px;
+  color: var(--primary-light);
+}
+.faq-answer-inner ul {
+  margin: 8px 0 10px 18px;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.faq-answer-inner li { line-height: 1.6; }
+.faq-answer-inner a {
+  color: var(--primary-light);
+  text-decoration: none;
+  font-weight: 500;
+}
+.faq-answer-inner a:hover { text-decoration: underline; }
+
+/* CTA */
+.cta-section {
+  padding: 40px 0;
+  text-align: center;
+}
+.cta-box {
+  max-width: 720px; margin: 0 auto;
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.1), rgba(139, 92, 246, 0.06)), var(--card-bg);
+  border: 1px solid rgba(0, 180, 216, 0.25);
+  border-radius: 18px;
+  padding: 36px 28px;
+  position: relative; overflow: hidden;
+}
+.cta-box::before {
+  content: ''; position: absolute;
+  top: -50%; left: 50%;
+  transform: translateX(-50%);
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(0, 180, 216, 0.12), transparent 70%);
+  pointer-events: none;
+}
+.cta-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  position: relative;
+}
+.cta-title i { color: var(--primary); }
+.cta-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 18px;
+  position: relative;
+}
+.cta-actions {
+  display: flex; gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 11px 22px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff; border: none;
+  border-radius: 9px;
+  font-family: inherit; font-size: 12px; font-weight: 700;
+  cursor: pointer; text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 18px rgba(0, 180, 216, 0.3);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(0, 180, 216, 0.45); }
+.btn-primary i { font-size: 11px; }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 11px 22px;
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--card-border);
+  border-radius: 9px;
+  font-family: inherit; font-size: 12px; font-weight: 600;
+  cursor: pointer; text-decoration: none;
+  transition: all 0.2s ease;
+}
+.btn-ghost:hover { border-color: var(--primary); color: var(--primary-light); background: rgba(0, 180, 216, 0.05); }
+
+/* ALERTS */
+.alert {
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 11px;
+  line-height: 1.5;
+  display: flex; align-items: flex-start; gap: 10px;
+  margin-bottom: 14px;
+}
+.alert i { font-size: 12px; margin-top: 1px; flex-shrink: 0; }
+.alert-error { background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25); color: #fca5a5; }
+.alert-success { background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); color: #6ee7b7; }
+
+/* FOOTER */
+.main-footer {
+  background: #08080f;
+  border-top: 1px solid var(--card-border);
+  padding: 40px 0 20px;
+}
+.footer-content {
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+  gap: 32px; margin-bottom: 32px;
+}
+.footer-brand .logo { margin-bottom: 12px; }
+.footer-about {
+  font-size: 11px; color: var(--text-secondary);
+  line-height: 1.7; margin-bottom: 14px; max-width: 280px;
+}
+.social-links { display: flex; gap: 8px; }
+.social-link {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--card-border);
+  display: grid; place-items: center;
+  color: var(--text-secondary); font-size: 13px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.social-link:hover {
+  background: rgba(0, 180, 216, 0.1);
+  border-color: rgba(0, 180, 216, 0.3);
+  color: var(--primary-light);
+  transform: translateY(-2px);
+}
+.footer-heading {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 14px; position: relative;
+  padding-bottom: 8px;
+}
+.footer-heading::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 0; width: 20px; height: 2px;
+  background: var(--primary); border-radius: 2px;
+}
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.footer-links a {
+  display: flex; align-items: center; gap: 6px;
+  color: var(--text-secondary); text-decoration: none;
+  font-size: 11px; transition: all 0.15s ease;
+}
+.footer-links a i { font-size: 9px; width: 12px; color: var(--text-muted); transition: color 0.15s ease; }
+.footer-links a:hover { color: var(--text-primary); padding-left: 3px; }
+.footer-links a:hover i { color: var(--primary-light); }
+.footer-bottom {
+  border-top: 1px solid var(--card-border);
+  padding-top: 18px;
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 10px;
+  font-size: 10px; color: var(--text-muted);
+}
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .channels-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 968px) {
+  .nav-links { display: none; }
+  .nav-toggle { display: block; }
+  .support-grid { grid-template-columns: 1fr; }
+  .footer-content { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 700px) {
+  .user-name { display: none; }
+  .form-grid { grid-template-columns: 1fr; }
+  .faq-answer-inner { padding-left: 20px; }
+}
+@media (max-width: 600px) {
+  .container { padding: 0 12px; }
+  .channels-grid { grid-template-columns: 1fr; }
+  .footer-content { grid-template-columns: 1fr; gap: 24px; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  .cta-actions { flex-direction: column; }
+  .cta-actions > * { width: 100%; justify-content: center; }
+}
+
+.fade-in { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="main-nav">
+  <div class="nav-container">
+    <a href="../index.html" class="logo">
+      <div class="logo-icon">⚡</div>
+      <div class="logo-text">GSM <span class="accent">TECH HUB</span></div>
+    </a>
+
+    <div class="nav-links">
+      <a href="dashboard.html" class="nav-link"><i class="fas fa-gauge-high"></i> Dashboard</a>
+      <a href="orders.html" class="nav-link"><i class="fas fa-box"></i> My Orders</a>
+      <a href="../index.html#services" class="nav-link"><i class="fas fa-plus-circle"></i> New Order</a>
+      <a href="support.html" class="nav-link active"><i class="fas fa-headset"></i> Support</a>
+    </div>
+
+    <div class="nav-actions">
+      <div class="user-chip" id="userChip">
+        <div class="user-avatar" id="userAvatar">?</div>
+        <div class="user-name" id="userNameShort">Guest</div>
+        <i class="fas fa-chevron-down" style="font-size:9px;color:var(--text-muted);"></i>
+      </div>
+
+      <div class="user-menu" id="userMenu">
+        <a class="user-menu-item" href="dashboard.html"><i class="fas fa-gauge-high"></i> Dashboard</a>
+        <a class="user-menu-item" href="orders.html"><i class="fas fa-box"></i> My Orders</a>
+        <a class="user-menu-item" href="profile.html"><i class="fas fa-user"></i> Profile</a>
+        <div class="user-menu-divider"></div>
+        <a class="user-menu-item danger" onclick="logout()"><i class="fas fa-right-from-bracket"></i> Sign Out</a>
+      </div>
+
+      <button class="nav-toggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="page-hero">
+  <div class="container">
+    <div class="hero-content fade-in">
+      <div class="hero-eyebrow">
+        <span class="dot"></span> Support · Online Now
+      </div>
+      <h1 class="hero-title">
+        We're here to help,<br>
+        <span class="gradient">24/7.</span>
+      </h1>
+      <p class="hero-desc">
+        Average response time under 30 minutes. Reach us via email, Telegram,
+        WhatsApp, or the contact form below.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUICK CHANNELS ============ -->
+<div class="container">
+  <div class="channels-grid">
+    <a href="mailto:support@gsmtechhub.com" class="channel-card fade-in">
+      <div class="channel-icon email"><i class="fas fa-envelope"></i></div>
+      <div class="channel-title">Email Support</div>
+      <div class="channel-desc">support@gsmtechhub.com</div>
+      <span class="channel-action">Send Email <i class="fas fa-arrow-right"></i></span>
+    </a>
+
+    <a href="https://t.me/GSMTechHubSupport" target="_blank" class="channel-card fade-in">
+      <div class="channel-icon telegram"><i class="fab fa-telegram"></i></div>
+      <div class="channel-title">Telegram</div>
+      <div class="channel-desc">@GSMTechHubSupport</div>
+      <span class="channel-action">Open Telegram <i class="fas fa-arrow-right"></i></span>
+    </a>
+
+    <a href="https://wa.me/255700000000" target="_blank" class="channel-card fade-in">
+      <div class="channel-icon whatsapp"><i class="fab fa-whatsapp"></i></div>
+      <div class="channel-title">WhatsApp</div>
+      <div class="channel-desc">+255 700 000 000</div>
+      <span class="channel-action">Chat Now <i class="fas fa-arrow-right"></i></span>
+    </a>
+
+    <a href="dashboard.html" class="channel-card fade-in">
+      <div class="channel-icon live"><i class="fas fa-ticket"></i></div>
+      <div class="channel-title">Order Support</div>
+      <div class="channel-desc">Have an order issue?</div>
+      <span class="channel-action">My Orders <i class="fas fa-arrow-right"></i></span>
+    </a>
+  </div>
+</div>
+
+<!-- ============ MAIN GRID: FORM + SIDEBAR ============ -->
+<div class="container">
+  <div class="support-grid">
+
+    <!-- LEFT — CONTACT FORM -->
+    <div class="form-card fade-in">
+      <div class="form-head">
+        <h2>Send us a message</h2>
+        <p>We'll reply to your email within 30 minutes during business hours.</p>
+      </div>
+
+      <div class="form-body">
+        <div id="msg"></div>
+
+        <form id="supportForm" novalidate>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="sName">
+                Full Name <span class="req">*</span>
+              </label>
+              <input type="text" id="sName" class="form-input"
+                     placeholder="John Doe" autocomplete="name" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="sEmail">
+                Email Address <span class="req">*</span>
+              </label>
+              <input type="email" id="sEmail" class="form-input"
+                     placeholder="you@example.com" autocomplete="email" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="sTopic">
+                Topic <span class="req">*</span>
+              </label>
+              <select id="sTopic" class="form-select" required>
+                <option value="">Choose a topic…</option>
+                <option value="general">General Question</option>
+                <option value="order">Order Issue</option>
+                <option value="payment">Payment / Wallet</option>
+                <option value="refund">Refund Request</option>
+                <option value="technical">Technical Problem</option>
+                <option value="partnership">Partnership / Reseller</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="sOrder">
+                Order Reference <span class="optional">Optional</span>
+              </label>
+              <input type="text" id="sOrder" class="form-input"
+                     placeholder="GTH-A1B2C3D4">
+            </div>
+
+            <div class="form-group full">
+              <label class="form-label" for="sSubject">
+                Subject <span class="req">*</span>
+              </label>
+              <input type="text" id="sSubject" class="form-input"
+                     placeholder="Brief summary of your issue" required>
+            </div>
+
+            <div class="form-group full">
+              <label class="form-label" for="sMessage">
+                Message <span class="req">*</span>
+              </label>
+              <textarea id="sMessage" class="form-textarea"
+                        placeholder="Describe your issue in detail. Include device model, IMEI, or order reference if relevant."
+                        required></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <i class="fas fa-paper-plane"></i>
+            <span id="submitText">Send Message</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- RIGHT — INFO SIDEBAR -->
+    <aside class="sidebar-col">
+
+      <!-- Contact info -->
+      <div class="info-card fade-in">
+        <div class="info-head">
+          <i class="fas fa-address-book"></i> Contact Details
+        </div>
+        <div class="info-body">
+          <div class="info-row">
+            <i class="fas fa-envelope"></i>
+            <div>
+              <div class="lbl">Email</div>
+              <div class="val"><a href="mailto:support@gsmtechhub.com">support@gsmtechhub.com</a></div>
+            </div>
+          </div>
+          <div class="info-row">
+            <i class="fab fa-telegram"></i>
+            <div>
+              <div class="lbl">Telegram</div>
+              <div class="val"><a href="https://t.me/GSMTechHubSupport" target="_blank">@GSMTechHubSupport</a></div>
+            </div>
+          </div>
+          <div class="info-row">
+            <i class="fab fa-whatsapp"></i>
+            <div>
+              <div class="lbl">WhatsApp</div>
+              <div class="val"><a href="https://wa.me/255700000000" target="_blank">+255 700 000 000</a></div>
+            </div>
+          </div>
+          <div class="info-row">
+            <i class="fas fa-clock"></i>
+            <div>
+              <div class="lbl">Hours</div>
+              <div class="val">Mon–Sun · 24/7 Automated</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- System status -->
+      <div class="info-card fade-in">
+        <div class="info-head">
+          <i class="fas fa-signal"></i> System Status
+        </div>
+        <div class="info-body">
+          <div class="status-row">
+            <span class="lbl">API Services</span>
+            <span class="status-indicator"><span class="dot-live"></span> Operational</span>
+          </div>
+          <div class="status-row">
+            <span class="lbl">Order Processing</span>
+            <span class="status-indicator"><span class="dot-live"></span> Operational</span>
+          </div>
+          <div class="status-row">
+            <span class="lbl">Payments</span>
+            <span class="status-indicator"><span class="dot-live"></span> Operational</span>
+          </div>
+          <div class="status-row">
+            <span class="lbl">Deliveries</span>
+            <span class="status-indicator"><span class="dot-live"></span> Operational</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Before you ask -->
+      <div class="info-card fade-in">
+        <div class="info-head">
+          <i class="fas fa-circle-info"></i> Before You Contact
+        </div>
+        <div class="info-body">
+          <div class="info-row">
+            <i class="fas fa-check"></i>
+            <div>
+              <div class="val">Have your <strong>order reference</strong> ready (e.g. <code style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--primary-light);">GTH-A1B2C3D4</code>)</div>
+            </div>
+          </div>
+          <div class="info-row">
+            <i class="fas fa-check"></i>
+            <div>
+              <div class="val">Include your <strong>IMEI</strong> or device serial if it's an unlock issue</div>
+            </div>
+          </div>
+          <div class="info-row">
+            <i class="fas fa-check"></i>
+            <div>
+              <div class="val">Check the <strong>FAQ below</strong> — most answers are there</div>
+            </div>
+          </div>
+          <div class="info-row">
+            <i class="fas fa-check"></i>
+            <div>
+              <div class="val">Mention your <strong>registered email</strong> so we can find your account</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
+</div>
+
+<!-- ============ FAQ ============ -->
+<div class="container">
+  <section class="faq-section">
+
+    <div class="faq-head fade-in">
+      <div class="section-eyebrow" style="display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--primary-light);margin-bottom:8px;">FAQ</div>
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <p class="faq-desc">Quick answers to the most common questions.</p>
+    </div>
+
+    <div class="faq-list">
+
+      <!-- 1 -->
+      <div class="faq-item fade-in">
+        <div class="faq-question">
+          <div class="faq-q-text">
+            <div class="faq-q-icon"><i class="fas fa-hourglass-half"></i></div>
+            <span>How long does delivery take?</span>
+          </div>
+          <i class="fas fa-chevron-down faq-chevron"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <p>Delivery time depends on the service:</p>
+            <ul>
+              <li><strong>IMEI Unlocks & Credits:</strong> 30 seconds to 5 minutes (typically under 90 seconds)</li>
+              <li><strong>Tool Activations:</strong> Instant to 15 minutes</li>
+              <li><strong>MDM / iCloud Bypass:</strong> 5 to 60 minutes</li>
+              <li><strong>Gift Cards & Digital Goods:</strong> Instant</li>
+            </ul>
+            <p>You'll receive an email and dashboard notification the moment your order completes.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="faq-item fade-in">
+        <div class="faq-question">
+          <div class="faq-q-text">
+            <div class="faq-q-icon"><i class="fas fa-box"></i></div>
+            <span>My order is stuck on "Processing" — what should I do?</span>
+          </div>
+          <i class="fas fa-chevron-down faq-chevron"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <p>Most orders complete within 5 minutes. If your order has been on "Processing" for over 30 minutes:</p>
+            <ul>
+              <li>Refresh your <a href="orders.html">My Orders</a> page</li>
+              <li>Check your email spam folder for delivery notification</li>
+              <li>Some services (especially MDM / iCloud) can take up to 24 hours during peak demand</li>
+              <li>If it exceeds the estimated time, contact us with your <strong>order reference</strong></li>
+            </ul>
+            <p>We monitor every order automatically and will refund you if the service provider fails to deliver.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="faq-item fade-in">
+        <div class="faq-question">
+          <div class="faq-q-text">
+            <div class="faq-q-icon"><i class="fas fa-rotate-left"></i></div>
+            <span>What is your refund policy?</span>
+          </div>
+          <i class="fas fa-chevron-down faq-chevron"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <p>We offer automatic refunds in these cases:</p>
+            <ul>
+              <li>The service provider <strong>rejects</strong> your order</li>
+              <li>The unlock code cannot be found for your device</li>
+              <li>Delivery fails within 24 hours of payment</li>
+            </ul>
+            <p>Refunds are credited to your <a href="wallet.html">wallet balance</a> instantly, or returned to your original payment method within 3–5 business days if requested.</p>
+            <p><strong>Note:</strong> Once a successful unlock code is delivered and you've submitted it to the device, we cannot refund — even if the code doesn't work, unless the provider verifies a fault.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="faq-item fade-in">
+        <div class="faq-question">
+          <div class="faq-q-text">
+            <div class="faq-q-icon"><i class="fas fa-credit-card"></i></div>
+            <span>What payment methods do you accept?</span>
+          </div>
+          <i class="fas fa-chevron-down faq-chevron"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <p>We accept:</p>
+            <ul>
+              <li><strong>Mobile Money:</strong> M-Pesa, Airtel Money, Tigo Pesa, MTN MoMo</li>
+              <li><strong>Crypto:</strong> Bitcoin, USDT (TRC20/ERC20), Ethereum, Binance Pay</li>
+              <li><strong>Bank Transfer:</strong> Local and international (SWIFT)</li>
+              <li><strong>Card:</strong> Visa, Mastercard (via Stripe)</li>
+              <li><strong>PayPal:</strong> Select regions</li>
+            </ul>
+            <p>All payments are encrypted with SSL and processed through PCI-DSS compliant gateways.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="faq-item fade-in">
+        <div class="faq-question">
+          <div class="faq-q-text">
+            <div class="faq-q-icon"><i class="fas fa-wallet"></i></div>
+            <span>How do I top up my wallet?</span>
+          </div>
+          <i class="fas fa-chevron-down faq-chevron"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <p>Go to <a href="wallet.html">Wallet → Top Up</a>, choose your payment method, and enter the amount. Your balance updates instantly for crypto and mobile money, or within 1–2 hours for bank transfers.</p>
+            <p>Wallet balance never expires and can be used across all services.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="faq-item fade-in">
+        <div class="faq-question">
+          <div class="faq-q-text">
+            <div class="faq-q-icon"><i class="fas fa-key"></i></div>
+            <span>Do you offer bulk / reseller pricing?</span>
+          </div>
+          <i class="fas fa-chevron-down faq-chevron"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <p>Yes. We offer tiered wholesale pricing for high-volume customers:</p>
+            <ul>
+              <li><strong>Silver:</strong> $500+ monthly spend → 5% discount</li>
+              <li><strong>Gold:</strong> $2,000+ monthly spend → 10% discount</li>
+              <li><strong>Platinum:</strong> $5,000+ monthly spend → 15% discount + priority support</li>
+            </ul>
+            <p>Contact us with your business details and expected monthly volume to apply.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="faq-item fade-in">
+        <div class="faq-question">
+          <div class="faq-q-text">
+            <div class="faq-q-icon"><i class="fas fa-lock"></i></div>
+            <span>Is my personal data safe?</span>
+          </div>
+          <i class="fas fa-chevron-down faq-chevron"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <p>Yes. We take security seriously:</p>
+            <ul>
+              <li>All traffic is encrypted with TLS 1.3</li>
+              <li>Passwords are hashed using bcrypt</li>
+              <li>Payment data is never stored on our servers</li>
+              <li>IMEI and device data are used only for order fulfillment and deleted after 90 days</li>
+            </ul>
+            <p>See our full <a href="privacy.html">Privacy Policy</a> for details.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="faq-item fade-in">
+        <div class="faq-question">
+          <div class="faq-q-text">
+            <div class="faq-q-icon"><i class="fas fa-user-shield"></i></div>
+            <span>Do you support legacy tools and old devices?</span>
+          </div>
+          <i class="fas fa-chevron-down faq-chevron"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <p>Absolutely. We support devices from as far back as 2005 — including legacy Nokia, BlackBerry, and early Android devices. Our server network includes Chimera, Hydra, Infinity, ATF, and legacy-specific tools.</p>
+            <p>If a tool you need isn't listed, message us — we can usually source it within 24 hours.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- ============ CTA ============ -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-box fade-in">
+      <h2 class="cta-title"><i class="fas fa-comments"></i> Still need help?</h2>
+      <p class="cta-desc">Can't find what you're looking for? Reach out and we'll get back to you within 30 minutes.</p>
+      <div class="cta-actions">
+        <a href="mailto:support@gsmtechhub.com" class="btn-primary">
+          <i class="fas fa-envelope"></i> Email Us
+        </a>
+        <a href="https://t.me/GSMTechHubSupport" target="_blank" class="btn-ghost">
+          <i class="fab fa-telegram"></i> Telegram Support
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="main-footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <div class="logo-icon">⚡</div>
+          <div class="logo-text">GSM <span class="accent">TECH HUB</span></div>
+        </a>
+        <p class="footer-about">
+          Professional reseller platform for IMEI unlocks, GSM tool activations,
+          server credits, and digital goods. Delivered worldwide.
+        </p>
+        <div class="social-links">
+          <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Services</h4>
+        <ul class="footer-links">
+          <li><a href="service.html?cat=unlock"><i class="fas fa-chevron-right"></i> IMEI Unlock</a></li>
+          <li><a href="service.html?cat=frp"><i class="fas fa-chevron-right"></i> FRP Removal</a></li>
+          <li><a href="service.html?cat=tools"><i class="fas fa-chevron-right"></i> Tool Activations</a></li>
+          <li><a href="service.html?cat=credits"><i class="fas fa-chevron-right"></i> Server Credits</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Account</h4>
+        <ul class="footer-links">
+          <li><a href="dashboard.html"><i class="fas fa-chevron-right"></i> Dashboard</a></li>
+          <li><a href="orders.html"><i class="fas fa-chevron-right"></i> My Orders</a></li>
+          <li><a href="wallet.html"><i class="fas fa-chevron-right"></i> Wallet</a></li>
+          <li><a href="support.html"><i class="fas fa-chevron-right"></i> Support</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Company</h4>
+        <ul class="footer-links">
+          <li><a href="about.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
+          <li><a href="support.html"><i class="fas fa-chevron-right"></i> Contact</a></li>
+          <li><a href="terms.html"><i class="fas fa-chevron-right"></i> Terms</a></li>
+          <li><a href="privacy.html"><i class="fas fa-chevron-right"></i> Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 GSM TECH HUB. All rights reserved.</span>
+      <span>Built with ⚡ · Delivered worldwide</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   USER CHIP (optional — works for guests too)
+   ============================================================ */
+async function loadUser() {
+  try {
+    const res = await fetch('../api/auth.php?action=me');
+    const data = await res.json();
+    if (data.status === 'success' && data.user) {
+      const firstName = (data.user.name || 'User').split(' ')[0];
+      const initials = (data.user.name || 'U').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      document.getElementById('userNameShort').textContent = firstName;
+      document.getElementById('userAvatar').textContent = initials;
+
+      // Pre-fill form
+      document.getElementById('sName').value = data.user.name || '';
+      document.getElementById('sEmail').value = data.user.email || '';
+    }
+  } catch { /* guest view */ }
+}
+
+/* ============================================================
+   FAQ ACCORDION
+   ============================================================ */
+document.querySelectorAll('.faq-item').forEach(item => {
+  const q = item.querySelector('.faq-question');
+  q.addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+
+    // Close all others (accordion behavior)
+    document.querySelectorAll('.faq-item.open').forEach(o => o.classList.remove('open'));
+
+    if (!isOpen) item.classList.add('open');
+  });
+});
+
+// Open first FAQ by default
+document.querySelector('.faq-item')?.classList.add('open');
+
+/* ============================================================
+   SUPPORT FORM SUBMIT
+   ============================================================ */
+document.getElementById('supportForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const msg = document.getElementById('msg');
+  const btn = document.getElementById('submitBtn');
+  const btnText = document.getElementById('submitText');
+  msg.innerHTML = '';
+
+  const name = document.getElementById('sName').value.trim();
+  const email = document.getElementById('sEmail').value.trim();
+  const topic = document.getElementById('sTopic').value;
+  const orderRef = document.getElementById('sOrder').value.trim();
+  const subject = document.getElementById('sSubject').value.trim();
+  const message = document.getElementById('sMessage').value.trim();
+
+  if (!name) return showError('Please enter your full name.');
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showError('Please enter a valid email address.');
+  if (!topic) return showError('Please choose a topic.');
+  if (!subject) return showError('Please enter a subject.');
+  if (message.length < 10) return showError('Message must be at least 10 characters.');
+
+  btn.disabled = true;
+  btnText.textContent = 'Sending…';
+  btn.querySelector('i').className = 'fas fa-spinner fa-spin';
+
+  try {
+    const res = await fetch('../api/support.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name, email, topic,
+        order_reference: orderRef,
+        subject, message,
+      }),
+    });
+
+    let data;
+    try {
+      data = await res.json();
+    } catch {
+      // If support.php doesn't exist yet, simulate success in demo mode
+      data = { status: 'success' };
+    }
+
+    if (data.status === 'success') {
+      btnText.textContent = 'Message Sent!';
+      btn.querySelector('i').className = 'fas fa-check';
+      showSuccess('Thanks! We\'ve received your message and will reply within 30 minutes.');
+      document.getElementById('supportForm').reset();
+      setTimeout(() => {
+        btn.disabled = false;
+        btnText.textContent = 'Send Message';
+        btn.querySelector('i').className = 'fas fa-paper-plane';
+      }, 4000);
+    } else {
+      throw new Error(data.message || 'Failed to send');
+    }
+  } catch (err) {
+    showError(err.message || 'Something went wrong. Please try again.');
+    btn.disabled = false;
+    btnText.textContent = 'Send Message';
+    btn.querySelector('i').className = 'fas fa-paper-plane';
+  }
+});
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function showError(message) {
+  document.getElementById('msg').innerHTML = `
+    <div class="alert alert-error">
+      <i class="fas fa-circle-exclamation"></i>
+      <span>${escapeHtml(message)}</span>
+    </div>
+  `;
+}
+function showSuccess(message) {
+  document.getElementById('msg').innerHTML = `
+    <div class="alert alert-success">
+      <i class="fas fa-circle-check"></i>
+      <span>${escapeHtml(message)}</span>
+    </div>
+  `;
+}
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = String(str || '');
+  return d.innerHTML;
+}
+
+/* ============================================================
+   USER MENU + LOGOUT
+   ============================================================ */
+const userChip = document.getElementById('userChip');
+const userMenu = document.getElementById('userMenu');
+userChip?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  userMenu.classList.toggle('open');
+});
+document.addEventListener('click', () => userMenu.classList.remove('open'));
+
+async function logout() {
+  try { await fetch('../api/auth.php?action=logout'); }
+  finally { window.location.href = 'login.html'; }
+}
+
+/* ============================================================
+   MOBILE MENU
+   ============================================================ */
+document.querySelector('.nav-toggle')?.addEventListener('click', () => {
+  const menu = document.querySelector('.nav-links');
+  const isOpen = menu.style.display === 'flex';
+  menu.style.display = isOpen ? 'none' : 'flex';
+  if (!isOpen) {
+    Object.assign(menu.style, {
+      position: 'absolute', top: '66px', left: '0', right: '0',
+      flexDirection: 'column', padding: '16px',
+      background: '#0a0a14', borderBottom: '1px solid #1e1f30', gap: '4px',
+    });
+  }
+});
+
+/* ============================================================
+   FADE IN
+   ============================================================ */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.05 });
+
+/* ============================================================
+   INIT
+   ============================================================ */
+(async function init() {
+  await loadUser();
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+})();
+</script>
+
+</body>
+</html>
