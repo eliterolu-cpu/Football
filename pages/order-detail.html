@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Order Details — GSM TECH HUB</title>
+<meta name="description" content="View full details, status, and delivery of your order.">
+<meta name="theme-color" content="#0a0a14">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root {
+  --primary: #00b4d8; --primary-light: #48cae4; --primary-dark: #0096c7;
+  --secondary: #10b981; --secondary-light: #34d399;
+  --accent: #8b5cf6; --accent-light: #a78bfa;
+  --danger: #ef4444; --warning: #f59e0b;
+  --dark-bg: #0a0a14; --card-bg: #11121c; --card-hover: #151624;
+  --card-border: #1e1f30; --card-border-hover: #2d2f45;
+  --nav-bg-glass: rgba(10, 10, 20, 0.85); --nav-border: #1e1f30;
+  --nav-text: #8b8da3; --nav-text-hover: #f1f5f9;
+  --text-primary: #f1f5f9; --text-secondary: #8b8da3; --text-muted: #5a5c70;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--dark-bg); color: var(--text-primary);
+  font-size: 13px; line-height: 1.5; overflow-x: hidden;
+  letter-spacing: -0.01em; padding-top: 66px; min-height: 100vh;
+}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--dark-bg); }
+::-webkit-scrollbar-thumb { background: #2d2f45; border-radius: 3px; }
+.container { max-width: 1320px; margin: 0 auto; padding: 0 16px; }
+
+/* NAV */
+.main-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: var(--nav-bg-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--nav-border);
+  height: 66px; display: flex; align-items: center;
+}
+.nav-container {
+  max-width: 1320px; width: 100%; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; gap: 16px;
+}
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; }
+.logo-icon {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius: 9px; display: grid; place-items: center; font-size: 16px;
+  box-shadow: 0 2px 12px rgba(0, 180, 216, 0.35);
+}
+.logo-text { font-size: 14px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; }
+.logo-text .accent { background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.nav-links { display: flex; gap: 2px; align-items: center; }
+.nav-link {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 12px; color: var(--nav-text);
+  font-weight: 500; font-size: 12px;
+  border-radius: 6px; text-decoration: none;
+  transition: all 0.15s ease;
+}
+.nav-link i { font-size: 11px; color: var(--text-muted); }
+.nav-link:hover { color: var(--nav-text-hover); background: rgba(255,255,255,0.04); }
+.nav-link:hover i { color: var(--primary-light); }
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+.btn-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px; color: var(--text-secondary);
+  border: 1px solid var(--card-border); border-radius: 7px;
+  font-size: 11px; font-weight: 600;
+  text-decoration: none; transition: all 0.15s ease;
+}
+.btn-back:hover { border-color: var(--primary); color: var(--primary-light); }
+.nav-toggle { display: none; background: none; border: none; color: var(--text-primary); font-size: 18px; cursor: pointer; padding: 6px; }
+
+/* PAGE HEAD */
+.page-head { padding: 24px 0 20px; }
+.breadcrumb {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; color: var(--text-muted);
+  margin-bottom: 12px;
+}
+.breadcrumb a { color: var(--text-secondary); text-decoration: none; }
+.breadcrumb a:hover { color: var(--primary-light); }
+.breadcrumb i { font-size: 8px; }
+.breadcrumb .current { color: var(--primary-light); font-weight: 600; }
+.head-row {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; gap: 16px; flex-wrap: wrap;
+}
+.head-title {
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 800; letter-spacing: -0.02em;
+  margin-bottom: 6px;
+  display: flex; align-items: center; gap: 10px;
+  flex-wrap: wrap;
+}
+.head-ref {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--primary-light);
+  padding: 4px 10px;
+  background: rgba(0, 180, 216, 0.08);
+  border: 1px solid rgba(0, 180, 216, 0.2);
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.head-ref:hover { background: rgba(0, 180, 216, 0.15); }
+.head-sub { font-size: 12px; color: var(--text-secondary); }
+.head-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 16px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff; border: none; border-radius: 9px;
+  font-family: inherit; font-size: 12px; font-weight: 700;
+  cursor: pointer; text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(0, 180, 216, 0.3);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0, 180, 216, 0.45); }
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 16px; background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--card-border);
+  border-radius: 9px;
+  font-family: inherit; font-size: 12px; font-weight: 600;
+  cursor: pointer; text-decoration: none;
+  transition: all 0.2s ease;
+}
+.btn-ghost:hover { border-color: var(--primary); color: var(--primary-light); }
+
+/* STATUS TIMELINE */
+.status-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.status-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+.status-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.status-badge-lg {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 16px; border-radius: 100px;
+  font-size: 12px; font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.status-badge-lg i { font-size: 12px; }
+.status-badge-lg.success { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3); }
+.status-badge-lg.pending { background: rgba(245, 158, 11, 0.15); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.3); }
+.status-badge-lg.processing { background: rgba(0, 180, 216, 0.15); color: #48cae4; border: 1px solid rgba(0, 180, 216, 0.3); }
+.status-badge-lg.failed { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+.status-elapsed {
+  font-size: 11px; color: var(--text-muted);
+}
+
+/* PROGRESS STEPS */
+.progress-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+}
+.progress-steps::before {
+  content: '';
+  position: absolute;
+  top: 22px; left: 8%; right: 8%;
+  height: 2px;
+  background: var(--card-border);
+  z-index: 0;
+}
+.progress-fill {
+  position: absolute;
+  top: 22px; left: 8%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  z-index: 1;
+  transition: width 0.8s ease;
+}
+
+.step {
+  position: relative;
+  z-index: 2;
+  display: flex; flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 0 6px;
+}
+.step-icon {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  display: grid; place-items: center;
+  font-size: 14px;
+  color: var(--text-muted);
+  transition: all 0.3s ease;
+}
+.step.done .step-icon {
+  background: linear-gradient(135deg, var(--secondary), #059669);
+  border-color: var(--secondary);
+  color: #fff;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+}
+.step.active .step-icon {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border-color: var(--primary);
+  color: #fff;
+  box-shadow: 0 0 0 4px rgba(0, 180, 216, 0.2);
+  animation: pulse-step 2s infinite;
+}
+@keyframes pulse-step {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(0, 180, 216, 0.2); }
+  50% { box-shadow: 0 0 0 8px rgba(0, 180, 216, 0.05); }
+}
+.step-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.3;
+}
+.step.done .step-label, .step.active .step-label {
+  color: var(--text-primary);
+}
+.step-time {
+  font-size: 9px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* GRID */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 16px;
+  align-items: start;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.card:last-child { margin-bottom: 0; }
+.card-head {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--card-border);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+.card-title {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.card-title i { color: var(--primary); font-size: 12px; }
+.card-body { padding: 20px; }
+.card-body.no-pad { padding: 0; }
+
+/* INFO ROWS */
+.info-row {
+  display: flex; justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px dashed var(--card-border);
+  font-size: 12px;
+}
+.info-row:last-child { border-bottom: none; padding-bottom: 0; }
+.info-row:first-child { padding-top: 0; }
+.info-row .lbl {
+  color: var(--text-muted);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.info-row .val {
+  color: var(--text-primary);
+  font-weight: 500;
+  text-align: right;
+  word-break: break-word;
+  line-height: 1.5;
+}
+.info-row .val.mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--primary-light);
+}
+
+/* RESULT BOX */
+.result-box {
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(0, 180, 216, 0.04));
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+.result-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--secondary-light);
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.result-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  word-break: break-all;
+  line-height: 1.4;
+  padding: 12px 14px;
+  background: var(--dark-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  letter-spacing: 0.02em;
+}
+.result-actions {
+  display: flex; gap: 6px;
+}
+.btn-copy {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 6px 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 10px; font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.btn-copy:hover { border-color: var(--primary); color: var(--primary-light); }
+.btn-copy i { font-size: 10px; }
+
+/* FIELDS LIST */
+.field-item {
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--card-border);
+}
+.field-item:last-child { border-bottom: none; padding-bottom: 0; }
+.field-item:first-child { padding-top: 0; }
+.field-name {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.field-value {
+  font-size: 12px;
+  color: var(--text-primary);
+  font-weight: 500;
+  word-break: break-word;
+  line-height: 1.5;
+}
+.field-value.mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--primary-light);
+}
+
+/* FEEDBACK */
+.feedback-item {
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  background: var(--dark-bg);
+  border: 1px solid var(--card-border);
+  font-size: 11px;
+}
+.feedback-item:last-child { margin-bottom: 0; }
+.feedback-head {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 8px; margin-bottom: 6px;
+}
+.feedback-status {
+  font-weight: 700;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.feedback-status.success { color: var(--secondary-light); }
+.feedback-status.rejected { color: #fca5a5; }
+.feedback-time { font-size: 10px; color: var(--text-muted); }
+.feedback-msg {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  word-break: break-all;
+  padding: 8px 10px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 6px;
+}
+
+/* ALERT */
+.alert {
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 11px;
+  line-height: 1.5;
+  display: flex; align-items: flex-start; gap: 10px;
+  margin-bottom: 12px;
+}
+.alert i { font-size: 12px; margin-top: 1px; flex-shrink: 0; }
+.alert-info { background: rgba(0, 180, 216, 0.08); border: 1px solid rgba(0, 180, 216, 0.25); color: #93c5fd; }
+.alert-warn { background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.25); color: #fcd34d; }
+
+/* LOADING / ERROR */
+.loading-card {
+  text-align: center;
+  padding: 60px 20px;
+}
+.spinner-lg {
+  width: 40px; height: 40px;
+  border: 3px solid var(--card-border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text {
+  font-size: 12px; color: var(--text-secondary);
+}
+
+/* FOOTER */
+.main-footer {
+  background: #08080f;
+  border-top: 1px solid var(--card-border);
+  padding: 40px 0 20px;
+  margin-top: 40px;
+}
+.footer-content {
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+  gap: 32px; margin-bottom: 32px;
+}
+.footer-brand .logo { margin-bottom: 12px; }
+.footer-about {
+  font-size: 11px; color: var(--text-secondary);
+  line-height: 1.7; margin-bottom: 14px; max-width: 280px;
+}
+.social-links { display: flex; gap: 8px; }
+.social-link {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--card-border);
+  display: grid; place-items: center;
+  color: var(--text-secondary); font-size: 13px;
+  text-decoration: none; transition: all 0.15s ease;
+}
+.social-link:hover {
+  background: rgba(0, 180, 216, 0.1);
+  border-color: rgba(0, 180, 216, 0.3);
+  color: var(--primary-light);
+  transform: translateY(-2px);
+}
+.footer-heading {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 14px; position: relative;
+  padding-bottom: 8px;
+}
+.footer-heading::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 0; width: 20px; height: 2px;
+  background: var(--primary); border-radius: 2px;
+}
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.footer-links a {
+  display: flex; align-items: center; gap: 6px;
+  color: var(--text-secondary); text-decoration: none;
+  font-size: 11px; transition: all 0.15s ease;
+}
+.footer-links a i { font-size: 9px; width: 12px; color: var(--text-muted); }
+.footer-links a:hover { color: var(--text-primary); padding-left: 3px; }
+.footer-links a:hover i { color: var(--primary-light); }
+.footer-bottom {
+  border-top: 1px solid var(--card-border);
+  padding-top: 18px;
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 10px;
+  font-size: 10px; color: var(--text-muted);
+}
+
+@media (max-width: 968px) {
+  .nav-links { display: none; }
+  .nav-toggle { display: block; }
+  .detail-grid { grid-template-columns: 1fr; }
+  .footer-content { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .container { padding: 0 12px; }
+  .progress-steps { grid-template-columns: 1fr; gap: 12px; }
+  .progress-steps::before, .progress-fill { display: none; }
+  .step { flex-direction: row; gap: 12px; padding: 6px 0; text-align: left; }
+  .step-icon { width: 36px; height: 36px; font-size: 12px; flex-shrink: 0; }
+  .step-label { font-size: 11px; text-align: left; }
+  .step-time { font-size: 10px; text-align: left; }
+  .footer-content { grid-template-columns: 1fr; gap: 24px; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  .head-actions { width: 100%; }
+  .head-actions .btn-primary, .head-actions .btn-ghost { flex: 1; justify-content: center; }
+}
+
+.fade-in { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<nav class="main-nav">
+  <div class="nav-container">
+    <a href="../index.html" class="logo">
+      <div class="logo-icon">⚡</div>
+      <div class="logo-text">GSM <span class="accent">TECH HUB</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="dashboard.html" class="nav-link"><i class="fas fa-gauge-high"></i> Dashboard</a>
+      <a href="orders.html" class="nav-link active"><i class="fas fa-box"></i> My Orders</a>
+      <a href="wallet.html" class="nav-link"><i class="fas fa-wallet"></i> Wallet</a>
+      <a href="support.html" class="nav-link"><i class="fas fa-headset"></i> Support</a>
+    </div>
+    <div class="nav-actions">
+      <a href="orders.html" class="btn-back"><i class="fas fa-arrow-left"></i> Back to Orders</a>
+      <button class="nav-toggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="page-head fade-in">
+    <div class="breadcrumb">
+      <a href="../index.html"><i class="fas fa-home"></i> Home</a>
+      <i class="fas fa-chevron-right"></i>
+      <a href="orders.html">My Orders</a>
+      <i class="fas fa-chevron-right"></i>
+      <span class="current">Order Details</span>
+    </div>
+    <div class="head-row">
+      <div>
+        <h1 class="head-title">
+          <span id="headProduct">Loading…</span>
+          <span class="head-ref" id="headRef" title="Click to copy">—</span>
+        </h1>
+        <p class="head-sub" id="headSub">Fetching order information…</p>
+      </div>
+      <div class="head-actions">
+        <button class="btn-ghost" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
+        <a href="support.html" class="btn-primary"><i class="fas fa-headset"></i> Get Help</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="container">
+  <div id="mainContent">
+    <div class="loading-card">
+      <div class="spinner-lg"></div>
+      <div class="loading-text">Loading order details…</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="main-footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo">
+          <div class="logo-icon">⚡</div>
+          <div class="logo-text">GSM <span class="accent">TECH HUB</span></div>
+        </a>
+        <p class="footer-about">
+          Professional reseller platform for IMEI unlocks, GSM tool activations,
+          server credits, and digital goods.
+        </p>
+        <div class="social-links">
+          <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4 class="footer-heading">Services</h4>
+        <ul class="footer-links">
+          <li><a href="service.html?cat=unlock"><i class="fas fa-chevron-right"></i> IMEI Unlock</a></li>
+          <li><a href="service.html?cat=frp"><i class="fas fa-chevron-right"></i> FRP Removal</a></li>
+          <li><a href="service.html?cat=tools"><i class="fas fa-chevron-right"></i> Tool Activations</a></li>
+          <li><a href="service.html?cat=credits"><i class="fas fa-chevron-right"></i> Server Credits</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-heading">Account</h4>
+        <ul class="footer-links">
+          <li><a href="dashboard.html"><i class="fas fa-chevron-right"></i> Dashboard</a></li>
+          <li><a href="orders.html"><i class="fas fa-chevron-right"></i> My Orders</a></li>
+          <li><a href="wallet.html"><i class="fas fa-chevron-right"></i> Wallet</a></li>
+          <li><a href="support.html"><i class="fas fa-chevron-right"></i> Support</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-heading">Company</h4>
+        <ul class="footer-links">
+          <li><a href="about.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
+          <li><a href="support.html"><i class="fas fa-chevron-right"></i> Contact</a></li>
+          <li><a href="terms.html"><i class="fas fa-chevron-right"></i> Terms</a></li>
+          <li><a href="privacy.html"><i class="fas fa-chevron-right"></i> Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 GSM TECH HUB. All rights reserved.</span>
+      <span>Built with ⚡ · Delivered worldwide</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   GET REFERENCE FROM URL
+   ============================================================ */
+const params = new URLSearchParams(window.location.search);
+const ref = params.get('ref') || '';
+
+/* ============================================================
+   LOAD ORDER DETAILS
+   ============================================================ */
+async function loadOrder() {
+  if (!ref) {
+    showError('No order reference provided.');
+    return;
+  }
+
+  document.getElementById('headRef').textContent = ref;
+
+  try {
+    const res = await fetch(`../api/order.php?ref=${encodeURIComponent(ref)}`);
+    const data = await res.json();
+
+    if (data.status !== 'success' || !data.order) {
+      throw new Error(data.message || 'Order not found');
+    }
+
+    renderOrder(data.order);
+  } catch (err) {
+    showError(err.message || 'Failed to load order.');
+  }
+}
+
+/* ============================================================
+   NORMALIZE STATUS
+   ============================================================ */
+function normalizeStatus(s) {
+  const v = (s || '').toLowerCase();
+  if (v === 'success' || v === 'completed' || v === 'delivered') return 'success';
+  if (v === 'failed' || v === 'rejected' || v === 'cancelled') return 'failed';
+  if (v === 'processing' || v === 'sent' || v === 'in_progress') return 'processing';
+  return 'pending';
+}
+
+/* ============================================================
+   RENDER FULL ORDER
+   ============================================================ */
+function renderOrder(order) {
+  const status = normalizeStatus(order.fulfillment_status || order.status);
+  const payment = order.payment_status || 'paid';
+  const created = order.created_at || '';
+  const updated = order.updated_at || created;
+
+  document.title = `Order ${ref} — GSM TECH HUB`;
+  document.getElementById('headProduct').textContent = order.product_name || 'Service';
+  document.getElementById('headSub').innerHTML =
+    `Ordered ${formatDate(created)} · Last update ${formatDate(updated)}`;
+
+  // Progress state
+  const stepIndex = { pending: 1, processing: 2, success: 3, failed: 3 }[status] || 1;
+
+  // Result data (if success and there's a code)
+  const resultCode = order.result_code || order.gsm_order_uuid || '';
+
+  // Dynamic fields
+  let parsedFields = {};
+  try {
+    parsedFields = typeof order.fields_json === 'string'
+      ? JSON.parse(order.fields_json)
+      : (order.fields_json || {});
+  } catch {}
+
+  // Feedback history
+  let feedback = [];
+  try {
+    feedback = typeof order.gsm_response === 'string'
+      ? [JSON.parse(order.gsm_response)]
+      : (order.gsm_response ? [order.gsm_response] : []);
+    feedback = feedback.filter(Boolean);
+  } catch {}
+
+  // Build the page
+  const mainContent = document.getElementById('mainContent');
+  mainContent.innerHTML = `
+    <div class="detail-grid">
+
+      <div>
+        <!-- STATUS CARD -->
+        <div class="status-card fade-in">
+          <div class="status-head">
+            <span class="status-badge-lg ${status}">
+              <i class="fas fa-${statusIcon(status)}"></i>
+              ${statusLabel(status)}
+            </span>
+            <span class="status-elapsed">
+              <i class="fas fa-clock"></i> ${relativeTime(created)}
+            </span>
+          </div>
+
+          <div class="progress-steps">
+            <div class="progress-fill" style="width: ${progressWidth(stepIndex)}%;"></div>
+
+            <div class="step ${stepIndex >= 1 ? 'done' : ''} ${stepIndex === 1 ? 'active' : ''}">
+              <div class="step-icon"><i class="fas fa-receipt"></i></div>
+              <div class="step-label">Order<br>Received</div>
+              <div class="step-time">${formatTime(created)}</div>
+            </div>
+
+            <div class="step ${stepIndex >= 2 ? (stepIndex === 2 ? 'active' : 'done') : ''}">
+              <div class="step-icon"><i class="fas fa-spinner"></i></div>
+              <div class="step-label">Processing<br>at Supplier</div>
+              <div class="step-time">${stepIndex >= 2 ? 'In progress' : '—'}</div>
+            </div>
+
+            <div class="step ${stepIndex >= 3 ? (status === 'failed' ? 'active' : 'done') : ''}">
+              <div class="step-icon"><i class="fas fa-${status === 'failed' ? 'circle-xmark' : 'circle-check'}"></i></div>
+              <div class="step-label">${status === 'failed' ? 'Rejected' : 'Completed'}</div>
+              <div class="step-time">${stepIndex >= 3 ? formatTime(updated) : '—'}</div>
+            </div>
+
+            <div class="step ${stepIndex >= 4 ? 'done' : ''}">
+              <div class="step-icon"><i class="fas fa-inbox"></i></div>
+              <div class="step-label">Delivered<br>to You</div>
+              <div class="step-time">${stepIndex >= 4 ? 'Completed' : '—'}</div>
+            </div>
+          </div>
+        </div>
+
+        ${status === 'success' && resultCode ? `
+        <!-- RESULT CARD -->
+        <div class="card fade-in">
+          <div class="card-head">
+            <div class="card-title"><i class="fas fa-key"></i> Your Result</div>
+          </div>
+          <div class="card-body">
+            <div class="result-box">
+              <div class="result-label"><i class="fas fa-circle-check"></i> Unlock Code / Result</div>
+              <div class="result-value" id="resultCode">${escapeHtml(resultCode)}</div>
+              <div class="result-actions">
+                <button class="btn-copy" onclick="copyResult()"><i class="fas fa-copy"></i> Copy Code</button>
+                <button class="btn-copy" onclick="window.print()"><i class="fas fa-download"></i> Download PDF</button>
+              </div>
+            </div>
+            <div class="alert alert-info">
+              <i class="fas fa-info-circle"></i>
+              <span>
+                Enter this code on your device to complete the unlock. If the code
+                doesn't work, contact support within 24 hours with your order reference.
+              </span>
+            </div>
+          </div>
+        </div>
+        ` : ''}
+
+        ${status === 'failed' ? `
+        <div class="card fade-in">
+          <div class="card-body">
+            <div class="alert alert-warn">
+              <i class="fas fa-exclamation-triangle"></i>
+              <span>
+                <strong>Order rejected by supplier.</strong> This usually happens when the
+                device information doesn't match the requested service. A full refund has
+                been credited to your wallet.
+              </span>
+            </div>
+          </div>
+        </div>
+        ` : ''}
+
+        <!-- ORDER INFO -->
+        <div class="card fade-in">
+          <div class="card-head">
+            <div class="card-title"><i class="fas fa-receipt"></i> Order Information</div>
+          </div>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="lbl">Reference</span>
+              <span class="val mono" onclick="copyText('${escapeAttr(ref)}')" style="cursor:pointer;">${escapeHtml(ref)}</span>
+            </div>
+            <div class="info-row">
+              <span class="lbl">Service</span>
+              <span class="val">${escapeHtml(order.product_name || '—')}</span>
+            </div>
+            ${order.category_name ? `
+            <div class="info-row">
+              <span class="lbl">Category</span>
+              <span class="val">${escapeHtml(order.category_name)}</span>
+            </div>
+            ` : ''}
+            <div class="info-row">
+              <span class="lbl">Quantity</span>
+              <span class="val">${order.quantity || 1}</span>
+            </div>
+            <div class="info-row">
+              <span class="lbl">Amount</span>
+              <span class="val" style="color:var(--secondary-light);font-weight:700;">$${parseFloat(order.amount || 0).toFixed(2)} ${escapeHtml(order.currency || 'USD')}</span>
+            </div>
+            <div class="info-row">
+              <span class="lbl">Payment</span>
+              <span class="val">
+                <span class="status-badge-lg ${payment === 'paid' ? 'success' : payment === 'pending' ? 'pending' : 'failed'}" style="padding:3px 9px;font-size:10px;">
+                  ${escapeHtml(payment)}
+                </span>
+              </span>
+            </div>
+            <div class="info-row">
+              <span class="lbl">Ordered</span>
+              <span class="val">${formatDateFull(created)}</span>
+            </div>
+            ${order.gsm_order_uuid ? `
+            <div class="info-row">
+              <span class="lbl">Supplier Ref</span>
+              <span class="val mono">${escapeHtml(order.gsm_order_uuid)}</span>
+            </div>
+            ` : ''}
+          </div>
+        </div>
+
+        ${Object.keys(parsedFields).length ? `
+        <!-- SUBMITTED DETAILS -->
+        <div class="card fade-in">
+          <div class="card-head">
+            <div class="card-title"><i class="fas fa-list-check"></i> Submitted Details</div>
+          </div>
+          <div class="card-body">
+            ${Object.entries(parsedFields).map(([k, v]) => `
+              <div class="field-item">
+                <div class="field-name">${escapeHtml(k)}</div>
+                <div class="field-value ${isNumeric(k) ? 'mono' : ''}">${escapeHtml(String(v))}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        ` : ''}
+
+        ${feedback.length ? `
+        <!-- FEEDBACK LOG -->
+        <div class="card fade-in">
+          <div class="card-head">
+            <div class="card-title"><i class="fas fa-comment-dots"></i> Supplier Feedback</div>
+          </div>
+          <div class="card-body">
+            ${feedback.map(f => `
+              <div class="feedback-item">
+                <div class="feedback-head">
+                  <span class="feedback-status ${f.status === 'success' ? 'success' : 'rejected'}">
+                    ${escapeHtml(f.status || 'update')}
+                  </span>
+                  <span class="feedback-time">${formatDate(f.timestamp || '')}</span>
+                </div>
+                ${f.replay ? `<div class="feedback-msg">${escapeHtml(decodeBase64(f.replay))}</div>` : ''}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        ` : ''}
+      </div>
+
+      <!-- SIDEBAR -->
+      <aside>
+        <div class="card fade-in">
+          <div class="card-head">
+            <div class="card-title"><i class="fas fa-bolt"></i> Quick Actions</div>
+          </div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:8px;">
+            <a href="orders.html" class="btn-ghost" style="justify-content:center;">
+              <i class="fas fa-list"></i> All Orders
+            </a>
+            <a href="../index.html#services" class="btn-primary" style="justify-content:center;">
+              <i class="fas fa-plus"></i> Place New Order
+            </a>
+            <a href="support.html" class="btn-ghost" style="justify-content:center;">
+              <i class="fas fa-headset"></i> Contact Support
+            </a>
+          </div>
+        </div>
+
+        <div class="card fade-in">
+          <div class="card-head">
+            <div class="card-title"><i class="fas fa-circle-info"></i> Need Help?</div>
+          </div>
+          <div class="card-body">
+            <p style="font-size:11px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px;">
+              If your order is stuck or the result isn't working, contact us
+              within <strong style="color:var(--text-primary);">24 hours</strong>
+              with your order reference.
+            </p>
+            <div class="alert alert-info" style="margin-bottom:0;">
+              <i class="fas fa-clock"></i>
+              <span>Support response time: <strong>under 30 minutes</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card fade-in">
+          <div class="card-head">
+            <div class="card-title"><i class="fas fa-shield-halved"></i> Refund Policy</div>
+          </div>
+          <div class="card-body">
+            <p style="font-size:11px;color:var(--text-secondary);line-height:1.7;">
+              Automatic refunds are issued if:
+            </p>
+            <ul style="list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:6px;">
+              <li style="font-size:11px;color:var(--text-secondary);display:flex;gap:8px;align-items:flex-start;">
+                <i class="fas fa-check" style="color:var(--secondary-light);font-size:10px;margin-top:3px;"></i>
+                Order is rejected by supplier
+              </li>
+              <li style="font-size:11px;color:var(--text-secondary);display:flex;gap:8px;align-items:flex-start;">
+                <i class="fas fa-check" style="color:var(--secondary-light);font-size:10px;margin-top:3px;"></i>
+                Delivery exceeds 24 hours
+              </li>
+              <li style="font-size:11px;color:var(--text-secondary);display:flex;gap:8px;align-items:flex-start;">
+                <i class="fas fa-check" style="color:var(--secondary-light);font-size:10px;margin-top:3px;"></i>
+                Service is unavailable
+              </li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  `;
+
+  // Observe new fade-ins
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+}
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function statusIcon(s) {
+  return { success: 'circle-check', pending: 'clock', processing: 'spinner', failed: 'circle-xmark' }[s] || 'circle';
+}
+function statusLabel(s) {
+  return { success: 'Completed', pending: 'Pending', processing: 'Processing', failed: 'Failed' }[s] || 'Unknown';
+}
+function progressWidth(stepIndex) {
+  // 3 steps: fill from 0% to 100%
+  return [0, 0, 33, 66, 100][stepIndex] || 0;
+}
+function isNumeric(k) {
+  return /imei|serial|phone|code/i.test(k);
+}
+function formatDate(str) {
+  if (!str) return '';
+  const d = new Date(str.replace(' ', 'T'));
+  if (isNaN(d)) return str;
+  const now = new Date();
+  const diff = (now - d) / 1000;
+  if (diff < 60) return 'Just now';
+  if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+  if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+  if (diff < 604800) return Math.floor(diff / 86400) + 'd ago';
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+function formatDateFull(str) {
+  if (!str) return '—';
+  const d = new Date(str.replace(' ', 'T'));
+  if (isNaN(d)) return str;
+  return d.toLocaleString('en-US', {
+    month: 'short', day: 'numeric', year: 'numeric',
+    hour: 'numeric', minute: '2-digit', hour12: true
+  });
+}
+function formatTime(str) {
+  if (!str) return '';
+  const d = new Date(str.replace(' ', 'T'));
+  if (isNaN(d)) return '';
+  return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+}
+function relativeTime(str) {
+  return 'Ordered ' + formatDate(str);
+}
+function decodeBase64(str) {
+  try {
+    return atob(str);
+  } catch {
+    return str;
+  }
+}
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = String(str || '');
+  return d.innerHTML;
+}
+function escapeAttr(str) {
+  return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+
+/* ============================================================
+   ACTIONS
+   ============================================================ */
+function copyResult() {
+  const code = document.getElementById('resultCode')?.textContent;
+  if (!code) return;
+  navigator.clipboard.writeText(code).then(() => toast('Code copied'));
+}
+function copyText(txt) {
+  navigator.clipboard.writeText(txt).then(() => toast('Copied: ' + txt));
+}
+
+document.getElementById('headRef')?.addEventListener('click', function() {
+  const t = this.textContent;
+  if (t && t !== '—') {
+    navigator.clipboard.writeText(t).then(() => toast('Reference copied'));
+  }
+});
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+function toast(message) {
+  const existing = document.querySelector('.toast-popup');
+  if (existing) existing.remove();
+
+  const t = document.createElement('div');
+  t.className = 'toast-popup';
+  t.innerHTML = `<i class="fas fa-circle-check"></i> ${escapeHtml(message)}`;
+  Object.assign(t.style, {
+    position: 'fixed', top: '84px', right: '20px', zIndex: '9999',
+    padding: '12px 16px',
+    background: 'rgba(16, 185, 129, 0.12)',
+    border: '1px solid rgba(16, 185, 129, 0.3)',
+    borderRadius: '10px',
+    color: '#6ee7b7',
+    fontSize: '12px', fontWeight: '600',
+    display: 'flex', alignItems: 'center', gap: '8px',
+    boxShadow: '0 12px 32px rgba(0,0,0,0.4)',
+  });
+  document.body.appendChild(t);
+
+  setTimeout(() => {
+    t.style.opacity = '0';
+    t.style.transition = 'opacity 0.3s';
+    setTimeout(() => t.remove(), 300);
+  }, 2200);
+}
+
+/* ============================================================
+   ERROR STATE
+   ============================================================ */
+function showError(message) {
+  document.getElementById('mainContent').innerHTML = `
+    <div class="card">
+      <div class="card-body" style="text-align:center;padding:60px 20px;">
+        <div style="font-size:40px;opacity:0.35;margin-bottom:12px;">⚠️</div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:6px;">Could not load order</div>
+        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;">
+          ${escapeHtml(message)}
+        </div>
+        <a href="orders.html" class="btn-primary">
+          <i class="fas fa-arrow-left"></i> Back to Orders
+        </a>
+      </div>
+    </div>
+  `;
+}
+
+/* ============================================================
+   MOBILE MENU
+   ============================================================ */
+document.querySelector('.nav-toggle')?.addEventListener('click', () => {
+  const menu = document.querySelector('.nav-links');
+  const isOpen = menu.style.display === 'flex';
+  menu.style.display = isOpen ? 'none' : 'flex';
+  if (!isOpen) {
+    Object.assign(menu.style, {
+      position: 'absolute', top: '66px', left: '0', right: '0',
+      flexDirection: 'column', padding: '16px',
+      background: '#0a0a14', borderBottom: '1px solid #1e1f30', gap: '4px',
+    });
+  }
+});
+
+/* ============================================================
+   INIT
+   ============================================================ */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.05 });
+
+loadOrder();
+</script>
+
+</body>
+</html>
